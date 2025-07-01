@@ -1,0 +1,52 @@
+# Multi-stage build for Genje News Fetcher
+FROM rust:1.88-slim AS builder
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libssl-dev \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directory
+WORKDIR /app
+
+# Copy manifests
+COPY Cargo.toml Cargo.lock ./
+
+# Copy source code
+COPY src ./src
+
+# Build the fetcher binary
+RUN cargo build --release --bin fetcher
+
+# Runtime stage
+FROM debian:bookworm-slim
+
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y \
+    libssl3 \
+    libpq5 \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create a non-privileged user
+RUN useradd --create-home --shell /bin/bash genje
+
+# Set working directory
+WORKDIR /app
+
+# Copy the built binary
+COPY --from=builder /app/target/release/fetcher /app/
+
+# Copy configuration
+COPY config.toml /app/
+
+# Change ownership
+RUN chown -R genje:genje /app
+
+# Switch to non-privileged user
+USER genje
+
+# Run the fetcher
+CMD ["./fetcher"] 

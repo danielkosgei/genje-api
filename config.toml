@@ -1,0 +1,15 @@
+[database]
+url = "postgresql://postgres:password@localhost:5432/genje"
+max_connections = 10
+
+[server]
+host = "0.0.0.0"
+port = 8080
+
+[fetcher]
+fetch_interval_minutes = 30
+max_articles_per_source = 50
+concurrent_fetches = 5
+
+[logging]
+level = "info" 

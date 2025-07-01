@@ -1,0 +1,10 @@
+target/
+.git/
+.gitignore
+*.md
+Dockerfile
+Dockerfile.fetcher
+docker-compose.yml
+.env
+.env.example
+*.log 
