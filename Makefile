@@ -1,4 +1,4 @@
-.PHONY: build run test clean docker-build docker-run lint
+.PHONY: build run test clean docker-build docker-run lint lint-ci
 
 # Build the application
 build:
@@ -22,7 +22,11 @@ clean:
 
 # Lint the code
 lint:
-	golangci-lint run
+	$(shell go env GOPATH)/bin/golangci-lint run
+
+# Lint with timeout (for CI)
+lint-ci:
+	$(shell go env GOPATH)/bin/golangci-lint run --timeout=5m
 
 # Format the code
 format:
@@ -48,7 +52,7 @@ setup-env:
 # Development setup
 dev-setup: setup-env
 	go mod download
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8
 	@echo "🟢 Development environment ready!"
 	@echo "   Edit .env file with your configuration, then run 'make run'"
 
