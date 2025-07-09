@@ -1,3 +1,3 @@
-module github.com/danielkosgei/genje-api
+module genje-api
 
 go 1.24.4
