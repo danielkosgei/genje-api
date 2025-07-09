@@ -54,7 +54,9 @@ func NewAggregatorService(articleRepo *repository.ArticleRepository, sourceRepo 
 
 func (s *AggregatorService) StartBackgroundAggregation(ctx context.Context) {
 	// Run immediately
-	s.AggregateNews(ctx)
+	if err := s.AggregateNews(ctx); err != nil {
+		log.Printf("ERROR: Initial aggregation failed: %v", err)
+	}
 
 	ticker := time.NewTicker(s.config.Interval)
 	defer ticker.Stop()
@@ -65,7 +67,9 @@ func (s *AggregatorService) StartBackgroundAggregation(ctx context.Context) {
 			log.Println("Background aggregation stopped")
 			return
 		case <-ticker.C:
-			s.AggregateNews(ctx)
+			if err := s.AggregateNews(ctx); err != nil {
+				log.Printf("ERROR: Scheduled aggregation failed: %v", err)
+			}
 		}
 	}
 }

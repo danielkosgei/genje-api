@@ -64,7 +64,7 @@ func TestNewArticleRepository(t *testing.T) {
 
 	repo := NewArticleRepository(db)
 	if repo == nil {
-		t.Error("NewArticleRepository returned nil")
+		t.Fatal("NewArticleRepository returned nil")
 	}
 	if repo.db != db {
 		t.Error("NewArticleRepository did not set database correctly")

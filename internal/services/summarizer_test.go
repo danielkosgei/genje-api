@@ -81,7 +81,7 @@ func TestNewSummarizerService(t *testing.T) {
 
 	service := NewSummarizerService(repo)
 	if service == nil {
-		t.Error("NewSummarizerService returned nil")
+		t.Fatal("NewSummarizerService returned nil")
 	}
 	if service.articleRepo != repo {
 		t.Error("NewSummarizerService did not set repository correctly")

@@ -153,7 +153,9 @@ func (r *ArticleRepository) CreateArticlesBatch(articles []models.Article) error
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
-	defer tx.Rollback()
+	defer func() {
+		_ = tx.Rollback() // Ignore error as we're already in error handling
+	}()
 
 	query := `
 		INSERT OR IGNORE INTO articles (title, content, url, author, source, published_at, category, image_url)

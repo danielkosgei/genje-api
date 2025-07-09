@@ -386,7 +386,9 @@ func TestGetCategories(t *testing.T) {
 		Category:    "sports",
 		PublishedAt: time.Now(),
 	}
-	handler.articleRepo.CreateArticle(&article)
+	if err := handler.articleRepo.CreateArticle(&article); err != nil {
+		t.Fatalf("Failed to create test article: %v", err)
+	}
 
 	req := httptest.NewRequest("GET", "/api/v1/categories", nil)
 	rr := httptest.NewRecorder()

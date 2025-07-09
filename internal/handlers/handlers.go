@@ -132,7 +132,9 @@ func (h *Handler) GetCategories(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) RefreshNews(w http.ResponseWriter, r *http.Request) {
-	go h.aggregatorService.AggregateNews(r.Context())
+	go func() {
+		_ = h.aggregatorService.AggregateNews(r.Context()) // Error logged in service
+	}()
 	
 	response := map[string]string{"message": "News refresh started"}
 	h.respondJSON(w, http.StatusOK, response)
@@ -165,7 +167,11 @@ func (h *Handler) parseArticleFilters(r *http.Request) (models.ArticleFilters, e
 func (h *Handler) respondJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
-	json.NewEncoder(w).Encode(data)
+	if err := json.NewEncoder(w).Encode(data); err != nil {
+		// Log error but don't change response as headers are already written
+		// In a real application, you might want to use a proper logger here
+		return
+	}
 }
 
 func (h *Handler) respondError(w http.ResponseWriter, statusCode int, message, details string) {

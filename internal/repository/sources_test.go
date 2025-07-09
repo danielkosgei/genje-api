@@ -52,7 +52,7 @@ func TestNewSourceRepository(t *testing.T) {
 
 	repo := NewSourceRepository(db)
 	if repo == nil {
-		t.Error("NewSourceRepository returned nil")
+		t.Fatal("NewSourceRepository returned nil")
 	}
 	if repo.db != db {
 		t.Error("NewSourceRepository did not set database correctly")

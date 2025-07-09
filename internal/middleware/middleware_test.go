@@ -13,7 +13,10 @@ func TestCORS(t *testing.T) {
 	// Create a test handler
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("test response"))
+		if _, err := w.Write([]byte("test response")); err != nil {
+			// Log error in real application
+			return
+		}
 	})
 	
 	handler := corsMiddleware(testHandler)
@@ -89,7 +92,7 @@ func TestRequestID(t *testing.T) {
 	// Create a test handler that captures the request ID
 	var capturedRequestID string
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		capturedRequestID = r.Context().Value("request_id").(string)
+		capturedRequestID = GetRequestIDFromContext(r.Context())
 		w.WriteHeader(http.StatusOK)
 	})
 	
@@ -133,8 +136,9 @@ func TestRequestIDUniqueness(t *testing.T) {
 	
 	var requestIDs []string
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		requestID := r.Context().Value("request_id").(string)
-		requestIDs = append(requestIDs, requestID)
+		if id := GetRequestIDFromContext(r.Context()); id != "" {
+			requestIDs = append(requestIDs, id)
+		}
 		w.WriteHeader(http.StatusOK)
 	})
 	
@@ -194,9 +198,12 @@ func TestMiddlewareChaining(t *testing.T) {
 	
 	var capturedRequestID string
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		capturedRequestID = r.Context().Value("request_id").(string)
+		capturedRequestID = GetRequestIDFromContext(r.Context())
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
+		if _, err := w.Write([]byte("OK")); err != nil {
+			// Log error in real application
+			return
+		}
 	})
 	
 	// Chain the middleware
