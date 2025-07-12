@@ -16,8 +16,11 @@ func NewArticleRepository(db *sql.DB) *ArticleRepository {
 }
 
 func (r *ArticleRepository) GetArticles(filters models.ArticleFilters) ([]models.Article, int, error) {
-	// Build query with filters
-	query := "SELECT id, title, content, summary, url, author, source, published_at, created_at, category, image_url FROM articles WHERE 1=1"
+	// Build query with filters - use COALESCE to handle NULL values
+	query := `SELECT id, title, COALESCE(content, ''), COALESCE(summary, ''), url, 
+		COALESCE(author, ''), source, published_at, created_at, 
+		COALESCE(category, 'general'), COALESCE(image_url, '') 
+		FROM articles WHERE 1=1`
 	countQuery := "SELECT COUNT(*) FROM articles WHERE 1=1"
 	args := []interface{}{}
 
@@ -34,8 +37,8 @@ func (r *ArticleRepository) GetArticles(filters models.ArticleFilters) ([]models
 	}
 
 	if filters.Search != "" {
-		query += " AND (title LIKE ? OR content LIKE ?)"
-		countQuery += " AND (title LIKE ? OR content LIKE ?)"
+		query += " AND (title LIKE ? OR COALESCE(content, '') LIKE ?)"
+		countQuery += " AND (title LIKE ? OR COALESCE(content, '') LIKE ?)"
 		searchTerm := "%" + filters.Search + "%"
 		args = append(args, searchTerm, searchTerm)
 	}
@@ -78,7 +81,9 @@ func (r *ArticleRepository) GetArticles(filters models.ArticleFilters) ([]models
 
 func (r *ArticleRepository) GetArticleByID(id int) (*models.Article, error) {
 	query := `
-		SELECT id, title, content, summary, url, author, source, published_at, created_at, category, image_url
+		SELECT id, title, COALESCE(content, ''), COALESCE(summary, ''), url, 
+			COALESCE(author, ''), source, published_at, created_at, 
+			COALESCE(category, 'general'), COALESCE(image_url, '')
 		FROM articles WHERE id = ?
 	`
 
@@ -104,8 +109,26 @@ func (r *ArticleRepository) CreateArticle(article *models.Article) error {
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 	`
 
-	_, err := r.db.Exec(query, article.Title, article.Content, article.URL, article.Author,
-		article.Source, article.PublishedAt, article.Category, article.ImageURL)
+	// Ensure we never insert NULL values for string fields
+	content := article.Content
+	if content == "" {
+		content = ""
+	}
+	author := article.Author
+	if author == "" {
+		author = ""
+	}
+	category := article.Category
+	if category == "" {
+		category = "general"
+	}
+	imageURL := article.ImageURL
+	if imageURL == "" {
+		imageURL = ""
+	}
+
+	_, err := r.db.Exec(query, article.Title, content, article.URL, author,
+		article.Source, article.PublishedAt, category, imageURL)
 
 	if err != nil {
 		return fmt.Errorf("failed to create article: %w", err)
@@ -169,8 +192,26 @@ func (r *ArticleRepository) CreateArticlesBatch(articles []models.Article) error
 	defer stmt.Close()
 
 	for _, article := range articles {
-		_, err := stmt.Exec(article.Title, article.Content, article.URL, article.Author,
-			article.Source, article.PublishedAt, article.Category, article.ImageURL)
+		// Ensure we never insert NULL values for string fields
+		content := article.Content
+		if content == "" {
+			content = ""
+		}
+		author := article.Author
+		if author == "" {
+			author = ""
+		}
+		category := article.Category
+		if category == "" {
+			category = "general"
+		}
+		imageURL := article.ImageURL
+		if imageURL == "" {
+			imageURL = ""
+		}
+
+		_, err := stmt.Exec(article.Title, content, article.URL, author,
+			article.Source, article.PublishedAt, category, imageURL)
 		if err != nil {
 			return fmt.Errorf("failed to insert article: %w", err)
 		}
