@@ -3,7 +3,7 @@
 [![Go CI/CD](https://github.com/danielkosgei/genje-api/actions/workflows/go.yml/badge.svg)](https://github.com/danielkosgei/genje-api/actions/workflows/go.yml)
 [![codecov](https://codecov.io/gh/danielkosgei/genje-api/branch/main/graph/badge.svg)](https://codecov.io/gh/danielkosgei/genje-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/danielkosgei/genje-api)](https://goreportcard.com/report/github.com/danielkosgei/genje-api)
-[![Docker Pulls](https://img.shields.io/docker/pulls/danielkosgei/genje-api)](https://hub.docker.com/r/danielkosgei/genje-api)
+[![Docker Pulls](https://img.shields.io/docker/pulls/dd0n3/genje-api)](https://hub.docker.com/r/dd0n3/genje-api)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 News aggregation service that collects articles from multiple Kenyan news sources via RSS feeds and provides a RESTful API for accessing and managing news content.
