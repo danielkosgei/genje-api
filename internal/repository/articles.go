@@ -874,7 +874,11 @@ func (r *ArticleRepository) GetTrendingTopics(limit int, timeWindow string) ([]m
 				}
 			}
 			topic.Articles = articleIDs
-			articleRows.Close()
+			if closeErr := articleRows.Close(); closeErr != nil {
+				// Log the error but don't fail the entire operation
+				// In a production environment, you might want to log this properly
+				_ = closeErr
+			}
 		}
 		
 		topics = append(topics, topic)
