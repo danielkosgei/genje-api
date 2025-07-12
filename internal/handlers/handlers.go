@@ -194,10 +194,17 @@ func (h *Handler) GetAPIInfo(w http.ResponseWriter, r *http.Request) {
 		Endpoints: []string{
 			"GET /health",
 			"GET /",
+			"GET /v1/openapi.json",
+			"GET /v1/schema", 
 			"GET /v1/articles",
 			"GET /v1/articles/{id}",
 			"POST /v1/articles/{id}/summarize",
 			"GET /v1/articles/recent",
+			"GET /v1/articles/feed",
+			"GET /v1/articles/search",
+			"GET /v1/articles/trending",
+			"GET /v1/articles/by-source/{sourceId}",
+			"GET /v1/articles/by-category/{category}",
 			"GET /v1/sources",
 			"GET /v1/sources/{id}",
 			"POST /v1/sources",
@@ -209,6 +216,7 @@ func (h *Handler) GetAPIInfo(w http.ResponseWriter, r *http.Request) {
 			"GET /v1/stats/sources",
 			"GET /v1/stats/categories",
 			"GET /v1/stats/timeline",
+			"GET /v1/trends",
 			"GET /v1/status",
 			"POST /v1/refresh",
 		},
@@ -519,5 +527,372 @@ func (h *Handler) GetAllSources(w http.ResponseWriter, r *http.Request) {
 			"generated_at": time.Now(),
 		},
 	}
+	h.respondJSON(w, http.StatusOK, response)
+}
+
+// New handler methods for missing endpoints
+
+// GetOpenAPISpec returns OpenAPI specification
+func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
+	spec := models.OpenAPISpec{
+		OpenAPI: "3.0.0",
+		Info: models.OpenAPIInfo{
+			Title:       "Genje News API",
+			Description: "Kenyan news aggregation service providing access to articles from multiple sources",
+			Version:     "1.0.0",
+			Contact: models.OpenAPIContact{
+				Name:  "Genje Team",
+				Email: "support@genje.com",
+				URL:   "https://genje.com",
+			},
+		},
+		Paths: map[string]interface{}{
+			"/health": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary": "Health check",
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Service is healthy",
+						},
+					},
+				},
+			},
+			"/v1/articles": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary": "Get articles",
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":     "page",
+							"in":       "query",
+							"required": false,
+							"schema":   map[string]interface{}{"type": "integer"},
+						},
+						map[string]interface{}{
+							"name":     "limit",
+							"in":       "query",
+							"required": false,
+							"schema":   map[string]interface{}{"type": "integer"},
+						},
+						map[string]interface{}{
+							"name":     "category",
+							"in":       "query",
+							"required": false,
+							"schema":   map[string]interface{}{"type": "string"},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "List of articles",
+						},
+					},
+				},
+			},
+		},
+		Components: map[string]interface{}{
+			"schemas": map[string]interface{}{
+				"Article": map[string]interface{}{
+					"type": "object",
+					"properties": map[string]interface{}{
+						"id":           map[string]interface{}{"type": "integer"},
+						"title":        map[string]interface{}{"type": "string"},
+						"content":      map[string]interface{}{"type": "string"},
+						"url":          map[string]interface{}{"type": "string"},
+						"author":       map[string]interface{}{"type": "string"},
+						"source":       map[string]interface{}{"type": "string"},
+						"published_at": map[string]interface{}{"type": "string", "format": "date-time"},
+						"created_at":   map[string]interface{}{"type": "string", "format": "date-time"},
+						"category":     map[string]interface{}{"type": "string"},
+					},
+				},
+			},
+		},
+	}
+	
+	h.respondJSON(w, http.StatusOK, spec)
+}
+
+// GetAPISchema returns API schema information
+func (h *Handler) GetAPISchema(w http.ResponseWriter, r *http.Request) {
+	schema := models.APISchema{
+		Models: map[string]interface{}{
+			"Article": map[string]interface{}{
+				"type": "object",
+				"properties": map[string]interface{}{
+					"id":           map[string]interface{}{"type": "integer"},
+					"title":        map[string]interface{}{"type": "string"},
+					"content":      map[string]interface{}{"type": "string"},
+					"url":          map[string]interface{}{"type": "string"},
+					"author":       map[string]interface{}{"type": "string"},
+					"source":       map[string]interface{}{"type": "string"},
+					"published_at": map[string]interface{}{"type": "string", "format": "date-time"},
+					"created_at":   map[string]interface{}{"type": "string", "format": "date-time"},
+					"category":     map[string]interface{}{"type": "string"},
+				},
+			},
+			"NewsSource": map[string]interface{}{
+				"type": "object",
+				"properties": map[string]interface{}{
+					"id":       map[string]interface{}{"type": "integer"},
+					"name":     map[string]interface{}{"type": "string"},
+					"url":      map[string]interface{}{"type": "string"},
+					"feed_url": map[string]interface{}{"type": "string"},
+					"category": map[string]interface{}{"type": "string"},
+					"active":   map[string]interface{}{"type": "boolean"},
+				},
+			},
+		},
+		Endpoints: []models.EndpointSchema{
+			{
+				Path:        "/v1/articles",
+				Method:      "GET",
+				Description: "Get paginated list of articles",
+				Parameters: []models.ParameterSchema{
+					{Name: "page", In: "query", Required: false, Type: "integer", Description: "Page number (default: 1)"},
+					{Name: "limit", In: "query", Required: false, Type: "integer", Description: "Items per page (default: 20, max: 100)"},
+					{Name: "category", In: "query", Required: false, Type: "string", Description: "Filter by category"},
+					{Name: "source", In: "query", Required: false, Type: "string", Description: "Filter by source"},
+					{Name: "search", In: "query", Required: false, Type: "string", Description: "Search in title and content"},
+				},
+				Response: map[string]interface{}{
+					"type": "object",
+					"properties": map[string]interface{}{
+						"articles":   map[string]interface{}{"type": "array", "items": map[string]interface{}{"$ref": "#/models/Article"}},
+						"pagination": map[string]interface{}{"type": "object"},
+					},
+				},
+			},
+			{
+				Path:        "/v1/articles/{id}",
+				Method:      "GET",
+				Description: "Get single article by ID",
+				Parameters: []models.ParameterSchema{
+					{Name: "id", In: "path", Required: true, Type: "integer", Description: "Article ID"},
+				},
+				Response: map[string]interface{}{
+					"$ref": "#/models/Article",
+				},
+			},
+		},
+	}
+	
+	h.respondJSON(w, http.StatusOK, schema)
+}
+
+// SearchArticles performs full-text search
+func (h *Handler) SearchArticles(w http.ResponseWriter, r *http.Request) {
+	filters := models.SearchFilters{
+		Query:     r.URL.Query().Get("q"),
+		Category:  r.URL.Query().Get("category"),
+		Source:    r.URL.Query().Get("source"),
+		From:      r.URL.Query().Get("from"),
+		To:        r.URL.Query().Get("to"),
+		Page:      1,
+		Limit:     20,
+		SortBy:    r.URL.Query().Get("sort_by"),
+		SortOrder: r.URL.Query().Get("sort_order"),
+	}
+	
+	if pageStr := r.URL.Query().Get("page"); pageStr != "" {
+		if page, err := strconv.Atoi(pageStr); err == nil && page > 0 {
+			filters.Page = page
+		}
+	}
+	
+	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
+		if limit, err := strconv.Atoi(limitStr); err == nil && limit > 0 && limit <= 100 {
+			filters.Limit = limit
+		}
+	}
+	
+	if filters.Query == "" {
+		h.respondError(w, http.StatusBadRequest, "Query parameter 'q' is required", "")
+		return
+	}
+	
+	articles, total, err := h.articleRepo.SearchArticles(filters)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Failed to search articles", err.Error())
+		return
+	}
+	
+	response := models.SearchResponse{
+		Success: true,
+		Data:    articles,
+	}
+	response.Meta.Pagination = models.PaginationResponse{
+		Page:  filters.Page,
+		Limit: filters.Limit,
+		Total: total,
+	}
+	response.Meta.GeneratedAt = time.Now()
+	response.Meta.Query = filters.Query
+	response.Meta.Filters = filters
+	
+	h.respondJSON(w, http.StatusOK, response)
+}
+
+// GetArticlesFeed returns cursor-based paginated feed
+func (h *Handler) GetArticlesFeed(w http.ResponseWriter, r *http.Request) {
+	req := models.FeedRequest{
+		Cursor:    r.URL.Query().Get("cursor"),
+		Limit:     20,
+		Category:  r.URL.Query().Get("category"),
+		Source:    r.URL.Query().Get("source"),
+		SortBy:    r.URL.Query().Get("sort_by"),
+		SortOrder: r.URL.Query().Get("sort_order"),
+	}
+	
+	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
+		if limit, err := strconv.Atoi(limitStr); err == nil && limit > 0 && limit <= 100 {
+			req.Limit = limit
+		}
+	}
+	
+	feed, err := h.articleRepo.GetArticlesFeed(req)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Failed to get articles feed", err.Error())
+		return
+	}
+	
+	response := models.FeedResponse{
+		Success: true,
+		Data:    feed,
+	}
+	response.Meta.GeneratedAt = time.Now()
+	response.Meta.Filters = req
+	
+	h.respondJSON(w, http.StatusOK, response)
+}
+
+// GetTrendingArticles returns trending articles
+func (h *Handler) GetTrendingArticles(w http.ResponseWriter, r *http.Request) {
+	limit := 20
+	timeWindow := r.URL.Query().Get("window")
+	if timeWindow == "" {
+		timeWindow = "24h"
+	}
+	
+	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
+		if l, err := strconv.Atoi(limitStr); err == nil && l > 0 && l <= 100 {
+			limit = l
+		}
+	}
+	
+	articles, err := h.articleRepo.GetTrendingArticles(limit, timeWindow)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Failed to get trending articles", err.Error())
+		return
+	}
+	
+	response := models.TrendingResponse{
+		Success: true,
+		Data:    articles,
+	}
+	response.Meta.GeneratedAt = time.Now()
+	response.Meta.Algorithm = "recent_engagement"
+	response.Meta.TimeWindow = timeWindow
+	
+	h.respondJSON(w, http.StatusOK, response)
+}
+
+// GetArticlesBySource returns articles from a specific source
+func (h *Handler) GetArticlesBySource(w http.ResponseWriter, r *http.Request) {
+	sourceIDStr := chi.URLParam(r, "sourceId")
+	sourceID, err := strconv.Atoi(sourceIDStr)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		return
+	}
+	
+	filters, err := h.parseArticleFilters(r)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Invalid query parameters", err.Error())
+		return
+	}
+	
+	articles, total, err := h.articleRepo.GetArticlesBySource(sourceID, filters)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Failed to get articles by source", err.Error())
+		return
+	}
+	
+	response := models.EnhancedArticlesResponse{
+		Success: true,
+		Data:    articles,
+	}
+	response.Meta.Pagination = models.PaginationResponse{
+		Page:  filters.Page,
+		Limit: filters.Limit,
+		Total: total,
+	}
+	response.Meta.GeneratedAt = time.Now()
+	response.Meta.Filters = filters
+	
+	h.respondJSON(w, http.StatusOK, response)
+}
+
+// GetArticlesByCategory returns articles from a specific category
+func (h *Handler) GetArticlesByCategory(w http.ResponseWriter, r *http.Request) {
+	category := chi.URLParam(r, "category")
+	if category == "" {
+		h.respondError(w, http.StatusBadRequest, "Category parameter is required", "")
+		return
+	}
+	
+	filters, err := h.parseArticleFilters(r)
+	if err != nil {
+		h.respondError(w, http.StatusBadRequest, "Invalid query parameters", err.Error())
+		return
+	}
+	
+	articles, total, err := h.articleRepo.GetArticlesByCategory(category, filters)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Failed to get articles by category", err.Error())
+		return
+	}
+	
+	response := models.EnhancedArticlesResponse{
+		Success: true,
+		Data:    articles,
+	}
+	response.Meta.Pagination = models.PaginationResponse{
+		Page:  filters.Page,
+		Limit: filters.Limit,
+		Total: total,
+	}
+	response.Meta.GeneratedAt = time.Now()
+	response.Meta.Filters = filters
+	
+	h.respondJSON(w, http.StatusOK, response)
+}
+
+// GetTrends returns trending topics/keywords
+func (h *Handler) GetTrends(w http.ResponseWriter, r *http.Request) {
+	limit := 10
+	timeWindow := r.URL.Query().Get("window")
+	if timeWindow == "" {
+		timeWindow = "24h"
+	}
+	
+	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
+		if l, err := strconv.Atoi(limitStr); err == nil && l > 0 && l <= 50 {
+			limit = l
+		}
+	}
+	
+	topics, err := h.articleRepo.GetTrendingTopics(limit, timeWindow)
+	if err != nil {
+		h.respondError(w, http.StatusInternalServerError, "Failed to get trending topics", err.Error())
+		return
+	}
+	
+	response := models.TrendsResponse{
+		Success: true,
+		Data:    topics,
+	}
+	response.Meta.GeneratedAt = time.Now()
+	response.Meta.TimeWindow = timeWindow
+	response.Meta.Algorithm = "category_frequency"
+	
 	h.respondJSON(w, http.StatusOK, response)
 } 

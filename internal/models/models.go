@@ -177,4 +177,135 @@ type UpdateSourceRequest struct {
 	FeedURL  string `json:"feed_url,omitempty"`
 	Category string `json:"category,omitempty"`
 	Active   *bool  `json:"active,omitempty"`
+}
+
+// New models for missing endpoints
+type OpenAPISpec struct {
+	OpenAPI string                 `json:"openapi"`
+	Info    OpenAPIInfo           `json:"info"`
+	Paths   map[string]interface{} `json:"paths"`
+	Components map[string]interface{} `json:"components"`
+}
+
+type OpenAPIInfo struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Version     string `json:"version"`
+	Contact     OpenAPIContact `json:"contact"`
+}
+
+type OpenAPIContact struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
+	URL   string `json:"url"`
+}
+
+type APISchema struct {
+	Models map[string]interface{} `json:"models"`
+	Endpoints []EndpointSchema `json:"endpoints"`
+}
+
+type EndpointSchema struct {
+	Path        string                 `json:"path"`
+	Method      string                 `json:"method"`
+	Description string                 `json:"description"`
+	Parameters  []ParameterSchema      `json:"parameters,omitempty"`
+	Response    map[string]interface{} `json:"response"`
+}
+
+type ParameterSchema struct {
+	Name        string `json:"name"`
+	In          string `json:"in"` // "query", "path", "header"
+	Required    bool   `json:"required"`
+	Type        string `json:"type"`
+	Description string `json:"description"`
+}
+
+type CursorPaginationResponse struct {
+	Articles   []Article `json:"articles"`
+	NextCursor string    `json:"next_cursor,omitempty"`
+	PrevCursor string    `json:"prev_cursor,omitempty"`
+	HasMore    bool      `json:"has_more"`
+	Total      int       `json:"total"`
+}
+
+type TrendingArticle struct {
+	Article
+	Score           float64 `json:"score"`
+	ViewCount       int     `json:"view_count"`
+	ShareCount      int     `json:"share_count"`
+	CommentCount    int     `json:"comment_count"`
+	TrendingReason  string  `json:"trending_reason"`
+}
+
+type TrendingTopic struct {
+	Topic       string  `json:"topic"`
+	Count       int     `json:"count"`
+	Score       float64 `json:"score"`
+	Articles    []int   `json:"articles"` // Article IDs
+	Category    string  `json:"category"`
+	FirstSeen   time.Time `json:"first_seen"`
+	LastUpdated time.Time `json:"last_updated"`
+}
+
+type SearchFilters struct {
+	Query       string `json:"query"`
+	Category    string `json:"category,omitempty"`
+	Source      string `json:"source,omitempty"`
+	From        string `json:"from,omitempty"`
+	To          string `json:"to,omitempty"`
+	Page        int    `json:"page"`
+	Limit       int    `json:"limit"`
+	SortBy      string `json:"sort_by"` // "relevance", "date", "source"
+	SortOrder   string `json:"sort_order"` // "asc", "desc"
+}
+
+type FeedRequest struct {
+	Cursor    string `json:"cursor,omitempty"`
+	Limit     int    `json:"limit"`
+	Category  string `json:"category,omitempty"`
+	Source    string `json:"source,omitempty"`
+	SortBy    string `json:"sort_by"` // "date", "popularity"
+	SortOrder string `json:"sort_order"` // "asc", "desc"
+}
+
+// Response wrapper types
+type SearchResponse struct {
+	Success bool      `json:"success"`
+	Data    []Article `json:"data"`
+	Meta    struct {
+		Pagination  PaginationResponse `json:"pagination"`
+		GeneratedAt time.Time          `json:"generated_at"`
+		Query       string             `json:"query"`
+		Filters     SearchFilters      `json:"filters"`
+	} `json:"meta"`
+}
+
+type FeedResponse struct {
+	Success bool                     `json:"success"`
+	Data    CursorPaginationResponse `json:"data"`
+	Meta    struct {
+		GeneratedAt time.Time `json:"generated_at"`
+		Filters     FeedRequest `json:"filters"`
+	} `json:"meta"`
+}
+
+type TrendingResponse struct {
+	Success bool              `json:"success"`
+	Data    []TrendingArticle `json:"data"`
+	Meta    struct {
+		GeneratedAt time.Time `json:"generated_at"`
+		Algorithm   string    `json:"algorithm"`
+		TimeWindow  string    `json:"time_window"`
+	} `json:"meta"`
+}
+
+type TrendsResponse struct {
+	Success bool            `json:"success"`
+	Data    []TrendingTopic `json:"data"`
+	Meta    struct {
+		GeneratedAt time.Time `json:"generated_at"`
+		TimeWindow  string    `json:"time_window"`
+		Algorithm   string    `json:"algorithm"`
+	} `json:"meta"`
 } 

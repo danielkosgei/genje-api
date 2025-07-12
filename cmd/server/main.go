@@ -114,11 +114,22 @@ func setupRouter(h *handlers.Handler) *chi.Mux {
 
 	// API routes
 	r.Route("/v1", func(r chi.Router) {
-		// Articles
+		// API metadata
+		r.Get("/openapi.json", h.GetOpenAPISpec)
+		r.Get("/schema", h.GetAPISchema)
+		
+		// Advanced article queries (MUST come before /articles/{id})
+		r.Get("/articles/feed", h.GetArticlesFeed)
+		r.Get("/articles/search", h.SearchArticles)
+		r.Get("/articles/trending", h.GetTrendingArticles)
+		r.Get("/articles/recent", h.GetRecentArticles)
+		r.Get("/articles/by-source/{sourceId}", h.GetArticlesBySource)
+		r.Get("/articles/by-category/{category}", h.GetArticlesByCategory)
+		
+		// Generic article routes (MUST come after specific routes)
 		r.Get("/articles", h.GetArticles)
 		r.Get("/articles/{id}", h.GetArticle)
 		r.Post("/articles/{id}/summarize", h.SummarizeArticle)
-		r.Get("/articles/recent", h.GetRecentArticles)
 		
 		// Sources
 		r.Get("/sources", h.GetSources)
@@ -136,6 +147,9 @@ func setupRouter(h *handlers.Handler) *chi.Mux {
 		r.Get("/stats/sources", h.GetSourceStats)
 		r.Get("/stats/categories", h.GetCategoryStats)
 		r.Get("/stats/timeline", h.GetTimelineStats)
+		
+		// Trending topics
+		r.Get("/trends", h.GetTrends)
 		
 		// System
 		r.Get("/status", h.GetSystemStatus)
