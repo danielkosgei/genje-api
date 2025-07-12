@@ -106,16 +106,53 @@ func setupRouter(h *handlers.Handler) *chi.Mux {
 	r.Use(middleware.CORS())
 	r.Use(middleware.RequestID())
 
+	// Root endpoint - API info
+	r.Get("/", h.GetAPIInfo)
+
 	// Health check
 	r.Get("/health", h.Health)
 
 	// API routes
 	r.Route("/v1", func(r chi.Router) {
+		// API metadata
+		r.Get("/openapi.json", h.GetOpenAPISpec)
+		r.Get("/schema", h.GetAPISchema)
+		
+		// Advanced article queries (MUST come before /articles/{id})
+		r.Get("/articles/feed", h.GetArticlesFeed)
+		r.Get("/articles/search", h.SearchArticles)
+		r.Get("/articles/trending", h.GetTrendingArticles)
+		r.Get("/articles/recent", h.GetRecentArticles)
+		r.Get("/articles/by-source/{sourceId}", h.GetArticlesBySource)
+		r.Get("/articles/by-category/{category}", h.GetArticlesByCategory)
+		
+		// Generic article routes (MUST come after specific routes)
 		r.Get("/articles", h.GetArticles)
 		r.Get("/articles/{id}", h.GetArticle)
 		r.Post("/articles/{id}/summarize", h.SummarizeArticle)
+		
+		// Sources
 		r.Get("/sources", h.GetSources)
+		r.Get("/sources/{id}", h.GetSource)
+		r.Post("/sources", h.CreateSource)
+		r.Put("/sources/{id}", h.UpdateSource)
+		r.Delete("/sources/{id}", h.DeleteSource)
+		r.Post("/sources/{id}/refresh", h.RefreshSource)
+		
+		// Categories
 		r.Get("/categories", h.GetCategories)
+		
+		// Statistics
+		r.Get("/stats", h.GetGlobalStats)
+		r.Get("/stats/sources", h.GetSourceStats)
+		r.Get("/stats/categories", h.GetCategoryStats)
+		r.Get("/stats/timeline", h.GetTimelineStats)
+		
+		// Trending topics
+		r.Get("/trends", h.GetTrends)
+		
+		// System
+		r.Get("/status", h.GetSystemStatus)
 		r.Post("/refresh", h.RefreshNews)
 	})
 

@@ -122,4 +122,172 @@ func (r *SourceRepository) SeedInitialSources() error {
 	}
 
 	return nil
+}
+
+// GetSourceByID returns a source by its ID
+func (r *SourceRepository) GetSourceByID(id int) (*models.NewsSource, error) {
+	query := "SELECT id, name, url, feed_url, category, active FROM news_sources WHERE id = ?"
+	
+	var source models.NewsSource
+	err := r.db.QueryRow(query, id).Scan(&source.ID, &source.Name, &source.URL, 
+		&source.FeedURL, &source.Category, &source.Active)
+	
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
+	
+	if err != nil {
+		return nil, fmt.Errorf("failed to get source: %w", err)
+	}
+	
+	return &source, nil
+}
+
+// UpdateSource updates an existing source
+func (r *SourceRepository) UpdateSource(id int, updates models.UpdateSourceRequest) error {
+	// Use a secure approach that avoids dynamic SQL construction
+	// We'll update all fields at once using COALESCE to keep existing values
+	
+	// First, get the current source to use as defaults
+	current, err := r.GetSourceByID(id)
+	if err != nil {
+		return fmt.Errorf("failed to get current source: %w", err)
+	}
+	if current == nil {
+		return fmt.Errorf("source not found")
+	}
+	
+	// Use provided values or fall back to current values
+	name := current.Name
+	if updates.Name != "" {
+		name = updates.Name
+	}
+	
+	url := current.URL
+	if updates.URL != "" {
+		url = updates.URL
+	}
+	
+	feedURL := current.FeedURL
+	if updates.FeedURL != "" {
+		feedURL = updates.FeedURL
+	}
+	
+	category := current.Category
+	if updates.Category != "" {
+		category = updates.Category
+	}
+	
+	active := current.Active
+	if updates.Active != nil {
+		active = *updates.Active
+	}
+	
+	// Check if any field actually changed
+	if name == current.Name && url == current.URL && feedURL == current.FeedURL && 
+		category == current.Category && active == current.Active {
+		return fmt.Errorf("no fields to update")
+	}
+	
+	// Static query - no dynamic SQL construction
+	query := `UPDATE news_sources SET 
+		name = ?, 
+		url = ?, 
+		feed_url = ?, 
+		category = ?, 
+		active = ? 
+		WHERE id = ?`
+	
+	result, err := r.db.Exec(query, name, url, feedURL, category, active, id)
+	if err != nil {
+		return fmt.Errorf("failed to update source: %w", err)
+	}
+	
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+	
+	if rowsAffected == 0 {
+		return fmt.Errorf("source not found")
+	}
+	
+	return nil
+}
+
+// DeleteSource soft deletes a source (sets active = false)
+func (r *SourceRepository) DeleteSource(id int) error {
+	query := "UPDATE news_sources SET active = 0 WHERE id = ?"
+	
+	result, err := r.db.Exec(query, id)
+	if err != nil {
+		return fmt.Errorf("failed to delete source: %w", err)
+	}
+	
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("failed to get rows affected: %w", err)
+	}
+	
+	if rowsAffected == 0 {
+		return fmt.Errorf("source not found")
+	}
+	
+	return nil
+}
+
+// GetAllSources returns all sources (active and inactive)
+func (r *SourceRepository) GetAllSources() ([]models.NewsSource, error) {
+	query := "SELECT id, name, url, feed_url, category, active FROM news_sources ORDER BY name"
+	
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("failed to query sources: %w", err)
+	}
+	defer rows.Close()
+
+	var sources []models.NewsSource
+	for rows.Next() {
+		var source models.NewsSource
+		err := rows.Scan(&source.ID, &source.Name, &source.URL, &source.FeedURL, 
+			&source.Category, &source.Active)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan source: %w", err)
+		}
+		sources = append(sources, source)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("error iterating rows: %w", err)
+	}
+
+	return sources, nil
+}
+
+// GetSourcesCount returns the total number of sources
+func (r *SourceRepository) GetSourcesCount() (int, error) {
+	var count int
+	err := r.db.QueryRow("SELECT COUNT(*) FROM news_sources WHERE active = 1").Scan(&count)
+	if err != nil {
+		return 0, fmt.Errorf("failed to get sources count: %w", err)
+	}
+	return count, nil
+}
+
+// RefreshSingleSource triggers aggregation for a single source
+func (r *SourceRepository) RefreshSingleSource(id int) (*models.NewsSource, error) {
+	source, err := r.GetSourceByID(id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get source: %w", err)
+	}
+	
+	if source == nil {
+		return nil, fmt.Errorf("source not found")
+	}
+	
+	if !source.Active {
+		return nil, fmt.Errorf("source is not active")
+	}
+	
+	return source, nil
 } 
