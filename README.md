@@ -12,12 +12,12 @@ News aggregation service that collects articles from multiple Kenyan news source
 
 ```
 GET /health
-GET /api/v1/articles?page=1&limit=20&category=news&source=Standard&search=politics
-GET /api/v1/articles/{id}
-POST /api/v1/articles/{id}/summarize
-GET /api/v1/sources
-GET /api/v1/categories
-POST /api/v1/refresh
+GET /v1/articles?page=1&limit=20&category=news&source=Standard&search=politics
+GET /v1/articles/{id}
+POST /v1/articles/{id}/summarize
+GET /v1/sources
+GET /v1/categories
+POST /v1/refresh
 ```
 
 ### Development
