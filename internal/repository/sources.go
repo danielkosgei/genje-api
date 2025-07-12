@@ -146,9 +146,9 @@ func (r *SourceRepository) GetSourceByID(id int) (*models.NewsSource, error) {
 
 // UpdateSource updates an existing source
 func (r *SourceRepository) UpdateSource(id int, updates models.UpdateSourceRequest) error {
-	// Build dynamic query based on provided fields
-	setParts := []string{}
-	args := []interface{}{}
+	// Build dynamic query based on provided fields using secure string building
+	var setParts []string
+	var args []interface{}
 	
 	if updates.Name != "" {
 		setParts = append(setParts, "name = ?")
@@ -175,7 +175,8 @@ func (r *SourceRepository) UpdateSource(id int, updates models.UpdateSourceReque
 		return fmt.Errorf("no fields to update")
 	}
 	
-	query := fmt.Sprintf("UPDATE news_sources SET %s WHERE id = ?", strings.Join(setParts, ", "))
+	// Build query securely without fmt.Sprintf
+	query := "UPDATE news_sources SET " + strings.Join(setParts, ", ") + " WHERE id = ?"
 	args = append(args, id)
 	
 	result, err := r.db.Exec(query, args...)
