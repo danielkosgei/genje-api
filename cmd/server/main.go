@@ -110,7 +110,7 @@ func setupRouter(h *handlers.Handler) *chi.Mux {
 	r.Get("/health", h.Health)
 
 	// API routes
-	r.Route("/api/v1", func(r chi.Router) {
+	r.Route("/v1", func(r chi.Router) {
 		r.Get("/articles", h.GetArticles)
 		r.Get("/articles/{id}", h.GetArticle)
 		r.Post("/articles/{id}/summarize", h.SummarizeArticle)
