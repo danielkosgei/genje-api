@@ -146,40 +146,60 @@ func (r *SourceRepository) GetSourceByID(id int) (*models.NewsSource, error) {
 
 // UpdateSource updates an existing source
 func (r *SourceRepository) UpdateSource(id int, updates models.UpdateSourceRequest) error {
-	// Build dynamic query based on provided fields using secure string building
-	var setParts []string
-	var args []interface{}
+	// Use a secure approach that avoids dynamic SQL construction
+	// We'll update all fields at once using COALESCE to keep existing values
 	
+	// First, get the current source to use as defaults
+	current, err := r.GetSourceByID(id)
+	if err != nil {
+		return fmt.Errorf("failed to get current source: %w", err)
+	}
+	if current == nil {
+		return fmt.Errorf("source not found")
+	}
+	
+	// Use provided values or fall back to current values
+	name := current.Name
 	if updates.Name != "" {
-		setParts = append(setParts, "name = ?")
-		args = append(args, updates.Name)
-	}
-	if updates.URL != "" {
-		setParts = append(setParts, "url = ?")
-		args = append(args, updates.URL)
-	}
-	if updates.FeedURL != "" {
-		setParts = append(setParts, "feed_url = ?")
-		args = append(args, updates.FeedURL)
-	}
-	if updates.Category != "" {
-		setParts = append(setParts, "category = ?")
-		args = append(args, updates.Category)
-	}
-	if updates.Active != nil {
-		setParts = append(setParts, "active = ?")
-		args = append(args, *updates.Active)
+		name = updates.Name
 	}
 	
-	if len(setParts) == 0 {
+	url := current.URL
+	if updates.URL != "" {
+		url = updates.URL
+	}
+	
+	feedURL := current.FeedURL
+	if updates.FeedURL != "" {
+		feedURL = updates.FeedURL
+	}
+	
+	category := current.Category
+	if updates.Category != "" {
+		category = updates.Category
+	}
+	
+	active := current.Active
+	if updates.Active != nil {
+		active = *updates.Active
+	}
+	
+	// Check if any field actually changed
+	if name == current.Name && url == current.URL && feedURL == current.FeedURL && 
+		category == current.Category && active == current.Active {
 		return fmt.Errorf("no fields to update")
 	}
 	
-	// Build query securely without fmt.Sprintf
-	query := "UPDATE news_sources SET " + strings.Join(setParts, ", ") + " WHERE id = ?"
-	args = append(args, id)
+	// Static query - no dynamic SQL construction
+	query := `UPDATE news_sources SET 
+		name = ?, 
+		url = ?, 
+		feed_url = ?, 
+		category = ?, 
+		active = ? 
+		WHERE id = ?`
 	
-	result, err := r.db.Exec(query, args...)
+	result, err := r.db.Exec(query, name, url, feedURL, category, active, id)
 	if err != nil {
 		return fmt.Errorf("failed to update source: %w", err)
 	}
