@@ -80,21 +80,21 @@ func (r *SourceRepository) CreateSource(source *models.NewsSource) error {
 
 func (r *SourceRepository) SeedInitialSources() error {
 	sources := []models.NewsSource{
-		{Name: "The Standard Headlines", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/headlines.php", Category: "news", Active: true},
-		{Name: "Standard Kenya", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/kenya.php", Category: "news", Active: true},
-		{Name: "Standard World", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/world.php", Category: "world", Active: true},
-		{Name: "Standard Politics", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/politics.php", Category: "politics", Active: true},
-		{Name: "Standard Sports", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/sports.php", Category: "sports", Active: true},
-		{Name: "Standard Business", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/business.php", Category: "business", Active: true},
-		{Name: "Standard Columnists", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/columnists.php", Category: "opinion", Active: true},
-		{Name: "Daily Nation", URL: "https://nation.africa", FeedURL: "https://nation.africa/kenya/rss.xml", Category: "news", Active: true},
+		{Name: "The Standard Headlines", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/headlines.php", Category: "news", Active: false},
+		{Name: "Standard Kenya", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/kenya.php", Category: "news", Active: false},
+		{Name: "Standard World", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/world.php", Category: "world", Active: false},
+		{Name: "Standard Politics", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/politics.php", Category: "politics", Active: false},
+		{Name: "Standard Sports", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/sports.php", Category: "sports", Active: false},
+		{Name: "Standard Business", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/business.php", Category: "business", Active: false},
+		{Name: "Standard Columnists", URL: "https://standardmedia.co.ke", FeedURL: "https://www.standardmedia.co.ke/rss/columnists.php", Category: "opinion", Active: false},
+		{Name: "Daily Nation", URL: "https://nation.africa", FeedURL: "https://nation.africa/kenya/rss.xml", Category: "news", Active: false},
 		{Name: "Taifa Leo", URL: "https://taifaleo.nation.co.ke", FeedURL: "https://taifaleo.nation.co.ke/feed", Category: "kiswahili", Active: true},
-		{Name: "Capital FM News", URL: "https://capitalfm.co.ke", FeedURL: "https://capitalfm.co.ke/news/feed", Category: "news", Active: true},
+		{Name: "Capital FM News", URL: "https://capitalfm.co.ke", FeedURL: "https://capitalfm.co.ke/news/feed", Category: "news", Active: false},
 		{Name: "Nairobi Wire", URL: "https://nairobiwire.com", FeedURL: "https://nairobiwire.com/feed", Category: "news", Active: true},
 		{Name: "Diaspora Messenger", URL: "https://diasporamessenger.com", FeedURL: "https://diasporamessenger.com/feed", Category: "diaspora", Active: true},
-		{Name: "Sharp Daily", URL: "https://thesharpdaily.com", FeedURL: "https://thesharpdaily.com/feed", Category: "news", Active: true},
-		{Name: "Kenyans.co.ke", URL: "https://kenyans.co.ke", FeedURL: "https://www.kenyans.co.ke/feeds/news", Category: "news", Active: true},
-		{Name: "Business Daily", URL: "https://www.businessdailyafrica.com", FeedURL: "https://www.businessdailyafrica.com/rss", Category: "business", Active: true},
+		{Name: "Sharp Daily", URL: "https://thesharpdaily.com", FeedURL: "https://thesharpdaily.com/feed", Category: "news", Active: false},
+		{Name: "Kenyans.co.ke", URL: "https://kenyans.co.ke", FeedURL: "https://www.kenyans.co.ke/feeds/news", Category: "news", Active: false},
+		{Name: "Business Daily", URL: "https://www.businessdailyafrica.com", FeedURL: "https://www.businessdailyafrica.com/rss", Category: "business", Active: false},
 	}
 
 	for _, src := range sources {
