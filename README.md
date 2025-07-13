@@ -3,358 +3,380 @@
 [![Go CI/CD](https://github.com/danielkosgei/genje-api/actions/workflows/go.yml/badge.svg)](https://github.com/danielkosgei/genje-api/actions/workflows/go.yml)
 [![codecov](https://codecov.io/gh/danielkosgei/genje-api/branch/main/graph/badge.svg)](https://codecov.io/gh/danielkosgei/genje-api)
 [![Go Report Card](https://goreportcard.com/badge/github.com/danielkosgei/genje-api)](https://goreportcard.com/report/github.com/danielkosgei/genje-api)
-[![Docker Pulls](https://img.shields.io/docker/pulls/dd0n3/genje-api)](https://hub.docker.com/r/dd0n3/genje-api)
+[![GHCR](https://img.shields.io/badge/GHCR-danielkosgei%2Fgenje--api-blue)](https://github.com/danielkosgei/genje-api/pkgs/container/genje-api)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-News aggregation service that collects articles from multiple Kenyan news sources via RSS feeds and provides a RESTful API for accessing and managing news content.
+**Genje API** is a comprehensive news aggregation service that automatically collects and organizes articles from multiple Kenyan news sources via RSS feeds. It provides a powerful RESTful API for accessing, filtering, and managing news content with advanced features like search, categorization, and automatic summarization.
 
-## API Endpoints
 
+## **API Documentation**
+
+### **Base URL**
 ```
-GET /health
-GET /v1/articles?page=1&limit=20&category=news&source=Standard&search=politics
-GET /v1/articles/{id}
-POST /v1/articles/{id}/summarize
-GET /v1/sources
-GET /v1/categories
-POST /v1/refresh
+http://api.genje.co.ke
 ```
 
-### Development
+### **Example Usage**
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/danielkosgei/genje-api.git
-   cd genje-api
-   ```
-
-2. **Install dependencies**
-   ```bash
-   make dev-setup
-   ```
-
-3. **Set up environment**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
-
-4. **Run the application**
-   ```bash
-   make run
-   ```
-
-### Using Docker (Production)
-
-1. **Build the image**
-   ```bash
-   make docker-build
-   ```
-
-2. **Run the container**
-   ```bash
-   make docker-run
-   ```
-
-## Configuration
-
-The application uses environment variables for configuration. See `.env.example` for all available options and `docs/CONFIGURATION.md` for detailed documentation.
-
-### Quick Setup
+#### **Get Recent Articles**
 ```bash
-cp .env.example .env
-nano .env
+GET /v1/articles?limit=10&page=1
+
+# Response
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Kenya's Economic Growth Outlook for 2024",
+      "content": "The Central Bank of Kenya projects...",
+      "summary": "Economic experts predict steady growth...",
+      "url": "https://standardmedia.co.ke/business/article/2024/01/15/kenya-economic-growth",
+      "author": "Jane Doe",
+      "source": "Standard Business",
+      "published_at": "2024-01-15T10:30:00Z",
+      "created_at": "2024-01-15T10:35:00Z",
+      "category": "business",
+      "image_url": "https://standardmedia.co.ke/images/business/economic-growth.jpg"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 1250
+  }
+}
 ```
 
-### Key Variables
-- `PORT` - Server port (default: 8080)
-- `DATABASE_URL` - SQLite database connection string
-- `AGGREGATION_INTERVAL` - How often to fetch news (default: 30m)
-- `REQUEST_TIMEOUT` - HTTP request timeout (default: 30s)
-- `USER_AGENT` - User agent for RSS requests
-
-For complete configuration options, see [Configuration Guide](docs/CONFIGURATION.md).
-
-## Development
-
-### Available Commands
-
+#### **Search Articles**
 ```bash
-make build          # Build the application
-make run            # Run in development mode
-make test           # Run tests
-make test-coverage  # Run tests with coverage
-make lint           # Lint the code
-make format         # Format the code
-make clean          # Clean build artifacts
-make tidy           # Tidy dependencies
+GET /v1/articles/search?q=election&category=politics&limit=5
+
+# Response
+{
+  "success": true,
+  "data": [
+    {
+      "id": 142,
+      "title": "2024 Election Preparations Underway",
+      "content": "The Independent Electoral and Boundaries Commission...",
+      "url": "https://nation.africa/kenya/news/politics/election-preparations-2024",
+      "source": "Daily Nation",
+      "category": "politics",
+      "published_at": "2024-01-14T08:00:00Z"
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "limit": 5,
+      "total": 23
+    },
+    "generated_at": "2024-01-15T12:00:00Z",
+    "query": "election",
+    "filters": {
+      "category": "politics"
+    }
+  }
+}
 ```
 
-### Testing
-
+#### **Get Articles by Category**
 ```bash
-# Run all tests
-make test
+GET /v1/articles/by-category/sports?limit=3
 
-# Run with coverage
-make test-coverage
-
-# Test specific package
-go test ./internal/services/...
+# Response
+{
+  "success": true,
+  "data": [
+    {
+      "id": 89,
+      "title": "Harambee Stars Prepares for AFCON Qualifiers",
+      "content": "The national football team has intensified training...",
+      "source": "Standard Sports",
+      "category": "sports",
+      "published_at": "2024-01-15T06:00:00Z"
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "limit": 3,
+      "total": 156
+    },
+    "generated_at": "2024-01-15T12:00:00Z"
+  }
+}
 ```
 
-### Code Quality
-
+#### **Get Article Summary**
 ```bash
-# Format code
-make format
+POST /v1/articles/123/summarize
 
-# Lint code
-make lint
-
-# Check for issues
-go vet ./...
+# Response
+{
+  "summary": "The Central Bank of Kenya has announced new monetary policies. The policies aim to stabilize the currency and control inflation. Implementation will begin next quarter."
+}
 ```
 
-## CI/CD Pipeline
-
-This project uses GitHub Actions for continuous integration and deployment with a comprehensive workflow that ensures code quality, security, and reliable deployments.
-
-### Workflow Overview
-
-The CI/CD pipeline (`go.yml`) runs on:
-- **Push to `main`** - Full pipeline including production deployment
-- **Push to `staging`** - Full pipeline including staging deployment  
-- **Pull Requests** to `main` or `staging` - Testing and validation only
-
-### Pipeline Jobs
-
-#### 1. **Test** 🧪
-- **Matrix Strategy**: Tests on Go versions 1.23 and 1.24.4
-- **Coverage**: Generates coverage reports and uploads to Codecov
-- **Caching**: Go modules cached for faster builds
-- **Dependencies**: Verifies and downloads all dependencies
-
+#### **Get Trending Articles**
 ```bash
-# Local equivalent
-make test
-make test-coverage
+GET /v1/articles/trending?window=24h&limit=5
+
+# Response
+{
+  "success": true,
+  "data": [
+    {
+      "id": 95,
+      "title": "Breaking: New Infrastructure Project Launched",
+      "score": 8.5,
+      "trending_reason": "recent_engagement",
+      "published_at": "2024-01-15T09:00:00Z"
+    }
+  ],
+  "meta": {
+    "generated_at": "2024-01-15T12:00:00Z",
+    "algorithm": "recent_engagement",
+    "time_window": "24h"
+  }
+}
 ```
 
-#### 2. **Lint** 🔍
-- **Code Quality**: Runs `golangci-lint` with 5-minute timeout
-- **Standards**: Enforces Go best practices and style guidelines
-- **Fast Feedback**: Fails fast on code quality issues
-
+#### **Get Statistics**
 ```bash
-# Local equivalent  
-make lint
+GET /v1/stats
+
+# Response
+{
+  "success": true,
+  "data": {
+    "total_articles": 12450,
+    "total_sources": 15,
+    "categories": 8,
+    "last_updated": "2024-01-15T11:30:00Z"
+  },
+  "meta": {
+    "generated_at": "2024-01-15T12:00:00Z"
+  }
+}
 ```
 
-#### 3. **Build** 🔨
-- **Dependency**: Requires test and lint to pass
-- **Artifacts**: Builds binary and uploads as GitHub artifact
-- **Retention**: Artifacts kept for 30 days
+## **Error Handling**
 
+### **HTTP Status Codes**
+
+| Status Code | Description | Example |
+|-------------|-------------|---------|
+| `200` | Success | Request completed successfully |
+| `400` | Bad Request | Invalid query parameters |
+| `404` | Not Found | Article or resource not found |
+| `500` | Internal Server Error | Database connection failed |
+
+### **Error Response Format**
+
+```json
+{
+  "error": "Invalid query parameters",
+  "code": 400,
+  "details": "Page parameter must be a positive integer"
+}
+```
+
+### **Common Error Scenarios**
+
+#### **Invalid Article ID**
 ```bash
-# Local equivalent
-make build
+GET /v1/articles/invalid-id
+
+# Response (400 Bad Request)
+{
+  "error": "Invalid article ID",
+  "code": 400
+}
 ```
 
-#### 4. **Security** 🔒
-- **Scanner**: Uses Gosec to detect security vulnerabilities
-- **SARIF**: Uploads results to GitHub Security tab
-- **Parallel**: Runs independently for faster feedback
-
-#### 5. **Docker** 🐳
-- **Trigger**: Only on `main` branch pushes
-- **Multi-arch**: Builds for `linux/amd64` and `linux/arm64`
-- **Registry**: Pushes to Docker Hub with multiple tags
-- **Caching**: Uses GitHub Actions cache for faster builds
-
-#### 6. **Deploy** 🚀
-- **Staging**: Deploys on `staging` branch pushes
-- **Production**: Deploys on `main` branch pushes  
-- **Environments**: Uses GitHub environment protection rules
-- **Manual Approval**: Can require manual approval for production
-
-#### 7. **Release** 📦
-- **Trigger**: Only on version tags (e.g., `v1.0.0`)
-- **GoReleaser**: Creates GitHub releases with binaries
-- **Cross-platform**: Builds for multiple OS/architecture combinations
-
-### Branch Strategy
-
-```
-main           # Production branch - triggers prod deployment
-  ↑
-staging        # Staging branch - triggers staging deployment  
-  ↑
-feature/*      # Feature branches - create PRs to staging
-```
-
-### Required Secrets
-
-Set these in your GitHub repository settings → Secrets and variables → Actions:
-
+#### **Article Not Found**
 ```bash
-# Docker Hub (for image publishing)
-DOCKER_USERNAME=your-dockerhub-username
-DOCKER_PASSWORD=your-dockerhub-token
+GET /v1/articles/99999
 
-# Codecov (for coverage reporting)  
-CODECOV_TOKEN=your-codecov-token
-
-# Deployment secrets (add as needed)
-# KUBECONFIG, AWS_ACCESS_KEY_ID, etc.
+# Response (404 Not Found)
+{
+  "error": "Article not found",
+  "code": 404
+}
 ```
 
-### Environment Setup
-
-1. **Enable GitHub Actions**
-   ```bash
-   # Workflows are automatically enabled when you push .github/workflows/go.yml
-   ```
-
-2. **Configure Environments** (Optional)
-   - Go to Settings → Environments
-   - Create `staging` and `production` environments
-   - Add protection rules (required reviewers, wait timers)
-
-3. **Set up Codecov**
-   - Sign up at [codecov.io](https://codecov.io)
-   - Link your GitHub repository
-   - Add `CODECOV_TOKEN` secret
-
-### Local Testing
-
-Before pushing, ensure your code passes all checks:
-
+#### **Invalid Search Query**
 ```bash
-# Full local validation
-make test && make lint && make build
+GET /v1/articles/search
 
-# Match CI environment
-go test -v -coverprofile=coverage.out -covermode=atomic ./...
+# Response (400 Bad Request)
+{
+  "error": "Query parameter 'q' is required",
+  "code": 400
+}
 ```
 
-### Deployment Customization
+## **Authentication**
 
-The deployment jobs currently contain placeholder commands. Customize them for your infrastructure:
+Currently, the Genje API does not require authentication and is designed for public access. All endpoints are accessible without API keys or tokens.
 
-**Staging Deployment Example:**
-```yaml
-- name: Deploy to staging
-  run: |
-    kubectl apply -f k8s/staging/ 
-    kubectl rollout status deployment/genje-api -n staging
+
+## **API Endpoints Reference**
+
+### **Health & System**
+- `GET /health` - API health check
+- `GET /v1/status` - Detailed system status
+- `GET /` - API information and available endpoints
+
+### **Articles**
+- `GET /v1/articles` - Get articles with pagination and filters
+- `GET /v1/articles/{id}` - Get specific article
+- `POST /v1/articles/{id}/summarize` - Generate article summary
+- `GET /v1/articles/search` - Full-text search
+- `GET /v1/articles/trending` - Get trending articles
+- `GET /v1/articles/recent` - Get recent articles
+- `GET /v1/articles/feed` - Get cursor-based article feed
+- `GET /v1/articles/by-source/{sourceId}` - Get articles by source
+- `GET /v1/articles/by-category/{category}` - Get articles by category
+
+### **Sources**
+- `GET /v1/sources` - Get all active sources
+- `GET /v1/sources/{id}` - Get specific source
+- `POST /v1/sources` - Create new source
+- `PUT /v1/sources/{id}` - Update existing source
+- `DELETE /v1/sources/{id}` - Delete source
+- `POST /v1/sources/{id}/refresh` - Refresh specific source
+
+### **Categories & Statistics**
+- `GET /v1/categories` - Get all available categories
+- `GET /v1/stats` - Get global statistics
+- `GET /v1/stats/sources` - Get per-source statistics
+- `GET /v1/stats/categories` - Get per-category statistics
+- `GET /v1/stats/timeline` - Get timeline statistics
+- `GET /v1/trends` - Get trending topics
+
+### **System Operations**
+- `POST /v1/refresh` - Trigger manual news aggregation
+- `GET /v1/openapi.json` - OpenAPI specification
+- `GET /v1/schema` - API schema information
+
+## **Architecture**
+
+The Genje API follows a clean architecture pattern:
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   HTTP Client   │───▶│    Handlers     │───▶│    Services     │
+│   (cURL, etc.)  │    │  (Controllers)  │    │ (Business Logic)│
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                                       │
+                                                       ▼
+                                               ┌─────────────────┐
+                                               │   Repositories  │
+                                               │  (Data Access)  │
+                                               └─────────────────┘
+                                                       │
+                                                       ▼
+                                               ┌─────────────────┐
+                                               │   SQLite DB     │
+                                               │   (Storage)     │
+                                               └─────────────────┘
 ```
 
-**Production Deployment Example:**  
-```yaml
-- name: Deploy to production
-  run: |
-    aws ecs update-service --cluster prod --service genje-api
-    aws ecs wait services-stable --cluster prod --services genje-api
-```
+## Start Development Here
 
-### Workflow Triggers & Behavior
-
-| **Event** | **Branch** | **Jobs Run** | **Deployment** |
-|-----------|------------|--------------|----------------|
-| Push | `main` | All jobs | ✅ Production |
-| Push | `staging` | All jobs | ✅ Staging |
-| Pull Request | `main`/`staging` | Test, Lint, Build, Security | ❌ None |
-| Tag | `v*.*.*` | All jobs + Release | ❌ None |
-
-### Monitoring & Observability
-
-- **🔍 Code Coverage**: View coverage reports on [Codecov](https://codecov.io/gh/danielkosgei/genje-api)
-- **🔒 Security Scan**: Check security issues in GitHub Security tab
-- **📊 Go Report**: Code quality metrics on [Go Report Card](https://goreportcard.com/report/github.com/danielkosgei/genje-api)
-- **🐳 Docker Hub**: Track image pulls and versions
-- **📋 GitHub Actions**: Monitor workflow runs and build history
-
-### Release Process
-
-1. **Development**: Work on feature branches, create PRs to `staging`
-2. **Staging**: Merge to `staging` branch for testing
-3. **Production**: Merge `staging` to `main` for production deployment
-4. **Release**: Tag `main` branch to create official releases
-
-```bash
-# Create a release
-git checkout main
-git pull origin main
-git tag -a v1.0.0 -m "Release version 1.0.0"
-git push origin v1.0.0
-```
-
-### Troubleshooting CI/CD
-
-**❌ Linting Failures**
-```bash
-# Fix locally before pushing
-make lint
-make format
-```
-
-**❌ Test Failures**  
-```bash
-# Run the exact same tests as CI
-go test -v -coverprofile=coverage.out -covermode=atomic ./...
-```
-
-**❌ Docker Build Failures**
-```bash
-# Test Docker build locally
-make docker-build
-docker run --rm genje-api:latest /bin/sh -c "echo 'Container works'"
-```
-
-**❌ Missing Secrets**
-- Check repository Settings → Secrets and variables → Actions  
-- Ensure `DOCKER_USERNAME`, `DOCKER_PASSWORD`, `CODECOV_TOKEN` are set
-
-**❌ Deployment Failures**
-- Check GitHub Actions logs for specific error messages
-- Verify environment variables in deployment jobs
-- Test deployment commands locally first
-
-## Deployment
-
-### Docker Production Setup
+### **Use Docker (Recommended)**
 
 ```bash
-# Build production image
-docker build -t genje-api:latest .
-
-# Run with environment file
+# Pull and run the latest image
 docker run -d \
   --name genje-api \
   -p 8080:8080 \
-  --env-file .env \
-  --restart unless-stopped \
-  genje-api:latest
+  -e DATABASE_URL="/app/data/genje.db" \
+  -e AGGREGATION_INTERVAL="30m" \
+  -v genje-data:/app/data \
+  ghcr.io/danielkosgei/genje-api:main
 ```
 
-### Systemd Service (Linux)
-
-```ini
-[Unit]
-Description=Genje News API
-After=network.target
-
-[Service]
-Type=simple
-User=genje
-WorkingDirectory=/opt/genje
-ExecStart=/opt/genje/bin/genje-api
-Restart=always
-RestartSec=5
-Environment=PORT=8080
-
-[Install]
-WantedBy=multi-user.target
+```
+# Check if it's running
+curl http://localhost:8080/health
 ```
 
+### **Local Development**
+
+```bash
+# Clone the repository
+git clone https://github.com/danielkosgei/genje-api.git
+cd genje-api
+
+# Setup development environment
+make dev-setup
+
+# Configure environment (edit as needed)
+cp .env.example .env
+
+# Run the application
+make run
+
+# The API will be available at http://localhost:8080
+```
+
+### **Development Commands**
+
+```bash
+# Build the application
+make build
+
+# Run in development mode
+make run
+
+# Run tests
+make test
+
+# Run tests with coverage
+make test-coverage
+
+# Lint the code
+make lint
+
+# Format code
+make format
+
+# Build Docker image
+make docker-build
+
+# Run Docker container
+make docker-run
+
+# Clean build artifacts
+make clean
+
+# Setup development environment
+make dev-setup
+```
+
+## **Configuration**
+
+### **Key Configuration Options**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `8080` | HTTP server port |
+| `DATABASE_URL` | `./genje.db?...` | SQLite database connection string |
+| `AGGREGATION_INTERVAL` | `30m` | How often to fetch news (5m, 30m, 1h, 2h) |
+| `REQUEST_TIMEOUT` | `30s` | HTTP timeout for RSS requests |
+| `USER_AGENT` | `Mozilla/5.0 (compatible; Genje-News-Aggregator/1.0)` | User agent for RSS requests |
+| `MAX_CONTENT_SIZE` | `10000` | Maximum article content length |
+| `MAX_SUMMARY_SIZE` | `300` | Maximum summary length |
+
+
+
+## **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+**Contact**: For questions or support, please open an issue on GitHub.
+
+**🌟 Star this repo** if you find it helpful!
