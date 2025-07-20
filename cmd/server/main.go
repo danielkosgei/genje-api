@@ -128,6 +128,7 @@ func setupRouter(h *handlers.Handler) *chi.Mux {
 		r.Route("/articles", func(r chi.Router) {
 			r.Get("/", h.GetArticles)           // GET /v1/articles
 			r.Get("/{id}", h.GetArticle)        // GET /v1/articles/123
+			r.Get("/{id}/summary", h.SummarizeArticle)  // GET /v1/articles/123/summary
 			r.Post("/{id}/summary", h.SummarizeArticle) // POST /v1/articles/123/summary
 			
 			// Article collections and filters
