@@ -319,4 +319,4 @@ func TestNewsSourceValidation(t *testing.T) {
 	if source.FeedURL == "" {
 		t.Error("NewsSource should have a FeedURL")
 	}
-} 
+}

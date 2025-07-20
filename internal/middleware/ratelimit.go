@@ -34,21 +34,21 @@ func (rl *RateLimiter) RateLimit() func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			clientIP := getClientIP(r)
-			
+
 			if !rl.allowRequest(clientIP) {
 				w.Header().Set("X-RateLimit-Limit", fmt.Sprintf("%d", rl.limit))
 				w.Header().Set("X-RateLimit-Window", rl.window.String())
 				w.Header().Set("Retry-After", "60")
-				
-				http.Error(w, `{"success":false,"error":{"code":"RATE_LIMIT_EXCEEDED","message":"Rate limit exceeded"}}`, 
+
+				http.Error(w, `{"success":false,"error":{"code":"RATE_LIMIT_EXCEEDED","message":"Rate limit exceeded"}}`,
 					http.StatusTooManyRequests)
 				return
 			}
-			
+
 			// Add rate limit headers
 			w.Header().Set("X-RateLimit-Limit", fmt.Sprintf("%d", rl.limit))
 			w.Header().Set("X-RateLimit-Window", rl.window.String())
-			
+
 			next.ServeHTTP(w, r)
 		})
 	}
@@ -57,7 +57,7 @@ func (rl *RateLimiter) RateLimit() func(http.Handler) http.Handler {
 func (rl *RateLimiter) allowRequest(clientIP string) bool {
 	rl.mutex.Lock()
 	defer rl.mutex.Unlock()
-	
+
 	client, exists := rl.clients[clientIP]
 	if !exists {
 		client = &ClientLimiter{
@@ -65,13 +65,13 @@ func (rl *RateLimiter) allowRequest(clientIP string) bool {
 		}
 		rl.clients[clientIP] = client
 	}
-	
+
 	client.mutex.Lock()
 	defer client.mutex.Unlock()
-	
+
 	now := time.Now()
 	cutoff := now.Add(-rl.window)
-	
+
 	// Remove old requests
 	validRequests := make([]time.Time, 0)
 	for _, reqTime := range client.requests {
@@ -80,12 +80,12 @@ func (rl *RateLimiter) allowRequest(clientIP string) bool {
 		}
 	}
 	client.requests = validRequests
-	
+
 	// Check if limit exceeded
 	if len(client.requests) >= rl.limit {
 		return false
 	}
-	
+
 	// Add current request
 	client.requests = append(client.requests, now)
 	return true
@@ -96,12 +96,12 @@ func getClientIP(r *http.Request) string {
 	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
 		return xff
 	}
-	
+
 	// Check X-Real-IP header
 	if xri := r.Header.Get("X-Real-IP"); xri != "" {
 		return xri
 	}
-	
+
 	// Fall back to RemoteAddr
 	return r.RemoteAddr
 }

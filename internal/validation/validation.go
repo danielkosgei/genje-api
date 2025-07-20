@@ -78,7 +78,7 @@ func (v *Validator) URL(field, value string) {
 	if value == "" {
 		return // Skip validation for empty values
 	}
-	
+
 	if _, err := url.ParseRequestURI(value); err != nil {
 		v.AddError(field, "must be a valid URL")
 	}
@@ -89,7 +89,7 @@ func (v *Validator) Email(field, value string) {
 	if value == "" {
 		return // Skip validation for empty values
 	}
-	
+
 	emailRegex := regexp.MustCompile(`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
 	if !emailRegex.MatchString(value) {
 		v.AddError(field, "must be a valid email address")
@@ -101,13 +101,13 @@ func (v *Validator) In(field, value string, allowed []string) {
 	if value == "" {
 		return // Skip validation for empty values
 	}
-	
+
 	for _, item := range allowed {
 		if value == item {
 			return
 		}
 	}
-	
+
 	v.AddError(field, fmt.Sprintf("must be one of: %s", strings.Join(allowed, ", ")))
 }
 

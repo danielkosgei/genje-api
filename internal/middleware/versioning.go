@@ -18,10 +18,10 @@ func APIVersion() func(http.Handler) http.Handler {
 			} else {
 				w.Header().Set("Content-Type", "application/json")
 			}
-			
+
 			// Add API version to response headers
 			w.Header().Set("X-API-Version", "v1")
-			
+
 			next.ServeHTTP(w, r)
 		})
 	}

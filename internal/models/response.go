@@ -19,10 +19,10 @@ type APIError struct {
 
 // Meta provides response metadata
 type Meta struct {
-	Timestamp  time.Time          `json:"timestamp"`
-	Pagination *PaginationMeta    `json:"pagination,omitempty"`
-	Filters    map[string]string  `json:"filters,omitempty"`
-	RequestID  string             `json:"request_id,omitempty"`
+	Timestamp  time.Time         `json:"timestamp"`
+	Pagination *PaginationMeta   `json:"pagination,omitempty"`
+	Filters    map[string]string `json:"filters,omitempty"`
+	RequestID  string            `json:"request_id,omitempty"`
 }
 
 // PaginationMeta provides pagination information
@@ -39,14 +39,14 @@ type PaginationMeta struct {
 
 // Common error codes
 const (
-	ErrCodeValidation    = "VALIDATION_ERROR"
-	ErrCodeNotFound      = "NOT_FOUND"
-	ErrCodeUnauthorized  = "UNAUTHORIZED"
-	ErrCodeForbidden     = "FORBIDDEN"
-	ErrCodeConflict      = "CONFLICT"
-	ErrCodeInternal      = "INTERNAL_ERROR"
-	ErrCodeRateLimit     = "RATE_LIMIT_EXCEEDED"
-	ErrCodeBadRequest    = "BAD_REQUEST"
+	ErrCodeValidation   = "VALIDATION_ERROR"
+	ErrCodeNotFound     = "NOT_FOUND"
+	ErrCodeUnauthorized = "UNAUTHORIZED"
+	ErrCodeForbidden    = "FORBIDDEN"
+	ErrCodeConflict     = "CONFLICT"
+	ErrCodeInternal     = "INTERNAL_ERROR"
+	ErrCodeRateLimit    = "RATE_LIMIT_EXCEEDED"
+	ErrCodeBadRequest   = "BAD_REQUEST"
 )
 
 // Helper functions for creating responses

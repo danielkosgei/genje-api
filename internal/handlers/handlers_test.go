@@ -62,17 +62,19 @@ func setupHandlerTest(t *testing.T) (*sql.DB, *Handler) {
 
 	// Create services
 	cfg := config.AggregatorConfig{
-		Interval:        30 * time.Minute,
-		RequestTimeout:  30 * time.Second,
-		UserAgent:       "test-agent",
-		MaxContentSize:  10000,
-		MaxSummarySize:  300,
+		Interval:       30 * time.Minute,
+		RequestTimeout: 30 * time.Second,
+		UserAgent:      "test-agent",
+		MaxContentSize: 10000,
+		MaxSummarySize: 300,
 	}
 	aggregatorService := services.NewAggregatorService(articleRepo, sourceRepo, cfg)
 	summarizerService := services.NewSummarizerService(articleRepo)
+	engagementRepo := repository.NewEngagementRepository(db)
+	trendingService := services.NewTrendingService(db, articleRepo, engagementRepo, summarizerService)
 
 	// Create handler
-	handler := New(articleRepo, sourceRepo, aggregatorService, summarizerService)
+	handler := New(articleRepo, sourceRepo, engagementRepo, aggregatorService, summarizerService, trendingService)
 
 	return db, handler
 }
@@ -386,7 +388,7 @@ func TestGetCategories(t *testing.T) {
 
 	// Create test articles with different categories
 	createTestArticleForHandler(t, handler.articleRepo, "News Article", "News content")
-	
+
 	// Create article with different category
 	article := models.Article{
 		Title:       "Sports Article",
@@ -577,4 +579,4 @@ func TestRespondError(t *testing.T) {
 	if response.Error.Details != "Test details" {
 		t.Errorf("Expected error details 'Test details', got '%s'", response.Error.Details)
 	}
-} 
+}

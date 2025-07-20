@@ -78,16 +78,16 @@ type APIInfoResponse struct {
 }
 
 type GlobalStats struct {
-	TotalArticles int `json:"total_articles"`
-	TotalSources  int `json:"total_sources"`
-	Categories    int `json:"categories"`
+	TotalArticles int       `json:"total_articles"`
+	TotalSources  int       `json:"total_sources"`
+	Categories    int       `json:"categories"`
 	LastUpdated   time.Time `json:"last_updated"`
 }
 
 type SourceStats struct {
-	Name         string `json:"name"`
-	ArticleCount int    `json:"article_count"`
-	Category     string `json:"category"`
+	Name         string    `json:"name"`
+	ArticleCount int       `json:"article_count"`
+	Category     string    `json:"category"`
 	LastUpdated  time.Time `json:"last_updated"`
 }
 
@@ -181,16 +181,16 @@ type UpdateSourceRequest struct {
 
 // New models for missing endpoints
 type OpenAPISpec struct {
-	OpenAPI string                 `json:"openapi"`
-	Info    OpenAPIInfo           `json:"info"`
-	Paths   map[string]interface{} `json:"paths"`
+	OpenAPI    string                 `json:"openapi"`
+	Info       OpenAPIInfo            `json:"info"`
+	Paths      map[string]interface{} `json:"paths"`
 	Components map[string]interface{} `json:"components"`
 }
 
 type OpenAPIInfo struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Version     string `json:"version"`
+	Title       string         `json:"title"`
+	Description string         `json:"description"`
+	Version     string         `json:"version"`
 	Contact     OpenAPIContact `json:"contact"`
 }
 
@@ -201,8 +201,8 @@ type OpenAPIContact struct {
 }
 
 type APISchema struct {
-	Models map[string]interface{} `json:"models"`
-	Endpoints []EndpointSchema `json:"endpoints"`
+	Models    map[string]interface{} `json:"models"`
+	Endpoints []EndpointSchema       `json:"endpoints"`
 }
 
 type EndpointSchema struct {
@@ -231,33 +231,105 @@ type CursorPaginationResponse struct {
 
 type TrendingArticle struct {
 	Article
-	Score           float64 `json:"score"`
-	ViewCount       int     `json:"view_count"`
-	ShareCount      int     `json:"share_count"`
-	CommentCount    int     `json:"comment_count"`
-	TrendingReason  string  `json:"trending_reason"`
+	Score          float64 `json:"score"`
+	ViewCount      int     `json:"view_count"`
+	ShareCount     int     `json:"share_count"`
+	CommentCount   int     `json:"comment_count"`
+	TrendingReason string  `json:"trending_reason"`
 }
 
 type TrendingTopic struct {
-	Topic       string  `json:"topic"`
-	Count       int     `json:"count"`
-	Score       float64 `json:"score"`
-	Articles    []int   `json:"articles"` // Article IDs
-	Category    string  `json:"category"`
+	Topic       string    `json:"topic"`
+	Count       int       `json:"count"`
+	Score       float64   `json:"score"`
+	Articles    []int     `json:"articles"` // Article IDs
+	Category    string    `json:"category"`
 	FirstSeen   time.Time `json:"first_seen"`
 	LastUpdated time.Time `json:"last_updated"`
 }
 
+// Engagement models
+type ArticleEngagement struct {
+	ID          int       `json:"id" db:"id"`
+	ArticleID   int       `json:"article_id" db:"article_id"`
+	Views       int       `json:"views" db:"views"`
+	Shares      int       `json:"shares" db:"shares"`
+	Comments    int       `json:"comments" db:"comments"`
+	Likes       int       `json:"likes" db:"likes"`
+	LastUpdated time.Time `json:"last_updated" db:"last_updated"`
+}
+
+type EngagementEvent struct {
+	ID        int       `json:"id" db:"id"`
+	ArticleID int       `json:"article_id" db:"article_id"`
+	EventType string    `json:"event_type" db:"event_type"` // 'view', 'share', 'comment', 'like'
+	UserIP    string    `json:"user_ip,omitempty" db:"user_ip"`
+	UserAgent string    `json:"user_agent,omitempty" db:"user_agent"`
+	Timestamp time.Time `json:"timestamp" db:"timestamp"`
+	Metadata  string    `json:"metadata,omitempty" db:"metadata"` // JSON
+}
+
+type SourceAuthority struct {
+	ID               int       `json:"id" db:"id"`
+	SourceName       string    `json:"source_name" db:"source_name"`
+	AuthorityScore   float64   `json:"authority_score" db:"authority_score"`
+	CredibilityScore float64   `json:"credibility_score" db:"credibility_score"`
+	ReachScore       float64   `json:"reach_score" db:"reach_score"`
+	TotalArticles    int       `json:"total_articles" db:"total_articles"`
+	AvgEngagement    float64   `json:"avg_engagement" db:"avg_engagement"`
+	LastCalculated   time.Time `json:"last_calculated" db:"last_calculated"`
+}
+
+type TrendingCache struct {
+	ID                 int       `json:"id" db:"id"`
+	ArticleID          int       `json:"article_id" db:"article_id"`
+	TimeWindow         string    `json:"time_window" db:"time_window"`
+	TrendingScore      float64   `json:"trending_score" db:"trending_score"`
+	EngagementVelocity float64   `json:"engagement_velocity" db:"engagement_velocity"`
+	RecencyScore       float64   `json:"recency_score" db:"recency_score"`
+	AuthorityScore     float64   `json:"authority_score" db:"authority_score"`
+	ContentScore       float64   `json:"content_score" db:"content_score"`
+	CalculatedAt       time.Time `json:"calculated_at" db:"calculated_at"`
+}
+
+type ScoreBreakdown struct {
+	EngagementWeight float64 `json:"engagement_weight"`
+	VelocityWeight   float64 `json:"velocity_weight"`
+	RecencyWeight    float64 `json:"recency_weight"`
+	AuthorityWeight  float64 `json:"authority_weight"`
+	ContentWeight    float64 `json:"content_weight"`
+}
+
+type EnhancedTrendingArticle struct {
+	Article
+	Engagement         ArticleEngagement `json:"engagement"`
+	TrendingScore      float64           `json:"trending_score"`
+	EngagementVelocity float64           `json:"engagement_velocity"`
+	RecencyScore       float64           `json:"recency_score"`
+	AuthorityScore     float64           `json:"authority_score"`
+	ContentScore       float64           `json:"content_score"`
+	TrendingReason     string            `json:"trending_reason"`
+	VelocityChange     string            `json:"velocity_change"` // "rising", "stable", "declining"
+	ScoreBreakdown     ScoreBreakdown    `json:"score_breakdown"`
+}
+
+type EngagementRequest struct {
+	EventType string `json:"event_type" validate:"required,oneof=view share comment like"`
+	UserIP    string `json:"user_ip,omitempty"`
+	UserAgent string `json:"user_agent,omitempty"`
+	Metadata  string `json:"metadata,omitempty"`
+}
+
 type SearchFilters struct {
-	Query       string `json:"query"`
-	Category    string `json:"category,omitempty"`
-	Source      string `json:"source,omitempty"`
-	From        string `json:"from,omitempty"`
-	To          string `json:"to,omitempty"`
-	Page        int    `json:"page"`
-	Limit       int    `json:"limit"`
-	SortBy      string `json:"sort_by"` // "relevance", "date", "source"
-	SortOrder   string `json:"sort_order"` // "asc", "desc"
+	Query     string `json:"query"`
+	Category  string `json:"category,omitempty"`
+	Source    string `json:"source,omitempty"`
+	From      string `json:"from,omitempty"`
+	To        string `json:"to,omitempty"`
+	Page      int    `json:"page"`
+	Limit     int    `json:"limit"`
+	SortBy    string `json:"sort_by"`    // "relevance", "date", "source"
+	SortOrder string `json:"sort_order"` // "asc", "desc"
 }
 
 type FeedRequest struct {
@@ -265,7 +337,7 @@ type FeedRequest struct {
 	Limit     int    `json:"limit"`
 	Category  string `json:"category,omitempty"`
 	Source    string `json:"source,omitempty"`
-	SortBy    string `json:"sort_by"` // "date", "popularity"
+	SortBy    string `json:"sort_by"`    // "date", "popularity"
 	SortOrder string `json:"sort_order"` // "asc", "desc"
 }
 
@@ -285,7 +357,7 @@ type FeedResponse struct {
 	Success bool                     `json:"success"`
 	Data    CursorPaginationResponse `json:"data"`
 	Meta    struct {
-		GeneratedAt time.Time `json:"generated_at"`
+		GeneratedAt time.Time   `json:"generated_at"`
 		Filters     FeedRequest `json:"filters"`
 	} `json:"meta"`
 }
@@ -308,4 +380,4 @@ type TrendsResponse struct {
 		TimeWindow  string    `json:"time_window"`
 		Algorithm   string    `json:"algorithm"`
 	} `json:"meta"`
-} 
+}

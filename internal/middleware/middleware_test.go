@@ -9,7 +9,7 @@ import (
 
 func TestCORS(t *testing.T) {
 	corsMiddleware := CORS()
-	
+
 	// Create a test handler
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
@@ -18,7 +18,7 @@ func TestCORS(t *testing.T) {
 			return
 		}
 	})
-	
+
 	handler := corsMiddleware(testHandler)
 
 	tests := []struct {
@@ -88,19 +88,19 @@ func TestCORS(t *testing.T) {
 
 func TestRequestID(t *testing.T) {
 	requestIDMiddleware := RequestID()
-	
+
 	// Create a test handler that captures the request ID
 	var capturedRequestID string
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		capturedRequestID = GetRequestIDFromContext(r.Context())
 		w.WriteHeader(http.StatusOK)
 	})
-	
+
 	handler := requestIDMiddleware(testHandler)
 
 	req := httptest.NewRequest("GET", "/test", nil)
 	rr := httptest.NewRecorder()
-	
+
 	handler.ServeHTTP(rr, req)
 
 	// Check that request ID was set in context
@@ -133,7 +133,7 @@ func TestRequestID(t *testing.T) {
 
 func TestRequestIDUniqueness(t *testing.T) {
 	requestIDMiddleware := RequestID()
-	
+
 	var requestIDs []string
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if id := GetRequestIDFromContext(r.Context()); id != "" {
@@ -141,7 +141,7 @@ func TestRequestIDUniqueness(t *testing.T) {
 		}
 		w.WriteHeader(http.StatusOK)
 	})
-	
+
 	handler := requestIDMiddleware(testHandler)
 
 	// Generate multiple request IDs
@@ -195,7 +195,7 @@ func TestMiddlewareChaining(t *testing.T) {
 	// Test that both middleware can be chained together
 	corsMiddleware := CORS()
 	requestIDMiddleware := RequestID()
-	
+
 	var capturedRequestID string
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		capturedRequestID = GetRequestIDFromContext(r.Context())
@@ -205,13 +205,13 @@ func TestMiddlewareChaining(t *testing.T) {
 			return
 		}
 	})
-	
+
 	// Chain the middleware
 	handler := corsMiddleware(requestIDMiddleware(testHandler))
 
 	req := httptest.NewRequest("GET", "/test", nil)
 	req.Header.Set("Origin", "https://example.com")
-	
+
 	rr := httptest.NewRecorder()
 	handler.ServeHTTP(rr, req)
 
@@ -239,7 +239,7 @@ func containsAllValues(actual, expected string) bool {
 	if expected == actual {
 		return true
 	}
-	
+
 	// For comma-separated values, check if all expected values are present
 	expectedParts := strings.Split(expected, ",")
 	for _, part := range expectedParts {
@@ -252,4 +252,4 @@ func containsAllValues(actual, expected string) bool {
 
 func isHexChar(char rune) bool {
 	return (char >= '0' && char <= '9') || (char >= 'a' && char <= 'f') || (char >= 'A' && char <= 'F')
-} 
+}

@@ -18,17 +18,22 @@ import (
 type Handler struct {
 	articleRepo       *repository.ArticleRepository
 	sourceRepo        *repository.SourceRepository
+	engagementRepo    *repository.EngagementRepository
 	aggregatorService *services.AggregatorService
 	summarizerService *services.SummarizerService
+	trendingService   *services.TrendingService
 }
 
-func New(articleRepo *repository.ArticleRepository, sourceRepo *repository.SourceRepository, 
-	aggregatorService *services.AggregatorService, summarizerService *services.SummarizerService) *Handler {
+func New(articleRepo *repository.ArticleRepository, sourceRepo *repository.SourceRepository,
+	engagementRepo *repository.EngagementRepository, aggregatorService *services.AggregatorService,
+	summarizerService *services.SummarizerService, trendingService *services.TrendingService) *Handler {
 	return &Handler{
 		articleRepo:       articleRepo,
 		sourceRepo:        sourceRepo,
+		engagementRepo:    engagementRepo,
 		aggregatorService: aggregatorService,
 		summarizerService: summarizerService,
+		trendingService:   trendingService,
 	}
 }
 
@@ -137,7 +142,7 @@ func (h *Handler) RefreshNews(w http.ResponseWriter, r *http.Request) {
 	go func() {
 		_ = h.aggregatorService.AggregateNews(r.Context()) // Error logged in service
 	}()
-	
+
 	response := map[string]string{"message": "News refresh started"}
 	h.respondSuccess(w, response)
 }
@@ -196,12 +201,12 @@ func (h *Handler) respondValidationError(w http.ResponseWriter, message, details
 }
 
 func (h *Handler) respondNotFound(w http.ResponseWriter, resource string) {
-	h.respondError(w, http.StatusNotFound, models.ErrCodeNotFound, 
+	h.respondError(w, http.StatusNotFound, models.ErrCodeNotFound,
 		fmt.Sprintf("%s not found", resource), "")
 }
 
 func (h *Handler) respondInternalError(w http.ResponseWriter, message string) {
-	h.respondError(w, http.StatusInternalServerError, models.ErrCodeInternal, 
+	h.respondError(w, http.StatusInternalServerError, models.ErrCodeInternal,
 		"Internal server error", message)
 }
 
@@ -261,7 +266,7 @@ func (h *Handler) GetGlobalStats(w http.ResponseWriter, r *http.Request) {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	// Get total sources
 	sourcesCount, err := h.sourceRepo.GetSourcesCount()
 	if err != nil {
@@ -269,7 +274,7 @@ func (h *Handler) GetGlobalStats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	stats.TotalSources = sourcesCount
-	
+
 	h.respondSuccess(w, stats)
 }
 
@@ -280,7 +285,7 @@ func (h *Handler) GetSourceStats(w http.ResponseWriter, r *http.Request) {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondSuccess(w, stats)
 }
 
@@ -291,7 +296,7 @@ func (h *Handler) GetCategoryStats(w http.ResponseWriter, r *http.Request) {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondSuccess(w, stats)
 }
 
@@ -304,13 +309,13 @@ func (h *Handler) GetTimelineStats(w http.ResponseWriter, r *http.Request) {
 			days = d
 		}
 	}
-	
+
 	stats, err := h.articleRepo.GetTimelineStats(days)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondSuccess(w, stats)
 }
 
@@ -323,7 +328,7 @@ func (h *Handler) GetRecentArticles(w http.ResponseWriter, r *http.Request) {
 			hours = h
 		}
 	}
-	
+
 	limitStr := r.URL.Query().Get("limit")
 	limit := 20 // default
 	if limitStr != "" {
@@ -331,13 +336,13 @@ func (h *Handler) GetRecentArticles(w http.ResponseWriter, r *http.Request) {
 			limit = l
 		}
 	}
-	
+
 	articles, err := h.articleRepo.GetRecentArticles(hours, limit)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondSuccess(w, articles)
 }
 
@@ -348,7 +353,7 @@ func (h *Handler) GetSystemStatus(w http.ResponseWriter, r *http.Request) {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	// Get active sources count
 	sourcesCount, err := h.sourceRepo.GetSourcesCount()
 	if err != nil {
@@ -356,7 +361,7 @@ func (h *Handler) GetSystemStatus(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	status.ActiveSources = sourcesCount
-	
+
 	h.respondSuccess(w, status)
 }
 
@@ -369,13 +374,13 @@ func (h *Handler) CreateSource(w http.ResponseWriter, r *http.Request) {
 		h.respondValidationError(w, "Invalid request body", err.Error())
 		return
 	}
-	
+
 	// Validate request
 	if err := h.validateCreateSourceRequest(req); err != nil {
 		h.respondValidationError(w, "Validation failed", err.Error())
 		return
 	}
-	
+
 	source := &models.NewsSource{
 		Name:     req.Name,
 		URL:      req.URL,
@@ -383,12 +388,12 @@ func (h *Handler) CreateSource(w http.ResponseWriter, r *http.Request) {
 		Category: req.Category,
 		Active:   req.Active,
 	}
-	
+
 	if err := h.sourceRepo.CreateSource(source); err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondCreated(w, source)
 }
 
@@ -400,18 +405,18 @@ func (h *Handler) GetSource(w http.ResponseWriter, r *http.Request) {
 		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
-	
+
 	source, err := h.sourceRepo.GetSourceByID(id)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	if source == nil {
 		h.respondNotFound(w, "Source")
 		return
 	}
-	
+
 	h.respondSuccess(w, source)
 }
 
@@ -423,13 +428,13 @@ func (h *Handler) UpdateSource(w http.ResponseWriter, r *http.Request) {
 		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
-	
+
 	var req models.UpdateSourceRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		h.respondValidationError(w, "Invalid request body", err.Error())
 		return
 	}
-	
+
 	if err := h.sourceRepo.UpdateSource(id, req); err != nil {
 		if err.Error() == "source not found" {
 			h.respondNotFound(w, "Source")
@@ -438,14 +443,14 @@ func (h *Handler) UpdateSource(w http.ResponseWriter, r *http.Request) {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	// Get the updated source to return it
 	source, err := h.sourceRepo.GetSourceByID(id)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondSuccess(w, source)
 }
 
@@ -457,7 +462,7 @@ func (h *Handler) DeleteSource(w http.ResponseWriter, r *http.Request) {
 		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
-	
+
 	if err := h.sourceRepo.DeleteSource(id); err != nil {
 		if err.Error() == "source not found" {
 			h.respondNotFound(w, "Source")
@@ -466,7 +471,7 @@ func (h *Handler) DeleteSource(w http.ResponseWriter, r *http.Request) {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	// Return 204 No Content for successful deletion (RESTful pattern)
 	w.WriteHeader(http.StatusNoContent)
 }
@@ -479,7 +484,7 @@ func (h *Handler) RefreshSource(w http.ResponseWriter, r *http.Request) {
 		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
-	
+
 	source, err := h.sourceRepo.RefreshSingleSource(id)
 	if err != nil {
 		if err.Error() == "source not found" {
@@ -489,13 +494,13 @@ func (h *Handler) RefreshSource(w http.ResponseWriter, r *http.Request) {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	// Trigger refresh for this source (simplified - in real implementation you'd pass the source to aggregator)
 	go func() {
 		// This would need to be implemented in the aggregator service
 		// _ = h.aggregatorService.AggregateFromSource(r.Context(), *source)
 	}()
-	
+
 	response := map[string]interface{}{
 		"message": "Source refresh started",
 		"source":  source,
@@ -510,7 +515,7 @@ func (h *Handler) GetAllSources(w http.ResponseWriter, r *http.Request) {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondSuccess(w, sources)
 }
 
@@ -528,16 +533,6 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 				Name:  "Genje API Team",
 				Email: "support@genje.co.ke",
 				URL:   "https://api.genje.co.ke",
-			},
-		},
-		Servers: []map[string]interface{}{
-			{
-				"url":         "https://api.genje.co.ke",
-				"description": "Production server",
-			},
-			{
-				"url":         "http://localhost:8080",
-				"description": "Local development server",
 			},
 		},
 		Paths: map[string]interface{}{
@@ -757,8 +752,8 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 							"description": "Sort by field",
 							"required":    false,
 							"schema": map[string]interface{}{
-								"type": "string",
-								"enum": []string{"relevance", "date", "source"},
+								"type":    "string",
+								"enum":    []string{"relevance", "date", "source"},
 								"default": "relevance",
 							},
 						},
@@ -852,11 +847,168 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 					},
 				},
 			},
+			"/v1/articles/{id}/engagement": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Get Article Engagement Metrics",
+					"description": "Retrieve engagement metrics (views, shares, comments, likes) for a specific article",
+					"tags":        []string{"Articles", "Engagement"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "id",
+							"in":          "path",
+							"description": "Article ID",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Engagement metrics retrieved successfully",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/EngagementResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+				"post": map[string]interface{}{
+					"summary":     "Track Article Engagement",
+					"description": "Record an engagement event (view, share, comment, like) for an article",
+					"tags":        []string{"Articles", "Engagement"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "id",
+							"in":          "path",
+							"description": "Article ID",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1},
+						},
+					},
+					"requestBody": map[string]interface{}{
+						"required": true,
+						"content": map[string]interface{}{
+							"application/json": map[string]interface{}{
+								"schema": map[string]interface{}{
+									"$ref": "#/components/schemas/EngagementRequest",
+								},
+							},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Engagement tracked successfully",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SuccessResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/articles/trending/advanced": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Get Advanced Trending Articles",
+					"description": "Get trending articles using sophisticated 5-factor algorithm (engagement, velocity, authority, content, recency)",
+					"tags":        []string{"Articles", "Trending", "Advanced"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "limit",
+							"in":          "query",
+							"description": "Number of articles to return (default: 20, max: 100)",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1, "maximum": 100, "default": 20},
+						},
+						map[string]interface{}{
+							"name":        "window",
+							"in":          "query",
+							"description": "Time window for trending analysis",
+							"required":    false,
+							"schema": map[string]interface{}{
+								"type":    "string",
+								"enum":    []string{"1h", "6h", "12h", "24h", "7d"},
+								"default": "24h",
+							},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Advanced trending articles with detailed scoring",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/AdvancedTrendingResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/sources/{name}/authority": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Get Source Authority Metrics",
+					"description": "Retrieve authority, credibility, and reach scores for a news source",
+					"tags":        []string{"Sources", "Authority"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "name",
+							"in":          "path",
+							"description": "Source name",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "string"},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Source authority metrics",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SourceAuthorityResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+				"post": map[string]interface{}{
+					"summary":     "Update Source Authority",
+					"description": "Manually trigger recalculation of source authority metrics",
+					"tags":        []string{"Sources", "Authority"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "name",
+							"in":          "path",
+							"description": "Source name",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "string"},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Authority metrics updated",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SourceAuthorityResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 		Components: map[string]interface{}{
 			"schemas": map[string]interface{}{
 				"Article": map[string]interface{}{
-					"type": "object",
+					"type":        "object",
 					"description": "News article with comprehensive metadata",
 					"properties": map[string]interface{}{
 						"id":           map[string]interface{}{"type": "integer", "example": 123, "description": "Unique article identifier"},
@@ -874,7 +1026,7 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 					"required": []string{"id", "title", "url", "source", "published_at", "created_at", "category"},
 				},
 				"APIResponse": map[string]interface{}{
-					"type": "object",
+					"type":        "object",
 					"description": "Standardized API response wrapper",
 					"properties": map[string]interface{}{
 						"success": map[string]interface{}{"type": "boolean", "example": true, "description": "Indicates if the request was successful"},
@@ -882,7 +1034,7 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 						"meta": map[string]interface{}{
 							"type": "object",
 							"properties": map[string]interface{}{
-								"timestamp": map[string]interface{}{"type": "string", "format": "date-time", "description": "Response generation timestamp"},
+								"timestamp":  map[string]interface{}{"type": "string", "format": "date-time", "description": "Response generation timestamp"},
 								"pagination": map[string]interface{}{"$ref": "#/components/schemas/PaginationMeta"},
 								"request_id": map[string]interface{}{"type": "string", "description": "Unique request identifier for debugging"},
 							},
@@ -891,7 +1043,7 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 					"required": []string{"success"},
 				},
 				"PaginationMeta": map[string]interface{}{
-					"type": "object",
+					"type":        "object",
 					"description": "Enhanced pagination information",
 					"properties": map[string]interface{}{
 						"page":        map[string]interface{}{"type": "integer", "example": 1, "description": "Current page number"},
@@ -903,7 +1055,7 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 					},
 				},
 				"ErrorResponse": map[string]interface{}{
-					"type": "object",
+					"type":        "object",
 					"description": "Standardized error response",
 					"properties": map[string]interface{}{
 						"success": map[string]interface{}{"type": "boolean", "example": false},
@@ -925,7 +1077,7 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 					},
 				},
 				"SummaryResponse": map[string]interface{}{
-					"type": "object",
+					"type":        "object",
 					"description": "NLP-powered article summary response",
 					"properties": map[string]interface{}{
 						"success": map[string]interface{}{"type": "boolean", "example": true},
@@ -933,8 +1085,8 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 							"type": "object",
 							"properties": map[string]interface{}{
 								"summary": map[string]interface{}{
-									"type": "string", 
-									"example": "President William Ruto has pledged to expand youth employment in both the Climate Worx and affordable housing programmes, aiming to double current figures within the next three months.",
+									"type":        "string",
+									"example":     "President William Ruto has pledged to expand youth employment in both the Climate Worx and affordable housing programmes, aiming to double current figures within the next three months.",
 									"description": "AI-generated summary using TF-IDF analysis, entity recognition, and multi-criteria scoring",
 								},
 							},
@@ -950,7 +1102,7 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 	}
-	
+
 	h.respondJSON(w, http.StatusOK, spec)
 }
 
@@ -1017,7 +1169,7 @@ func (h *Handler) GetAPISchema(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 	}
-	
+
 	h.respondJSON(w, http.StatusOK, schema)
 }
 
@@ -1034,30 +1186,30 @@ func (h *Handler) SearchArticles(w http.ResponseWriter, r *http.Request) {
 		SortBy:    r.URL.Query().Get("sort_by"),
 		SortOrder: r.URL.Query().Get("sort_order"),
 	}
-	
+
 	if pageStr := r.URL.Query().Get("page"); pageStr != "" {
 		if page, err := strconv.Atoi(pageStr); err == nil && page > 0 {
 			filters.Page = page
 		}
 	}
-	
+
 	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
 		if limit, err := strconv.Atoi(limitStr); err == nil && limit > 0 && limit <= 100 {
 			filters.Limit = limit
 		}
 	}
-	
+
 	if filters.Query == "" {
 		h.respondValidationError(w, "Query parameter 'q' is required", "Search query must be provided")
 		return
 	}
-	
+
 	articles, total, err := h.articleRepo.SearchArticles(filters)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	totalPages := (total + filters.Limit - 1) / filters.Limit
 	pagination := models.PaginationMeta{
 		Page:       filters.Page,
@@ -1082,43 +1234,56 @@ func (h *Handler) GetArticlesFeed(w http.ResponseWriter, r *http.Request) {
 		SortBy:    r.URL.Query().Get("sort_by"),
 		SortOrder: r.URL.Query().Get("sort_order"),
 	}
-	
+
 	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
 		if limit, err := strconv.Atoi(limitStr); err == nil && limit > 0 && limit <= 100 {
 			req.Limit = limit
 		}
 	}
-	
+
 	feed, err := h.articleRepo.GetArticlesFeed(req)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondSuccess(w, feed)
 }
 
-// GetTrendingArticles returns trending articles
+// GetTrendingArticles returns trending articles using the advanced algorithm
 func (h *Handler) GetTrendingArticles(w http.ResponseWriter, r *http.Request) {
 	limit := 20
 	timeWindow := r.URL.Query().Get("window")
 	if timeWindow == "" {
 		timeWindow = "24h"
 	}
-	
+
 	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
 		if l, err := strconv.Atoi(limitStr); err == nil && l > 0 && l <= 100 {
 			limit = l
 		}
 	}
-	
-	articles, err := h.articleRepo.GetTrendingArticles(limit, timeWindow)
+
+	// Use the advanced trending algorithm
+	trending, err := h.trendingService.GetAdvancedTrendingArticles(limit, timeWindow)
 	if err != nil {
-		h.respondInternalError(w, err.Error())
+		// Fallback to simple trending if advanced fails
+		articles, fallbackErr := h.articleRepo.GetTrendingArticles(limit, timeWindow)
+		if fallbackErr != nil {
+			h.respondInternalError(w, err.Error())
+			return
+		}
+		h.respondSuccess(w, articles)
 		return
 	}
-	
-	h.respondSuccess(w, articles)
+
+	response := map[string]interface{}{
+		"articles":    trending,
+		"time_window": timeWindow,
+		"algorithm":   "5-factor advanced trending",
+	}
+
+	h.respondSuccess(w, response)
 }
 
 // GetArticlesBySource returns articles from a specific source
@@ -1129,19 +1294,19 @@ func (h *Handler) GetArticlesBySource(w http.ResponseWriter, r *http.Request) {
 		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
-	
+
 	filters, err := h.parseArticleFilters(r)
 	if err != nil {
 		h.respondValidationError(w, "Invalid query parameters", err.Error())
 		return
 	}
-	
+
 	articles, total, err := h.articleRepo.GetArticlesBySource(sourceID, filters)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	totalPages := (total + filters.Limit - 1) / filters.Limit
 	pagination := models.PaginationMeta{
 		Page:       filters.Page,
@@ -1163,19 +1328,19 @@ func (h *Handler) GetArticlesByCategory(w http.ResponseWriter, r *http.Request) 
 		h.respondValidationError(w, "Category parameter is required", "Category name must be provided")
 		return
 	}
-	
+
 	filters, err := h.parseArticleFilters(r)
 	if err != nil {
 		h.respondValidationError(w, "Invalid query parameters", err.Error())
 		return
 	}
-	
+
 	articles, total, err := h.articleRepo.GetArticlesByCategory(category, filters)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	totalPages := (total + filters.Limit - 1) / filters.Limit
 	pagination := models.PaginationMeta{
 		Page:       filters.Page,
@@ -1197,45 +1362,45 @@ func (h *Handler) GetTrends(w http.ResponseWriter, r *http.Request) {
 	if timeWindow == "" {
 		timeWindow = "24h"
 	}
-	
+
 	if limitStr := r.URL.Query().Get("limit"); limitStr != "" {
 		if l, err := strconv.Atoi(limitStr); err == nil && l > 0 && l <= 50 {
 			limit = l
 		}
 	}
-	
+
 	topics, err := h.articleRepo.GetTrendingTopics(limit, timeWindow)
 	if err != nil {
 		h.respondInternalError(w, err.Error())
 		return
 	}
-	
+
 	h.respondSuccess(w, topics)
 }
 
 // validateCreateSourceRequest validates the create source request
 func (h *Handler) validateCreateSourceRequest(req models.CreateSourceRequest) error {
 	validator := validation.New()
-	
+
 	// Required fields
 	validator.Required("name", req.Name)
 	validator.Required("feed_url", req.FeedURL)
-	
+
 	// Length validations
 	validator.MinLength("name", req.Name, 2)
 	validator.MaxLength("name", req.Name, 100)
-	
+
 	// URL validations
 	validator.URL("url", req.URL)
 	validator.URL("feed_url", req.FeedURL)
-	
+
 	// Category validation
 	allowedCategories := []string{"news", "sports", "business", "politics", "technology", "entertainment", "health", "world", "opinion", "general"}
 	validator.In("category", req.Category, allowedCategories)
-	
+
 	if validator.HasErrors() {
 		return validator.Errors()
 	}
-	
+
 	return nil
-} 
+}
