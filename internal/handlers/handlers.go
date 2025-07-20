@@ -516,57 +516,338 @@ func (h *Handler) GetAllSources(w http.ResponseWriter, r *http.Request) {
 
 // New handler methods for missing endpoints
 
-// GetOpenAPISpec returns OpenAPI specification
+// GetOpenAPISpec returns comprehensive OpenAPI 3.0 specification
 func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 	spec := models.OpenAPISpec{
 		OpenAPI: "3.0.0",
 		Info: models.OpenAPIInfo{
 			Title:       "Genje News API",
-			Description: "Kenyan news aggregation service providing access to articles from multiple sources",
-			Version:     "1.0.0",
+			Description: "Production-ready RESTful news aggregation API with advanced NLP summarization for Kenyan news content. Features intelligent search, real-time aggregation, and comprehensive filtering capabilities.",
+			Version:     "2.0.0",
 			Contact: models.OpenAPIContact{
-				Name:  "Genje Team",
-				Email: "support@genje.com",
-				URL:   "https://genje.com",
+				Name:  "Genje API Team",
+				Email: "support@genje.co.ke",
+				URL:   "https://api.genje.co.ke",
+			},
+		},
+		Servers: []map[string]interface{}{
+			{
+				"url":         "https://api.genje.co.ke",
+				"description": "Production server",
+			},
+			{
+				"url":         "http://localhost:8080",
+				"description": "Local development server",
 			},
 		},
 		Paths: map[string]interface{}{
 			"/health": map[string]interface{}{
 				"get": map[string]interface{}{
-					"summary": "Health check",
+					"summary":     "API Health Check",
+					"description": "Returns the health status of the API service",
+					"tags":        []string{"System"},
 					"responses": map[string]interface{}{
 						"200": map[string]interface{}{
 							"description": "Service is healthy",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/HealthResponse",
+									},
+								},
+							},
 						},
 					},
 				},
 			},
 			"/v1/articles": map[string]interface{}{
 				"get": map[string]interface{}{
-					"summary": "Get articles",
+					"summary":     "List Articles",
+					"description": "Get paginated list of articles with advanced filtering options",
+					"tags":        []string{"Articles"},
 					"parameters": []interface{}{
 						map[string]interface{}{
-							"name":     "page",
-							"in":       "query",
-							"required": false,
-							"schema":   map[string]interface{}{"type": "integer"},
+							"name":        "page",
+							"in":          "query",
+							"description": "Page number (default: 1)",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1, "default": 1},
 						},
 						map[string]interface{}{
-							"name":     "limit",
-							"in":       "query",
-							"required": false,
-							"schema":   map[string]interface{}{"type": "integer"},
+							"name":        "limit",
+							"in":          "query",
+							"description": "Items per page (default: 20, max: 100)",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1, "maximum": 100, "default": 20},
 						},
 						map[string]interface{}{
-							"name":     "category",
-							"in":       "query",
-							"required": false,
-							"schema":   map[string]interface{}{"type": "string"},
+							"name":        "category",
+							"in":          "query",
+							"description": "Filter by category",
+							"required":    false,
+							"schema": map[string]interface{}{
+								"type": "string",
+								"enum": []string{"news", "sports", "business", "politics", "technology", "entertainment", "health", "world", "opinion", "general", "kiswahili", "diaspora"},
+							},
+						},
+						map[string]interface{}{
+							"name":        "source",
+							"in":          "query",
+							"description": "Filter by source name",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "string"},
+						},
+						map[string]interface{}{
+							"name":        "search",
+							"in":          "query",
+							"description": "Search in title and content",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "string", "minLength": 2},
 						},
 					},
 					"responses": map[string]interface{}{
 						"200": map[string]interface{}{
-							"description": "List of articles",
+							"description": "Successful response with articles",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ArticlesResponse",
+									},
+								},
+							},
+						},
+						"400": map[string]interface{}{
+							"description": "Bad request - invalid parameters",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ErrorResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/articles/{id}": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Get Article by ID",
+					"description": "Retrieve a specific article by its unique identifier",
+					"tags":        []string{"Articles"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "id",
+							"in":          "path",
+							"description": "Article ID",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Article found",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ArticleResponse",
+									},
+								},
+							},
+						},
+						"404": map[string]interface{}{
+							"description": "Article not found",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ErrorResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/articles/{id}/summary": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Get Article Summary (NLP-Powered)",
+					"description": "Get or generate intelligent article summary using advanced NLP techniques including TF-IDF analysis, entity recognition, and multi-criteria scoring",
+					"tags":        []string{"Articles", "NLP"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "id",
+							"in":          "path",
+							"description": "Article ID",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Article summary generated successfully",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SummaryResponse",
+									},
+								},
+							},
+						},
+						"404": map[string]interface{}{
+							"description": "Article not found",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ErrorResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+				"post": map[string]interface{}{
+					"summary":     "Generate New Article Summary",
+					"description": "Force generation of a new article summary (same as GET but explicit action)",
+					"tags":        []string{"Articles", "NLP"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "id",
+							"in":          "path",
+							"description": "Article ID",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "New summary generated",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SummaryResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/articles/search": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Search Articles",
+					"description": "Full-text search with relevance ranking and advanced filtering",
+					"tags":        []string{"Articles", "Search"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "q",
+							"in":          "query",
+							"description": "Search query (required)",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "string", "minLength": 2},
+						},
+						map[string]interface{}{
+							"name":        "category",
+							"in":          "query",
+							"description": "Filter by category",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "string"},
+						},
+						map[string]interface{}{
+							"name":        "sort_by",
+							"in":          "query",
+							"description": "Sort by field",
+							"required":    false,
+							"schema": map[string]interface{}{
+								"type": "string",
+								"enum": []string{"relevance", "date", "source"},
+								"default": "relevance",
+							},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Search results",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ArticlesResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/sources": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "List News Sources",
+					"description": "Get all active news sources",
+					"tags":        []string{"Sources"},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "List of active sources",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SourcesResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+				"post": map[string]interface{}{
+					"summary":     "Create News Source",
+					"description": "Add a new news source to the system",
+					"tags":        []string{"Sources"},
+					"requestBody": map[string]interface{}{
+						"required": true,
+						"content": map[string]interface{}{
+							"application/json": map[string]interface{}{
+								"schema": map[string]interface{}{
+									"$ref": "#/components/schemas/CreateSourceRequest",
+								},
+							},
+						},
+					},
+					"responses": map[string]interface{}{
+						"201": map[string]interface{}{
+							"description": "Source created successfully",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SourceResponse",
+									},
+								},
+							},
+						},
+						"400": map[string]interface{}{
+							"description": "Validation error",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ErrorResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/stats": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Global Statistics",
+					"description": "Get comprehensive statistics about articles, sources, and categories",
+					"tags":        []string{"Statistics"},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Global statistics",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/StatsResponse",
+									},
+								},
+							},
 						},
 					},
 				},
@@ -576,16 +857,94 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 			"schemas": map[string]interface{}{
 				"Article": map[string]interface{}{
 					"type": "object",
+					"description": "News article with comprehensive metadata",
 					"properties": map[string]interface{}{
-						"id":           map[string]interface{}{"type": "integer"},
-						"title":        map[string]interface{}{"type": "string"},
-						"content":      map[string]interface{}{"type": "string"},
-						"url":          map[string]interface{}{"type": "string"},
-						"author":       map[string]interface{}{"type": "string"},
-						"source":       map[string]interface{}{"type": "string"},
-						"published_at": map[string]interface{}{"type": "string", "format": "date-time"},
-						"created_at":   map[string]interface{}{"type": "string", "format": "date-time"},
-						"category":     map[string]interface{}{"type": "string"},
+						"id":           map[string]interface{}{"type": "integer", "example": 123, "description": "Unique article identifier"},
+						"title":        map[string]interface{}{"type": "string", "example": "Kenya's Economic Growth Outlook for 2025", "description": "Article headline"},
+						"content":      map[string]interface{}{"type": "string", "description": "Full article content (HTML)"},
+						"summary":      map[string]interface{}{"type": "string", "example": "Economic experts predict steady growth driven by infrastructure investments.", "description": "AI-generated summary using NLP techniques"},
+						"url":          map[string]interface{}{"type": "string", "format": "uri", "example": "https://standardmedia.co.ke/business/article/2025/01/15/kenya-economic-growth", "description": "Original article URL"},
+						"author":       map[string]interface{}{"type": "string", "example": "Jane Doe", "description": "Article author"},
+						"source":       map[string]interface{}{"type": "string", "example": "Standard Business", "description": "News source name"},
+						"published_at": map[string]interface{}{"type": "string", "format": "date-time", "example": "2025-01-15T10:30:00Z", "description": "Original publication date"},
+						"created_at":   map[string]interface{}{"type": "string", "format": "date-time", "example": "2025-01-15T10:35:00Z", "description": "Date added to our system"},
+						"category":     map[string]interface{}{"type": "string", "example": "business", "description": "Article category", "enum": []string{"news", "sports", "business", "politics", "technology", "entertainment", "health", "world", "opinion", "general", "kiswahili", "diaspora"}},
+						"image_url":    map[string]interface{}{"type": "string", "format": "uri", "example": "https://standardmedia.co.ke/images/business/economic-growth.jpg", "description": "Article featured image"},
+					},
+					"required": []string{"id", "title", "url", "source", "published_at", "created_at", "category"},
+				},
+				"APIResponse": map[string]interface{}{
+					"type": "object",
+					"description": "Standardized API response wrapper",
+					"properties": map[string]interface{}{
+						"success": map[string]interface{}{"type": "boolean", "example": true, "description": "Indicates if the request was successful"},
+						"data":    map[string]interface{}{"description": "Response data (varies by endpoint)"},
+						"meta": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"timestamp": map[string]interface{}{"type": "string", "format": "date-time", "description": "Response generation timestamp"},
+								"pagination": map[string]interface{}{"$ref": "#/components/schemas/PaginationMeta"},
+								"request_id": map[string]interface{}{"type": "string", "description": "Unique request identifier for debugging"},
+							},
+						},
+					},
+					"required": []string{"success"},
+				},
+				"PaginationMeta": map[string]interface{}{
+					"type": "object",
+					"description": "Enhanced pagination information",
+					"properties": map[string]interface{}{
+						"page":        map[string]interface{}{"type": "integer", "example": 1, "description": "Current page number"},
+						"limit":       map[string]interface{}{"type": "integer", "example": 20, "description": "Items per page"},
+						"total":       map[string]interface{}{"type": "integer", "example": 1250, "description": "Total number of items"},
+						"total_pages": map[string]interface{}{"type": "integer", "example": 63, "description": "Total number of pages"},
+						"has_next":    map[string]interface{}{"type": "boolean", "example": true, "description": "Whether there are more pages"},
+						"has_prev":    map[string]interface{}{"type": "boolean", "example": false, "description": "Whether there are previous pages"},
+					},
+				},
+				"ErrorResponse": map[string]interface{}{
+					"type": "object",
+					"description": "Standardized error response",
+					"properties": map[string]interface{}{
+						"success": map[string]interface{}{"type": "boolean", "example": false},
+						"error": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"code":    map[string]interface{}{"type": "string", "example": "VALIDATION_ERROR", "description": "Error code for programmatic handling"},
+								"message": map[string]interface{}{"type": "string", "example": "Invalid query parameters", "description": "Human-readable error message"},
+								"details": map[string]interface{}{"type": "string", "example": "Page parameter must be a positive integer", "description": "Additional error details"},
+							},
+						},
+						"meta": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"timestamp":  map[string]interface{}{"type": "string", "format": "date-time"},
+								"request_id": map[string]interface{}{"type": "string"},
+							},
+						},
+					},
+				},
+				"SummaryResponse": map[string]interface{}{
+					"type": "object",
+					"description": "NLP-powered article summary response",
+					"properties": map[string]interface{}{
+						"success": map[string]interface{}{"type": "boolean", "example": true},
+						"data": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"summary": map[string]interface{}{
+									"type": "string", 
+									"example": "President William Ruto has pledged to expand youth employment in both the Climate Worx and affordable housing programmes, aiming to double current figures within the next three months.",
+									"description": "AI-generated summary using TF-IDF analysis, entity recognition, and multi-criteria scoring",
+								},
+							},
+						},
+						"meta": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"timestamp": map[string]interface{}{"type": "string", "format": "date-time"},
+							},
+						},
 					},
 				},
 			},
