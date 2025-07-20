@@ -209,13 +209,11 @@ func TestGetArticles(t *testing.T) {
 			}
 
 			if tt.checkCount && rr.Code == http.StatusOK {
-				var response models.APIResponse[[]models.Article]
+				var response models.ArticlesResponse
 				if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
 					t.Errorf("Failed to unmarshal response: %v", err)
-				} else if !response.Success {
-					t.Errorf("Expected success=true, got %v", response.Success)
-				} else if len(response.Data) < tt.expectedMin {
-					t.Errorf("Expected at least %d articles, got %d", tt.expectedMin, len(response.Data))
+				} else if len(response.Articles) < tt.expectedMin {
+					t.Errorf("Expected at least %d articles, got %d", tt.expectedMin, len(response.Articles))
 				}
 			}
 		})
@@ -268,13 +266,11 @@ func TestGetArticle(t *testing.T) {
 			}
 
 			if tt.expectedCode == http.StatusOK {
-				var response models.APIResponse[models.Article]
-				if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
+				var article models.Article
+				if err := json.Unmarshal(rr.Body.Bytes(), &article); err != nil {
 					t.Errorf("Failed to unmarshal response: %v", err)
-				} else if !response.Success {
-					t.Errorf("Expected success=true, got %v", response.Success)
-				} else if response.Data.Title != "Test Article" {
-					t.Errorf("Expected article title 'Test Article', got %s", response.Data.Title)
+				} else if article.Title != "Test Article" {
+					t.Errorf("Expected article title 'Test Article', got %s", article.Title)
 				}
 			}
 		})
@@ -327,12 +323,10 @@ func TestSummarizeArticle(t *testing.T) {
 			}
 
 			if tt.expectedCode == http.StatusOK {
-				var response models.APIResponse[map[string]string]
+				var response map[string]string
 				if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
 					t.Errorf("Failed to unmarshal response: %v", err)
-				} else if !response.Success {
-					t.Errorf("Expected success=true, got %v", response.Success)
-				} else if response.Data["summary"] == "" {
+				} else if response["summary"] == "" {
 					t.Error("Expected non-empty summary")
 				}
 			}
@@ -366,16 +360,12 @@ func TestGetSources(t *testing.T) {
 		t.Errorf("Expected status %d, got %d", http.StatusOK, rr.Code)
 	}
 
-	var response models.APIResponse[[]models.NewsSource]
+	var response models.SourcesResponse
 	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
 		t.Errorf("Failed to unmarshal response: %v", err)
 	}
 
-	if !response.Success {
-		t.Errorf("Expected success=true, got %v", response.Success)
-	}
-
-	if len(response.Data) == 0 {
+	if len(response.Sources) == 0 {
 		t.Error("Expected at least one source")
 	}
 }
@@ -409,16 +399,12 @@ func TestGetCategories(t *testing.T) {
 		t.Errorf("Expected status %d, got %d", http.StatusOK, rr.Code)
 	}
 
-	var response models.APIResponse[[]string]
+	var response models.CategoriesResponse
 	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
 		t.Errorf("Failed to unmarshal response: %v", err)
 	}
 
-	if !response.Success {
-		t.Errorf("Expected success=true, got %v", response.Success)
-	}
-
-	if len(response.Data) == 0 {
+	if len(response.Categories) == 0 {
 		t.Error("Expected at least one category")
 	}
 }
@@ -436,18 +422,14 @@ func TestRefreshNews(t *testing.T) {
 		t.Errorf("Expected status %d, got %d", http.StatusOK, rr.Code)
 	}
 
-	var response models.APIResponse[map[string]string]
+	var response map[string]string
 	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
 		t.Errorf("Failed to unmarshal response: %v", err)
 	}
 
-	if !response.Success {
-		t.Errorf("Expected success=true, got %v", response.Success)
-	}
-
 	expectedMessage := "News refresh started"
-	if response.Data["message"] != expectedMessage {
-		t.Errorf("Expected message '%s', got '%s'", expectedMessage, response.Data["message"])
+	if response["message"] != expectedMessage {
+		t.Errorf("Expected message '%s', got '%s'", expectedMessage, response["message"])
 	}
 }
 
@@ -548,33 +530,24 @@ func TestRespondError(t *testing.T) {
 	_, handler := setupHandlerTest(t)
 
 	rr := httptest.NewRecorder()
-	handler.respondError(rr, http.StatusBadRequest, models.ErrCodeValidation, "Test error", "Test details")
+	handler.respondError(rr, http.StatusBadRequest, "Test error", "Test details")
 
 	if rr.Code != http.StatusBadRequest {
 		t.Errorf("Expected status %d, got %d", http.StatusBadRequest, rr.Code)
 	}
 
-	var response models.APIResponse[any]
+	var response models.ErrorResponse
 	if err := json.Unmarshal(rr.Body.Bytes(), &response); err != nil {
 		t.Errorf("Failed to unmarshal response: %v", err)
 	}
 
-	if response.Success != false {
-		t.Errorf("Expected success=false, got %v", response.Success)
+	if response.Error != "Test error" {
+		t.Errorf("Expected error 'Test error', got '%s'", response.Error)
 	}
-
-	if response.Error == nil {
-		t.Error("Expected error object, got nil")
-		return
+	if response.Code != http.StatusBadRequest {
+		t.Errorf("Expected code %d, got %d", http.StatusBadRequest, response.Code)
 	}
-
-	if response.Error.Message != "Test error" {
-		t.Errorf("Expected error message 'Test error', got '%s'", response.Error.Message)
-	}
-	if response.Error.Code != models.ErrCodeValidation {
-		t.Errorf("Expected error code '%s', got '%s'", models.ErrCodeValidation, response.Error.Code)
-	}
-	if response.Error.Details != "Test details" {
-		t.Errorf("Expected error details 'Test details', got '%s'", response.Error.Details)
+	if response.Details != "Test details" {
+		t.Errorf("Expected details 'Test details', got '%s'", response.Details)
 	}
 } 
