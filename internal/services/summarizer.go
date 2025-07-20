@@ -2,11 +2,7 @@ package services
 
 import (
 	"fmt"
-	"math"
-	"regexp"
-	"sort"
 	"strings"
-	"unicode"
 
 	"genje-api/internal/repository"
 )
@@ -32,12 +28,12 @@ func (s *SummarizerService) SummarizeArticle(articleID int) (string, error) {
 	}
 
 	// If already summarized, return existing summary
-	if article.Summary != "" && strings.TrimSpace(article.Summary) != "" {
+	if article.Summary != "" {
 		return article.Summary, nil
 	}
 
 	// Generate summary
-	summary := s.generateIntelligentSummary(article.Title, article.Content)
+	summary := s.generateSimpleSummary(article.Content)
 
 	// Update database
 	if err := s.articleRepo.UpdateSummary(articleID, summary); err != nil {
@@ -47,7 +43,7 @@ func (s *SummarizerService) SummarizeArticle(articleID int) (string, error) {
 	return summary, nil
 }
 
-func (s *SummarizerService) generateIntelligentSummary(title, content string) string {
+func (s *SummarizerService) generateSimpleSummary(content string) string {
 	if content == "" {
 		return ""
 	}
@@ -552,6 +548,7 @@ func (s *SummarizerService) selectOptimalSentences(sentences []AdvancedScoredSen
 	if len(summary) > targetLength {
 		summary = summary[:targetLength-3] + "..."
 	}
+
 
 	return summary
 }
