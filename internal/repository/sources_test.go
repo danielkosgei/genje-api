@@ -317,4 +317,4 @@ func TestCreateSourceAllFields(t *testing.T) {
 	if retrieved.Active != source.Active {
 		t.Errorf("Expected active %v, got %v", source.Active, retrieved.Active)
 	}
-} 
+}

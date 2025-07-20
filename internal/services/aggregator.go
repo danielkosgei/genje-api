@@ -104,18 +104,18 @@ func (s *AggregatorService) AggregateNews(ctx context.Context) error {
 			errorCount++
 			continue
 		}
-		
+
 		totalProcessed += processed
 		successCount++
-		
+
 		// Small delay between requests to be respectful
 		time.Sleep(100 * time.Millisecond)
 	}
 
 	log.Printf("=== News aggregation completed at %s ===", time.Now().Format("2006-01-02 15:04:05"))
-	log.Printf("SUMMARY: Processed %d articles from %d sources (%d successful, %d failed)", 
+	log.Printf("SUMMARY: Processed %d articles from %d sources (%d successful, %d failed)",
 		totalProcessed, len(sources), successCount, errorCount)
-	
+
 	return nil
 }
 
@@ -145,7 +145,7 @@ func (s *AggregatorService) processFeed(ctx context.Context, source models.NewsS
 	}
 	defer resp.Body.Close()
 
-	log.Printf("Response from %s: Status=%d, Content-Type=%s, Content-Length=%s", 
+	log.Printf("Response from %s: Status=%d, Content-Type=%s, Content-Length=%s",
 		source.Name, resp.StatusCode, resp.Header.Get("Content-Type"), resp.Header.Get("Content-Length"))
 
 	if resp.StatusCode != 200 {
@@ -210,7 +210,7 @@ func (s *AggregatorService) convertFeedItems(items []*gofeed.Item, source models
 
 	for i, item := range items {
 		if item.Title == "" || item.Link == "" {
-			log.Printf("SKIP: Item %d from %s missing title or link (Title='%s', Link='%s')", 
+			log.Printf("SKIP: Item %d from %s missing title or link (Title='%s', Link='%s')",
 				i+1, source.Name, item.Title, item.Link)
 			skipped++
 			continue
@@ -233,7 +233,7 @@ func (s *AggregatorService) convertFeedItems(items []*gofeed.Item, source models
 			} else if parsed, err := time.Parse(time.RFC1123, item.Published); err == nil {
 				article.PublishedAt = parsed
 			} else {
-				log.Printf("DEBUG: Could not parse published date '%s' for item from %s, using current time", 
+				log.Printf("DEBUG: Could not parse published date '%s' for item from %s, using current time",
 					item.Published, source.Name)
 				article.PublishedAt = time.Now()
 			}
@@ -274,7 +274,7 @@ func (s *AggregatorService) convertFeedItems(items []*gofeed.Item, source models
 	}
 
 	if skipped > 0 {
-		log.Printf("INFO: Skipped %d invalid items from %s, processed %d valid items", 
+		log.Printf("INFO: Skipped %d invalid items from %s, processed %d valid items",
 			skipped, source.Name, len(articles))
 	}
 
@@ -283,11 +283,11 @@ func (s *AggregatorService) convertFeedItems(items []*gofeed.Item, source models
 
 func (s *AggregatorService) cleanContent(content string) string {
 	content = strings.TrimSpace(content)
-	
+
 	// Limit content size
 	if len(content) > s.config.MaxContentSize {
 		content = content[:s.config.MaxContentSize] + "..."
 	}
 
 	return content
-} 
+}

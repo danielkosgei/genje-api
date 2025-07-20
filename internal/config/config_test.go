@@ -55,9 +55,9 @@ func TestGetDuration(t *testing.T) {
 		defaultValue time.Duration
 		expected     time.Duration
 	}{
-		{"TEST_DURATION_1", "5m", 10*time.Minute, 5*time.Minute},
-		{"TEST_DURATION_2", "invalid", 10*time.Minute, 10*time.Minute},
-		{"TEST_DURATION_3", "", 10*time.Minute, 10*time.Minute},
+		{"TEST_DURATION_1", "5m", 10 * time.Minute, 5 * time.Minute},
+		{"TEST_DURATION_2", "invalid", 10 * time.Minute, 10 * time.Minute},
+		{"TEST_DURATION_3", "", 10 * time.Minute, 10 * time.Minute},
 	}
 
 	for _, tt := range tests {
@@ -129,4 +129,4 @@ func TestConfigurationOverride(t *testing.T) {
 	if cfg.Aggregator.MaxContentSize != 5000 {
 		t.Errorf("Expected MAX_CONTENT_SIZE override to 5000, got %d", cfg.Aggregator.MaxContentSize)
 	}
-} 
+}

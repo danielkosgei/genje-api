@@ -150,7 +150,7 @@ func (r *ArticleRepository) UpdateSummary(id int, summary string) error {
 
 func (r *ArticleRepository) GetCategories() ([]string, error) {
 	query := "SELECT DISTINCT category FROM articles ORDER BY category"
-	
+
 	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get categories: %w", err)
@@ -229,19 +229,19 @@ func (r *ArticleRepository) CreateArticlesBatch(articles []models.Article) error
 // GetGlobalStats returns global statistics about articles
 func (r *ArticleRepository) GetGlobalStats() (models.GlobalStats, error) {
 	var stats models.GlobalStats
-	
+
 	query := `
 		SELECT 
 			COUNT(*) as total_articles,
 			COUNT(DISTINCT category) as categories
 		FROM articles
 	`
-	
+
 	err := r.db.QueryRow(query).Scan(&stats.TotalArticles, &stats.Categories)
 	if err != nil {
 		return stats, fmt.Errorf("failed to get global stats: %w", err)
 	}
-	
+
 	// Get last updated time separately
 	var lastUpdatedStr string
 	err = r.db.QueryRow("SELECT MAX(created_at) FROM articles").Scan(&lastUpdatedStr)
@@ -256,7 +256,7 @@ func (r *ArticleRepository) GetGlobalStats() (models.GlobalStats, error) {
 			stats.LastUpdated = time.Now()
 		}
 	}
-	
+
 	return stats, nil
 }
 
@@ -272,13 +272,13 @@ func (r *ArticleRepository) GetSourceStats() ([]models.SourceStats, error) {
 		GROUP BY source, category
 		ORDER BY article_count DESC
 	`
-	
+
 	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get source stats: %w", err)
 	}
 	defer rows.Close()
-	
+
 	var stats []models.SourceStats
 	for rows.Next() {
 		var stat models.SourceStats
@@ -287,17 +287,17 @@ func (r *ArticleRepository) GetSourceStats() ([]models.SourceStats, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan source stats: %w", err)
 		}
-		
+
 		// Parse the SQLite datetime string
 		stat.LastUpdated, err = time.Parse("2006-01-02 15:04:05", lastUpdatedStr)
 		if err != nil {
 			// If parsing fails, use current time
 			stat.LastUpdated = time.Now()
 		}
-		
+
 		stats = append(stats, stat)
 	}
-	
+
 	return stats, nil
 }
 
@@ -311,13 +311,13 @@ func (r *ArticleRepository) GetCategoryStats() ([]models.CategoryStats, error) {
 		GROUP BY category
 		ORDER BY article_count DESC
 	`
-	
+
 	rows, err := r.db.Query(query)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get category stats: %w", err)
 	}
 	defer rows.Close()
-	
+
 	var stats []models.CategoryStats
 	for rows.Next() {
 		var stat models.CategoryStats
@@ -327,7 +327,7 @@ func (r *ArticleRepository) GetCategoryStats() ([]models.CategoryStats, error) {
 		}
 		stats = append(stats, stat)
 	}
-	
+
 	return stats, nil
 }
 
@@ -336,7 +336,7 @@ func (r *ArticleRepository) GetTimelineStats(days int) ([]models.TimelineStats, 
 	if days <= 0 {
 		days = 30
 	}
-	
+
 	query := `
 		SELECT 
 			DATE(published_at) as date,
@@ -347,13 +347,13 @@ func (r *ArticleRepository) GetTimelineStats(days int) ([]models.TimelineStats, 
 		ORDER BY date DESC
 		LIMIT ?
 	`
-	
+
 	rows, err := r.db.Query(query, days, days)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get timeline stats: %w", err)
 	}
 	defer rows.Close()
-	
+
 	var stats []models.TimelineStats
 	for rows.Next() {
 		var stat models.TimelineStats
@@ -363,7 +363,7 @@ func (r *ArticleRepository) GetTimelineStats(days int) ([]models.TimelineStats, 
 		}
 		stats = append(stats, stat)
 	}
-	
+
 	return stats, nil
 }
 
@@ -375,7 +375,7 @@ func (r *ArticleRepository) GetRecentArticles(hours int, limit int) ([]models.Ar
 	if limit <= 0 {
 		limit = 20
 	}
-	
+
 	query := `
 		SELECT id, title, COALESCE(content, ''), COALESCE(summary, ''), url, 
 			COALESCE(author, ''), source, published_at, created_at, 
@@ -385,13 +385,13 @@ func (r *ArticleRepository) GetRecentArticles(hours int, limit int) ([]models.Ar
 		ORDER BY published_at DESC
 		LIMIT ?
 	`
-	
+
 	rows, err := r.db.Query(query, hours, limit)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get recent articles: %w", err)
 	}
 	defer rows.Close()
-	
+
 	var articles []models.Article
 	for rows.Next() {
 		var article models.Article
@@ -403,7 +403,7 @@ func (r *ArticleRepository) GetRecentArticles(hours int, limit int) ([]models.Ar
 		}
 		articles = append(articles, article)
 	}
-	
+
 	return articles, nil
 }
 
@@ -411,13 +411,13 @@ func (r *ArticleRepository) GetRecentArticles(hours int, limit int) ([]models.Ar
 func (r *ArticleRepository) GetSystemStatus() (models.SystemStatus, error) {
 	var status models.SystemStatus
 	status.Status = "ok"
-	
+
 	// Get total articles
 	err := r.db.QueryRow("SELECT COUNT(*) FROM articles").Scan(&status.TotalArticles)
 	if err != nil {
 		return status, fmt.Errorf("failed to get total articles: %w", err)
 	}
-	
+
 	// Get last aggregation time (most recent article creation)
 	var lastAggregationStr string
 	err = r.db.QueryRow("SELECT MAX(created_at) FROM articles").Scan(&lastAggregationStr)
@@ -432,7 +432,7 @@ func (r *ArticleRepository) GetSystemStatus() (models.SystemStatus, error) {
 			status.LastAggregation = time.Now()
 		}
 	}
-	
+
 	return status, nil
 }
 
@@ -494,12 +494,12 @@ func (r *ArticleRepository) SearchArticles(filters models.SearchFilters) ([]mode
 	if sortBy == "" {
 		sortBy = "relevance"
 	}
-	
+
 	sortOrder := filters.SortOrder
 	if sortOrder == "" {
 		sortOrder = "desc"
 	}
-	
+
 	switch sortBy {
 	case "date":
 		query += " ORDER BY published_at " + strings.ToUpper(sortOrder)
@@ -538,7 +538,7 @@ func (r *ArticleRepository) SearchArticles(filters models.SearchFilters) ([]mode
 // GetArticlesFeed returns paginated articles with cursor-based pagination
 func (r *ArticleRepository) GetArticlesFeed(req models.FeedRequest) (models.CursorPaginationResponse, error) {
 	var result models.CursorPaginationResponse
-	
+
 	// Build base query
 	query := `
 		SELECT id, title, COALESCE(content, ''), COALESCE(summary, ''), url, 
@@ -571,7 +571,7 @@ func (r *ArticleRepository) GetArticlesFeed(req models.FeedRequest) (models.Curs
 	if sortBy == "" {
 		sortBy = "date"
 	}
-	
+
 	switch sortBy {
 	case "popularity":
 		query += " ORDER BY published_at DESC, id DESC"
@@ -737,13 +737,71 @@ func (r *ArticleRepository) GetArticlesByCategory(category string, filters model
 	return articles, total, nil
 }
 
-// GetTrendingArticles returns trending articles (simplified algorithm)
-func (r *ArticleRepository) GetTrendingArticles(limit int, timeWindow string) ([]models.TrendingArticle, error) {
+// GetTrendingArticles returns trending articles using advanced algorithm
+func (r *ArticleRepository) GetTrendingArticles(limit int, timeWindow string) ([]models.EnhancedTrendingArticle, error) {
 	if limit <= 0 {
 		limit = 20
 	}
 
-	// Simplified trending algorithm based on recent articles
+	// Use cached trending scores for performance
+	query := `
+		SELECT 
+			a.id, a.title, COALESCE(a.content, ''), COALESCE(a.summary, ''), a.url, 
+			COALESCE(a.author, ''), a.source, a.published_at, a.created_at, 
+			COALESCE(a.category, 'general'), COALESCE(a.image_url, ''),
+			COALESCE(e.views, 0), COALESCE(e.shares, 0), COALESCE(e.comments, 0), COALESCE(e.likes, 0),
+			COALESCE(e.last_updated, a.created_at),
+			tc.trending_score, tc.engagement_velocity, tc.recency_score, 
+			tc.authority_score, tc.content_score
+		FROM articles a
+		LEFT JOIN article_engagement e ON a.id = e.article_id
+		LEFT JOIN trending_cache tc ON a.id = tc.article_id AND tc.time_window = ?
+		WHERE tc.trending_score IS NOT NULL
+			AND tc.calculated_at >= DATETIME('now', '-2 hours')
+		ORDER BY tc.trending_score DESC, a.published_at DESC
+		LIMIT ?
+	`
+
+	rows, err := r.db.Query(query, timeWindow, limit)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get trending articles: %w", err)
+	}
+	defer rows.Close()
+
+	var trendingArticles []models.EnhancedTrendingArticle
+	for rows.Next() {
+		var trending models.EnhancedTrendingArticle
+		err := rows.Scan(
+			&trending.ID, &trending.Title, &trending.Content, &trending.Summary,
+			&trending.URL, &trending.Author, &trending.Source, &trending.PublishedAt,
+			&trending.CreatedAt, &trending.Category, &trending.ImageURL,
+			&trending.Engagement.Views, &trending.Engagement.Shares,
+			&trending.Engagement.Comments, &trending.Engagement.Likes,
+			&trending.Engagement.LastUpdated,
+			&trending.TrendingScore, &trending.EngagementVelocity, &trending.RecencyScore,
+			&trending.AuthorityScore, &trending.ContentScore)
+		if err != nil {
+			return nil, fmt.Errorf("failed to scan trending article: %w", err)
+		}
+
+		trending.Engagement.ArticleID = trending.ID
+
+		// Determine trending reason based on scores
+		trending.TrendingReason = r.determineTrendingReason(trending)
+		trending.VelocityChange = r.determineVelocityChange(trending.EngagementVelocity)
+
+		trendingArticles = append(trendingArticles, trending)
+	}
+
+	return trendingArticles, nil
+}
+
+// GetTrendingArticlesLegacy returns trending articles using the old simple algorithm (for backward compatibility)
+func (r *ArticleRepository) GetTrendingArticlesLegacy(limit int, timeWindow string) ([]models.TrendingArticle, error) {
+	if limit <= 0 {
+		limit = 20
+	}
+
 	hours := 24
 	switch timeWindow {
 	case "1h":
@@ -759,12 +817,18 @@ func (r *ArticleRepository) GetTrendingArticles(limit int, timeWindow string) ([
 	}
 
 	query := `
-		SELECT id, title, COALESCE(content, ''), COALESCE(summary, ''), url, 
-			COALESCE(author, ''), source, published_at, created_at, 
-			COALESCE(category, 'general'), COALESCE(image_url, '')
-		FROM articles 
-		WHERE published_at >= DATETIME('now', '-' || ? || ' hours')
-		ORDER BY published_at DESC
+		SELECT 
+			a.id, a.title, COALESCE(a.content, ''), COALESCE(a.summary, ''), a.url, 
+			COALESCE(a.author, ''), a.source, a.published_at, a.created_at, 
+			COALESCE(a.category, 'general'), COALESCE(a.image_url, ''),
+			COALESCE(e.views, 0), COALESCE(e.shares, 0), COALESCE(e.comments, 0), COALESCE(e.likes, 0)
+		FROM articles a
+		LEFT JOIN article_engagement e ON a.id = e.article_id
+		WHERE a.published_at >= DATETIME('now', '-' || ? || ' hours')
+		ORDER BY 
+			(COALESCE(e.views, 0) + COALESCE(e.shares, 0) * 3 + 
+			 COALESCE(e.comments, 0) * 2 + COALESCE(e.likes, 0) * 2) DESC,
+			a.published_at DESC
 		LIMIT ?
 	`
 
@@ -777,24 +841,69 @@ func (r *ArticleRepository) GetTrendingArticles(limit int, timeWindow string) ([
 	var trendingArticles []models.TrendingArticle
 	for rows.Next() {
 		var trending models.TrendingArticle
+		var views, shares, comments, likes int
+
 		err := rows.Scan(&trending.ID, &trending.Title, &trending.Content, &trending.Summary,
 			&trending.URL, &trending.Author, &trending.Source, &trending.PublishedAt,
-			&trending.CreatedAt, &trending.Category, &trending.ImageURL)
+			&trending.CreatedAt, &trending.Category, &trending.ImageURL,
+			&views, &shares, &comments, &likes)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan trending article: %w", err)
 		}
-		
-		// Calculate simple trending score (mock data for now)
-		trending.Score = 0.8 + (0.2 * float64(trending.ID%100)/100)
-		trending.ViewCount = trending.ID%1000 + 50
-		trending.ShareCount = trending.ID%100 + 10
-		trending.CommentCount = trending.ID%50 + 5
-		trending.TrendingReason = "Recent publication"
-		
+
+		// Calculate engagement-based score
+		totalEngagement := views + (shares * 3) + (comments * 2) + (likes * 2)
+		trending.Score = float64(totalEngagement) / 100.0
+		trending.ViewCount = views
+		trending.ShareCount = shares
+		trending.CommentCount = comments
+		trending.TrendingReason = "High engagement"
+
 		trendingArticles = append(trendingArticles, trending)
 	}
 
 	return trendingArticles, nil
+}
+
+// Helper functions for trending analysis
+func (r *ArticleRepository) determineTrendingReason(article models.EnhancedTrendingArticle) string {
+	reasons := []string{}
+
+	if article.EngagementVelocity > 1.5 {
+		reasons = append(reasons, "Rapid engagement growth")
+	}
+	if article.AuthorityScore > 0.8 {
+		reasons = append(reasons, "High-authority source")
+	}
+	if article.ContentScore > 0.8 {
+		reasons = append(reasons, "High-impact content")
+	}
+	if article.RecencyScore > 0.8 {
+		reasons = append(reasons, "Breaking news")
+	}
+	if article.Engagement.Shares > 50 {
+		reasons = append(reasons, "Viral sharing")
+	}
+
+	if len(reasons) == 0 {
+		return "Trending content"
+	}
+
+	if len(reasons) == 1 {
+		return reasons[0]
+	}
+
+	return reasons[0] + " & " + reasons[1] // Show top 2 reasons
+}
+
+func (r *ArticleRepository) determineVelocityChange(velocity float64) string {
+	if velocity > 1.5 {
+		return "rising"
+	} else if velocity > 0.8 {
+		return "stable"
+	} else {
+		return "declining"
+	}
 }
 
 // GetTrendingTopics returns trending topics/keywords (simplified)
@@ -843,20 +952,20 @@ func (r *ArticleRepository) GetTrendingTopics(limit int, timeWindow string) ([]m
 	for rows.Next() {
 		var topic models.TrendingTopic
 		var firstSeenStr, lastUpdatedStr string
-		
-		err := rows.Scan(&topic.Topic, &topic.Count, &topic.Category, 
+
+		err := rows.Scan(&topic.Topic, &topic.Count, &topic.Category,
 			&firstSeenStr, &lastUpdatedStr)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan trending topic: %w", err)
 		}
-		
+
 		// Parse dates
 		topic.FirstSeen, _ = time.Parse("2006-01-02 15:04:05", firstSeenStr)
 		topic.LastUpdated, _ = time.Parse("2006-01-02 15:04:05", lastUpdatedStr)
-		
+
 		// Calculate simple score
 		topic.Score = float64(topic.Count) * 0.1
-		
+
 		// Get sample article IDs for this topic
 		articleQuery := `
 			SELECT id FROM articles 
@@ -880,9 +989,9 @@ func (r *ArticleRepository) GetTrendingTopics(limit int, timeWindow string) ([]m
 				_ = closeErr
 			}
 		}
-		
+
 		topics = append(topics, topic)
 	}
 
 	return topics, nil
-} 
+}

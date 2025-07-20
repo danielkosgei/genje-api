@@ -116,7 +116,7 @@ func TestMigrateArticlesTableStructure(t *testing.T) {
 
 	// Check articles table columns
 	expectedColumns := []string{
-		"id", "title", "content", "summary", "url", "author", 
+		"id", "title", "content", "summary", "url", "author",
 		"source", "published_at", "created_at", "category", "image_url",
 	}
 
@@ -132,7 +132,7 @@ func TestMigrateArticlesTableStructure(t *testing.T) {
 		var name, dataType string
 		var notNull, pk int
 		var defaultValue interface{}
-		
+
 		err = rows.Scan(&cid, &name, &dataType, &notNull, &defaultValue, &pk)
 		if err != nil {
 			t.Fatalf("Failed to scan column info: %v", err)
@@ -188,7 +188,7 @@ func TestMigrateNewsSourcesTableStructure(t *testing.T) {
 		var name, dataType string
 		var notNull, pk int
 		var defaultValue interface{}
-		
+
 		err = rows.Scan(&cid, &name, &dataType, &notNull, &defaultValue, &pk)
 		if err != nil {
 			t.Fatalf("Failed to scan column info: %v", err)
@@ -277,7 +277,7 @@ func TestMigrateIdempotent(t *testing.T) {
 
 	// Verify tables still exist and are not duplicated
 	var articlesCount, sourcesCount int
-	
+
 	err = db.QueryRow("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='articles'").Scan(&articlesCount)
 	if err != nil {
 		t.Fatalf("Failed to count articles table: %v", err)
@@ -366,4 +366,4 @@ func TestDatabaseFile(t *testing.T) {
 
 	// Clean up test file
 	// Note: In a real test, you might want to use a temporary directory
-} 
+}

@@ -395,4 +395,4 @@ func TestCreateArticlesBatchWithDuplicates(t *testing.T) {
 	if count != 2 {
 		t.Errorf("Expected 2 articles (duplicate ignored), got %d", count)
 	}
-} 
+}

@@ -28,11 +28,11 @@ type DatabaseConfig struct {
 }
 
 type AggregatorConfig struct {
-	Interval        time.Duration
-	RequestTimeout  time.Duration
-	UserAgent       string
-	MaxContentSize  int
-	MaxSummarySize  int
+	Interval       time.Duration
+	RequestTimeout time.Duration
+	UserAgent      string
+	MaxContentSize int
+	MaxSummarySize int
 }
 
 func Load() (*Config, error) {
@@ -52,11 +52,11 @@ func Load() (*Config, error) {
 			ConnMaxLifetime: getDuration("DB_CONN_MAX_LIFETIME", 5*time.Minute),
 		},
 		Aggregator: AggregatorConfig{
-			Interval:        getDuration("AGGREGATION_INTERVAL", 30*time.Minute),
-			RequestTimeout:  getDuration("REQUEST_TIMEOUT", 30*time.Second),
-			UserAgent:       getEnv("USER_AGENT", "Mozilla/5.0 (compatible; Genje-News-Aggregator/1.0)"),
-			MaxContentSize:  getInt("MAX_CONTENT_SIZE", 10000),
-			MaxSummarySize:  getInt("MAX_SUMMARY_SIZE", 300),
+			Interval:       getDuration("AGGREGATION_INTERVAL", 30*time.Minute),
+			RequestTimeout: getDuration("REQUEST_TIMEOUT", 30*time.Second),
+			UserAgent:      getEnv("USER_AGENT", "Mozilla/5.0 (compatible; Genje-News-Aggregator/1.0)"),
+			MaxContentSize: getInt("MAX_CONTENT_SIZE", 10000),
+			MaxSummarySize: getInt("MAX_SUMMARY_SIZE", 300),
 		},
 	}, nil
 }
@@ -84,4 +84,4 @@ func getInt(key string, defaultValue int) int {
 		}
 	}
 	return defaultValue
-} 
+}
