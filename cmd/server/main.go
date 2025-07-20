@@ -117,43 +117,54 @@ func setupRouter(h *handlers.Handler) *chi.Mux {
 		// API metadata
 		r.Get("/openapi.json", h.GetOpenAPISpec)
 		r.Get("/schema", h.GetAPISchema)
-		
-		// Advanced article queries (MUST come before /articles/{id})
-		r.Get("/articles/feed", h.GetArticlesFeed)
-		r.Get("/articles/search", h.SearchArticles)
-		r.Get("/articles/trending", h.GetTrendingArticles)
-		r.Get("/articles/recent", h.GetRecentArticles)
-		r.Get("/articles/by-source/{sourceId}", h.GetArticlesBySource)
-		r.Get("/articles/by-category/{category}", h.GetArticlesByCategory)
-		
-		// Generic article routes (MUST come after specific routes)
-		r.Get("/articles", h.GetArticles)
-		r.Get("/articles/{id}", h.GetArticle)
-		r.Post("/articles/{id}/summarize", h.SummarizeArticle)
-		
-		// Sources
-		r.Get("/sources", h.GetSources)
-		r.Get("/sources/{id}", h.GetSource)
-		r.Post("/sources", h.CreateSource)
-		r.Put("/sources/{id}", h.UpdateSource)
-		r.Delete("/sources/{id}", h.DeleteSource)
-		r.Post("/sources/{id}/refresh", h.RefreshSource)
-		
-		// Categories
-		r.Get("/categories", h.GetCategories)
-		
-		// Statistics
-		r.Get("/stats", h.GetGlobalStats)
-		r.Get("/stats/sources", h.GetSourceStats)
-		r.Get("/stats/categories", h.GetCategoryStats)
-		r.Get("/stats/timeline", h.GetTimelineStats)
-		
-		// Trending topics
-		r.Get("/trends", h.GetTrends)
-		
-		// System
 		r.Get("/status", h.GetSystemStatus)
-		r.Post("/refresh", h.RefreshNews)
+		
+		// Articles resource
+		r.Route("/articles", func(r chi.Router) {
+			r.Get("/", h.GetArticles)           // GET /v1/articles
+			r.Get("/{id}", h.GetArticle)        // GET /v1/articles/123
+			r.Post("/{id}/summary", h.SummarizeArticle) // POST /v1/articles/123/summary
+			
+			// Article collections and filters
+			r.Get("/search", h.SearchArticles)   // GET /v1/articles/search?q=term
+			r.Get("/feed", h.GetArticlesFeed)    // GET /v1/articles/feed (cursor pagination)
+			r.Get("/trending", h.GetTrendingArticles) // GET /v1/articles/trending
+			r.Get("/recent", h.GetRecentArticles)     // GET /v1/articles/recent
+		})
+		
+		// Sources resource
+		r.Route("/sources", func(r chi.Router) {
+			r.Get("/", h.GetSources)            // GET /v1/sources
+			r.Post("/", h.CreateSource)         // POST /v1/sources
+			r.Get("/{id}", h.GetSource)         // GET /v1/sources/123
+			r.Put("/{id}", h.UpdateSource)      // PUT /v1/sources/123
+			r.Patch("/{id}", h.UpdateSource)    // PATCH /v1/sources/123
+			r.Delete("/{id}", h.DeleteSource)   // DELETE /v1/sources/123
+			r.Post("/{id}/refresh", h.RefreshSource) // POST /v1/sources/123/refresh
+			
+			// Source sub-resources
+			r.Get("/{id}/articles", h.GetArticlesBySource) // GET /v1/sources/123/articles
+		})
+		
+		// Categories resource
+		r.Route("/categories", func(r chi.Router) {
+			r.Get("/", h.GetCategories)         // GET /v1/categories
+			r.Get("/{name}/articles", h.GetArticlesByCategory) // GET /v1/categories/sports/articles
+		})
+		
+		// Statistics resource
+		r.Route("/stats", func(r chi.Router) {
+			r.Get("/", h.GetGlobalStats)        // GET /v1/stats
+			r.Get("/sources", h.GetSourceStats) // GET /v1/stats/sources
+			r.Get("/categories", h.GetCategoryStats) // GET /v1/stats/categories
+			r.Get("/timeline", h.GetTimelineStats)   // GET /v1/stats/timeline
+		})
+		
+		// Trends resource
+		r.Get("/trends", h.GetTrends)           // GET /v1/trends
+		
+		// System operations
+		r.Post("/refresh", h.RefreshNews)       // POST /v1/refresh
 	})
 
 	return r

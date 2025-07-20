@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -9,6 +10,7 @@ import (
 	"genje-api/internal/models"
 	"genje-api/internal/repository"
 	"genje-api/internal/services"
+	"genje-api/internal/validation"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -43,25 +45,27 @@ func (h *Handler) Health(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) GetArticles(w http.ResponseWriter, r *http.Request) {
 	filters, err := h.parseArticleFilters(r)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid query parameters", err.Error())
+		h.respondValidationError(w, "Invalid query parameters", err.Error())
 		return
 	}
 
 	articles, total, err := h.articleRepo.GetArticles(filters)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get articles", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
-	response := models.ArticlesResponse{
-		Articles: articles,
-		Pagination: models.PaginationResponse{
-			Page:  filters.Page,
-			Limit: filters.Limit,
-			Total: total,
-		},
+	totalPages := (total + filters.Limit - 1) / filters.Limit
+	pagination := models.PaginationMeta{
+		Page:       filters.Page,
+		Limit:      filters.Limit,
+		Total:      total,
+		TotalPages: totalPages,
+		HasNext:    filters.Page < totalPages,
+		HasPrev:    filters.Page > 1,
 	}
 
+	response := models.NewPaginatedResponse(articles, pagination)
 	h.respondJSON(w, http.StatusOK, response)
 }
 
@@ -69,66 +73,64 @@ func (h *Handler) GetArticle(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid article ID", "")
+		h.respondValidationError(w, "Invalid article ID", "Article ID must be a positive integer")
 		return
 	}
 
 	article, err := h.articleRepo.GetArticleByID(id)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get article", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
 	if article == nil {
-		h.respondError(w, http.StatusNotFound, "Article not found", "")
+		h.respondNotFound(w, "Article")
 		return
 	}
 
-	h.respondJSON(w, http.StatusOK, article)
+	h.respondSuccess(w, article)
 }
 
 func (h *Handler) SummarizeArticle(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid article ID", "")
+		h.respondValidationError(w, "Invalid article ID", "Article ID must be a positive integer")
 		return
 	}
 
 	summary, err := h.summarizerService.SummarizeArticle(id)
 	if err != nil {
 		if err.Error() == "article not found" {
-			h.respondError(w, http.StatusNotFound, "Article not found", "")
+			h.respondNotFound(w, "Article")
 			return
 		}
-		h.respondError(w, http.StatusInternalServerError, "Failed to summarize article", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
 	response := map[string]string{"summary": summary}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, response)
 }
 
 func (h *Handler) GetSources(w http.ResponseWriter, r *http.Request) {
 	sources, err := h.sourceRepo.GetActiveSources()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get sources", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
-	response := models.SourcesResponse{Sources: sources}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, sources)
 }
 
 func (h *Handler) GetCategories(w http.ResponseWriter, r *http.Request) {
 	categories, err := h.articleRepo.GetCategories()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get categories", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
-	response := models.CategoriesResponse{Categories: categories}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, categories)
 }
 
 func (h *Handler) RefreshNews(w http.ResponseWriter, r *http.Request) {
@@ -174,13 +176,33 @@ func (h *Handler) respondJSON(w http.ResponseWriter, statusCode int, data interf
 	}
 }
 
-func (h *Handler) respondError(w http.ResponseWriter, statusCode int, message, details string) {
-	response := models.ErrorResponse{
-		Error:   message,
-		Code:    statusCode,
-		Details: details,
-	}
+func (h *Handler) respondSuccess(w http.ResponseWriter, data interface{}) {
+	response := models.NewSuccessResponse(data)
+	h.respondJSON(w, http.StatusOK, response)
+}
+
+func (h *Handler) respondCreated(w http.ResponseWriter, data interface{}) {
+	response := models.NewSuccessResponse(data)
+	h.respondJSON(w, http.StatusCreated, response)
+}
+
+func (h *Handler) respondError(w http.ResponseWriter, statusCode int, code, message, details string) {
+	response := models.NewErrorResponse(code, message, details)
 	h.respondJSON(w, statusCode, response)
+}
+
+func (h *Handler) respondValidationError(w http.ResponseWriter, message, details string) {
+	h.respondError(w, http.StatusBadRequest, models.ErrCodeValidation, message, details)
+}
+
+func (h *Handler) respondNotFound(w http.ResponseWriter, resource string) {
+	h.respondError(w, http.StatusNotFound, models.ErrCodeNotFound, 
+		fmt.Sprintf("%s not found", resource), "")
+}
+
+func (h *Handler) respondInternalError(w http.ResponseWriter, message string) {
+	h.respondError(w, http.StatusInternalServerError, models.ErrCodeInternal, 
+		"Internal server error", message)
 }
 
 // Enhanced API endpoints
@@ -370,7 +392,13 @@ func (h *Handler) GetSystemStatus(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) CreateSource(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateSourceRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid request body", err.Error())
+		h.respondValidationError(w, "Invalid request body", err.Error())
+		return
+	}
+	
+	// Validate request
+	if err := h.validateCreateSourceRequest(req); err != nil {
+		h.respondValidationError(w, "Validation failed", err.Error())
 		return
 	}
 	
@@ -383,16 +411,11 @@ func (h *Handler) CreateSource(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	if err := h.sourceRepo.CreateSource(source); err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to create source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"message": "Source created successfully",
-		"data":    source,
-	}
-	h.respondJSON(w, http.StatusCreated, response)
+	h.respondCreated(w, source)
 }
 
 // GetSource returns a specific source
@@ -400,26 +423,22 @@ func (h *Handler) GetSource(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	source, err := h.sourceRepo.GetSourceByID(id)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
 	if source == nil {
-		h.respondError(w, http.StatusNotFound, "Source not found", "")
+		h.respondNotFound(w, "Source")
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"data":    source,
-	}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, source)
 }
 
 // UpdateSource updates an existing source
@@ -427,30 +446,33 @@ func (h *Handler) UpdateSource(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	var req models.UpdateSourceRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid request body", err.Error())
+		h.respondValidationError(w, "Invalid request body", err.Error())
 		return
 	}
 	
 	if err := h.sourceRepo.UpdateSource(id, req); err != nil {
 		if err.Error() == "source not found" {
-			h.respondError(w, http.StatusNotFound, "Source not found", "")
+			h.respondNotFound(w, "Source")
 			return
 		}
-		h.respondError(w, http.StatusInternalServerError, "Failed to update source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"message": "Source updated successfully",
+	// Get the updated source to return it
+	source, err := h.sourceRepo.GetSourceByID(id)
+	if err != nil {
+		h.respondInternalError(w, err.Error())
+		return
 	}
-	h.respondJSON(w, http.StatusOK, response)
+	
+	h.respondSuccess(w, source)
 }
 
 // DeleteSource deletes a source
@@ -458,24 +480,21 @@ func (h *Handler) DeleteSource(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	if err := h.sourceRepo.DeleteSource(id); err != nil {
 		if err.Error() == "source not found" {
-			h.respondError(w, http.StatusNotFound, "Source not found", "")
+			h.respondNotFound(w, "Source")
 			return
 		}
-		h.respondError(w, http.StatusInternalServerError, "Failed to delete source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"message": "Source deleted successfully",
-	}
-	h.respondJSON(w, http.StatusOK, response)
+	// Return 204 No Content for successful deletion (RESTful pattern)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // RefreshSource refreshes a single source
@@ -797,10 +816,10 @@ func (h *Handler) GetTrendingArticles(w http.ResponseWriter, r *http.Request) {
 
 // GetArticlesBySource returns articles from a specific source
 func (h *Handler) GetArticlesBySource(w http.ResponseWriter, r *http.Request) {
-	sourceIDStr := chi.URLParam(r, "sourceId")
+	sourceIDStr := chi.URLParam(r, "id")
 	sourceID, err := strconv.Atoi(sourceIDStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
@@ -833,9 +852,9 @@ func (h *Handler) GetArticlesBySource(w http.ResponseWriter, r *http.Request) {
 
 // GetArticlesByCategory returns articles from a specific category
 func (h *Handler) GetArticlesByCategory(w http.ResponseWriter, r *http.Request) {
-	category := chi.URLParam(r, "category")
+	category := chi.URLParam(r, "name")
 	if category == "" {
-		h.respondError(w, http.StatusBadRequest, "Category parameter is required", "")
+		h.respondValidationError(w, "Category parameter is required", "Category name must be provided")
 		return
 	}
 	
@@ -895,4 +914,31 @@ func (h *Handler) GetTrends(w http.ResponseWriter, r *http.Request) {
 	response.Meta.Algorithm = "category_frequency"
 	
 	h.respondJSON(w, http.StatusOK, response)
+}
+
+// validateCreateSourceRequest validates the create source request
+func (h *Handler) validateCreateSourceRequest(req models.CreateSourceRequest) error {
+	validator := validation.New()
+	
+	// Required fields
+	validator.Required("name", req.Name)
+	validator.Required("feed_url", req.FeedURL)
+	
+	// Length validations
+	validator.MinLength("name", req.Name, 2)
+	validator.MaxLength("name", req.Name, 100)
+	
+	// URL validations
+	validator.URL("url", req.URL)
+	validator.URL("feed_url", req.FeedURL)
+	
+	// Category validation
+	allowedCategories := []string{"news", "sports", "business", "politics", "technology", "entertainment", "health", "world", "opinion", "general"}
+	validator.In("category", req.Category, allowedCategories)
+	
+	if validator.HasErrors() {
+		return validator.Errors()
+	}
+	
+	return nil
 } 
