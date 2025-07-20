@@ -26,8 +26,8 @@ type SearchRequest struct {
 	SortOrder string `json:"sort_order" validate:"omitempty,oneof=asc desc"`
 }
 
-// FeedRequest represents feed parameters
-type FeedRequest struct {
+// FeedRequestParams represents feed parameters for validation
+type FeedRequestParams struct {
 	Cursor    string `json:"cursor"`
 	Limit     int    `json:"limit" validate:"min=1,max=100"`
 	Category  string `json:"category"`

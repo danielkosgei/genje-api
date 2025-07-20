@@ -99,12 +99,17 @@ func main() {
 func setupRouter(h *handlers.Handler) *chi.Mux {
 	r := chi.NewRouter()
 
+	// Create rate limiter (100 requests per minute per IP)
+	rateLimiter := middleware.NewRateLimiter(100, time.Minute)
+
 	// Middleware
 	r.Use(chimiddleware.Logger)
 	r.Use(chimiddleware.Recoverer)
 	r.Use(chimiddleware.Timeout(60 * time.Second))
 	r.Use(middleware.CORS())
 	r.Use(middleware.RequestID())
+	r.Use(middleware.APIVersion())
+	r.Use(rateLimiter.RateLimit())
 
 	// Root endpoint - API info
 	r.Get("/", h.GetAPIInfo)

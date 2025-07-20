@@ -139,7 +139,7 @@ func (h *Handler) RefreshNews(w http.ResponseWriter, r *http.Request) {
 	}()
 	
 	response := map[string]string{"message": "News refresh started"}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, response)
 }
 
 func (h *Handler) parseArticleFilters(r *http.Request) (models.ArticleFilters, error) {
@@ -217,93 +217,82 @@ func (h *Handler) GetAPIInfo(w http.ResponseWriter, r *http.Request) {
 			"GET /health",
 			"GET /",
 			"GET /v1/openapi.json",
-			"GET /v1/schema", 
+			"GET /v1/schema",
+			"GET /v1/status",
+			// Articles resource
 			"GET /v1/articles",
 			"GET /v1/articles/{id}",
-			"POST /v1/articles/{id}/summarize",
-			"GET /v1/articles/recent",
-			"GET /v1/articles/feed",
+			"POST /v1/articles/{id}/summary",
 			"GET /v1/articles/search",
+			"GET /v1/articles/feed",
 			"GET /v1/articles/trending",
-			"GET /v1/articles/by-source/{sourceId}",
-			"GET /v1/articles/by-category/{category}",
+			"GET /v1/articles/recent",
+			// Sources resource
 			"GET /v1/sources",
-			"GET /v1/sources/{id}",
 			"POST /v1/sources",
+			"GET /v1/sources/{id}",
 			"PUT /v1/sources/{id}",
+			"PATCH /v1/sources/{id}",
 			"DELETE /v1/sources/{id}",
 			"POST /v1/sources/{id}/refresh",
+			"GET /v1/sources/{id}/articles",
+			// Categories resource
 			"GET /v1/categories",
+			"GET /v1/categories/{name}/articles",
+			// Statistics resource
 			"GET /v1/stats",
 			"GET /v1/stats/sources",
 			"GET /v1/stats/categories",
 			"GET /v1/stats/timeline",
+			// Trends resource
 			"GET /v1/trends",
-			"GET /v1/status",
+			// System operations
 			"POST /v1/refresh",
 		},
 		LastUpdated: time.Now(),
 	}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, response)
 }
 
 // GetGlobalStats returns global statistics
 func (h *Handler) GetGlobalStats(w http.ResponseWriter, r *http.Request) {
 	stats, err := h.articleRepo.GetGlobalStats()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get global stats", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
 	// Get total sources
 	sourcesCount, err := h.sourceRepo.GetSourcesCount()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get sources count", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	stats.TotalSources = sourcesCount
 	
-	response := models.StatsResponse{
-		Success: true,
-		Data:    stats,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, stats)
 }
 
 // GetSourceStats returns statistics per source
 func (h *Handler) GetSourceStats(w http.ResponseWriter, r *http.Request) {
 	stats, err := h.articleRepo.GetSourceStats()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get source stats", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.SourceStatsResponse{
-		Success: true,
-		Data:    stats,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, stats)
 }
 
 // GetCategoryStats returns statistics per category
 func (h *Handler) GetCategoryStats(w http.ResponseWriter, r *http.Request) {
 	stats, err := h.articleRepo.GetCategoryStats()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get category stats", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.CategoryStatsResponse{
-		Success: true,
-		Data:    stats,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, stats)
 }
 
 // GetTimelineStats returns article count over time
@@ -318,18 +307,11 @@ func (h *Handler) GetTimelineStats(w http.ResponseWriter, r *http.Request) {
 	
 	stats, err := h.articleRepo.GetTimelineStats(days)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get timeline stats", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.TimelineStatsResponse{
-		Success: true,
-		Data:    stats,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Days = days
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, stats)
 }
 
 // GetRecentArticles returns recent articles
@@ -352,38 +334,30 @@ func (h *Handler) GetRecentArticles(w http.ResponseWriter, r *http.Request) {
 	
 	articles, err := h.articleRepo.GetRecentArticles(hours, limit)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get recent articles", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.RecentArticlesResponse{
-		Success: true,
-		Data:    articles,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Hours = hours
-	response.Meta.Total = len(articles)
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, articles)
 }
 
 // GetSystemStatus returns system status
 func (h *Handler) GetSystemStatus(w http.ResponseWriter, r *http.Request) {
 	status, err := h.articleRepo.GetSystemStatus()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get system status", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
 	// Get active sources count
 	sourcesCount, err := h.sourceRepo.GetSourcesCount()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get sources count", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	status.ActiveSources = sourcesCount
 	
-	h.respondJSON(w, http.StatusOK, status)
+	h.respondSuccess(w, status)
 }
 
 // Source management endpoints
@@ -502,17 +476,17 @@ func (h *Handler) RefreshSource(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	source, err := h.sourceRepo.RefreshSingleSource(id)
 	if err != nil {
 		if err.Error() == "source not found" {
-			h.respondError(w, http.StatusNotFound, "Source not found", "")
+			h.respondNotFound(w, "Source")
 			return
 		}
-		h.respondError(w, http.StatusInternalServerError, "Failed to refresh source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
@@ -523,30 +497,21 @@ func (h *Handler) RefreshSource(w http.ResponseWriter, r *http.Request) {
 	}()
 	
 	response := map[string]interface{}{
-		"success": true,
 		"message": "Source refresh started",
-		"data":    source,
+		"source":  source,
 	}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, response)
 }
 
 // GetAllSources returns all sources (including inactive ones)
 func (h *Handler) GetAllSources(w http.ResponseWriter, r *http.Request) {
 	sources, err := h.sourceRepo.GetAllSources()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get all sources", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"data":    sources,
-		"meta": map[string]interface{}{
-			"total":        len(sources),
-			"generated_at": time.Now(),
-		},
-	}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, sources)
 }
 
 // New handler methods for missing endpoints
@@ -724,29 +689,27 @@ func (h *Handler) SearchArticles(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	if filters.Query == "" {
-		h.respondError(w, http.StatusBadRequest, "Query parameter 'q' is required", "")
+		h.respondValidationError(w, "Query parameter 'q' is required", "Search query must be provided")
 		return
 	}
 	
 	articles, total, err := h.articleRepo.SearchArticles(filters)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to search articles", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.SearchResponse{
-		Success: true,
-		Data:    articles,
+	totalPages := (total + filters.Limit - 1) / filters.Limit
+	pagination := models.PaginationMeta{
+		Page:       filters.Page,
+		Limit:      filters.Limit,
+		Total:      total,
+		TotalPages: totalPages,
+		HasNext:    filters.Page < totalPages,
+		HasPrev:    filters.Page > 1,
 	}
-	response.Meta.Pagination = models.PaginationResponse{
-		Page:  filters.Page,
-		Limit: filters.Limit,
-		Total: total,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Query = filters.Query
-	response.Meta.Filters = filters
-	
+
+	response := models.NewPaginatedResponse(articles, pagination)
 	h.respondJSON(w, http.StatusOK, response)
 }
 
@@ -769,18 +732,11 @@ func (h *Handler) GetArticlesFeed(w http.ResponseWriter, r *http.Request) {
 	
 	feed, err := h.articleRepo.GetArticlesFeed(req)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get articles feed", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.FeedResponse{
-		Success: true,
-		Data:    feed,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Filters = req
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, feed)
 }
 
 // GetTrendingArticles returns trending articles
@@ -799,19 +755,11 @@ func (h *Handler) GetTrendingArticles(w http.ResponseWriter, r *http.Request) {
 	
 	articles, err := h.articleRepo.GetTrendingArticles(limit, timeWindow)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get trending articles", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.TrendingResponse{
-		Success: true,
-		Data:    articles,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Algorithm = "recent_engagement"
-	response.Meta.TimeWindow = timeWindow
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, articles)
 }
 
 // GetArticlesBySource returns articles from a specific source
@@ -825,28 +773,27 @@ func (h *Handler) GetArticlesBySource(w http.ResponseWriter, r *http.Request) {
 	
 	filters, err := h.parseArticleFilters(r)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid query parameters", err.Error())
+		h.respondValidationError(w, "Invalid query parameters", err.Error())
 		return
 	}
 	
 	articles, total, err := h.articleRepo.GetArticlesBySource(sourceID, filters)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get articles by source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.EnhancedArticlesResponse{
-		Success: true,
-		Data:    articles,
+	totalPages := (total + filters.Limit - 1) / filters.Limit
+	pagination := models.PaginationMeta{
+		Page:       filters.Page,
+		Limit:      filters.Limit,
+		Total:      total,
+		TotalPages: totalPages,
+		HasNext:    filters.Page < totalPages,
+		HasPrev:    filters.Page > 1,
 	}
-	response.Meta.Pagination = models.PaginationResponse{
-		Page:  filters.Page,
-		Limit: filters.Limit,
-		Total: total,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Filters = filters
-	
+
+	response := models.NewPaginatedResponse(articles, pagination)
 	h.respondJSON(w, http.StatusOK, response)
 }
 
@@ -860,28 +807,27 @@ func (h *Handler) GetArticlesByCategory(w http.ResponseWriter, r *http.Request) 
 	
 	filters, err := h.parseArticleFilters(r)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid query parameters", err.Error())
+		h.respondValidationError(w, "Invalid query parameters", err.Error())
 		return
 	}
 	
 	articles, total, err := h.articleRepo.GetArticlesByCategory(category, filters)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get articles by category", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.EnhancedArticlesResponse{
-		Success: true,
-		Data:    articles,
+	totalPages := (total + filters.Limit - 1) / filters.Limit
+	pagination := models.PaginationMeta{
+		Page:       filters.Page,
+		Limit:      filters.Limit,
+		Total:      total,
+		TotalPages: totalPages,
+		HasNext:    filters.Page < totalPages,
+		HasPrev:    filters.Page > 1,
 	}
-	response.Meta.Pagination = models.PaginationResponse{
-		Page:  filters.Page,
-		Limit: filters.Limit,
-		Total: total,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Filters = filters
-	
+
+	response := models.NewPaginatedResponse(articles, pagination)
 	h.respondJSON(w, http.StatusOK, response)
 }
 
@@ -901,19 +847,11 @@ func (h *Handler) GetTrends(w http.ResponseWriter, r *http.Request) {
 	
 	topics, err := h.articleRepo.GetTrendingTopics(limit, timeWindow)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get trending topics", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.TrendsResponse{
-		Success: true,
-		Data:    topics,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.TimeWindow = timeWindow
-	response.Meta.Algorithm = "category_frequency"
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, topics)
 }
 
 // validateCreateSourceRequest validates the create source request
