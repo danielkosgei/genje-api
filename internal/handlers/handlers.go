@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -9,6 +10,7 @@ import (
 	"genje-api/internal/models"
 	"genje-api/internal/repository"
 	"genje-api/internal/services"
+	"genje-api/internal/validation"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -43,25 +45,27 @@ func (h *Handler) Health(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) GetArticles(w http.ResponseWriter, r *http.Request) {
 	filters, err := h.parseArticleFilters(r)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid query parameters", err.Error())
+		h.respondValidationError(w, "Invalid query parameters", err.Error())
 		return
 	}
 
 	articles, total, err := h.articleRepo.GetArticles(filters)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get articles", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
-	response := models.ArticlesResponse{
-		Articles: articles,
-		Pagination: models.PaginationResponse{
-			Page:  filters.Page,
-			Limit: filters.Limit,
-			Total: total,
-		},
+	totalPages := (total + filters.Limit - 1) / filters.Limit
+	pagination := models.PaginationMeta{
+		Page:       filters.Page,
+		Limit:      filters.Limit,
+		Total:      total,
+		TotalPages: totalPages,
+		HasNext:    filters.Page < totalPages,
+		HasPrev:    filters.Page > 1,
 	}
 
+	response := models.NewPaginatedResponse(articles, pagination)
 	h.respondJSON(w, http.StatusOK, response)
 }
 
@@ -69,66 +73,64 @@ func (h *Handler) GetArticle(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid article ID", "")
+		h.respondValidationError(w, "Invalid article ID", "Article ID must be a positive integer")
 		return
 	}
 
 	article, err := h.articleRepo.GetArticleByID(id)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get article", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
 	if article == nil {
-		h.respondError(w, http.StatusNotFound, "Article not found", "")
+		h.respondNotFound(w, "Article")
 		return
 	}
 
-	h.respondJSON(w, http.StatusOK, article)
+	h.respondSuccess(w, article)
 }
 
 func (h *Handler) SummarizeArticle(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid article ID", "")
+		h.respondValidationError(w, "Invalid article ID", "Article ID must be a positive integer")
 		return
 	}
 
 	summary, err := h.summarizerService.SummarizeArticle(id)
 	if err != nil {
 		if err.Error() == "article not found" {
-			h.respondError(w, http.StatusNotFound, "Article not found", "")
+			h.respondNotFound(w, "Article")
 			return
 		}
-		h.respondError(w, http.StatusInternalServerError, "Failed to summarize article", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
 	response := map[string]string{"summary": summary}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, response)
 }
 
 func (h *Handler) GetSources(w http.ResponseWriter, r *http.Request) {
 	sources, err := h.sourceRepo.GetActiveSources()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get sources", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
-	response := models.SourcesResponse{Sources: sources}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, sources)
 }
 
 func (h *Handler) GetCategories(w http.ResponseWriter, r *http.Request) {
 	categories, err := h.articleRepo.GetCategories()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get categories", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 
-	response := models.CategoriesResponse{Categories: categories}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, categories)
 }
 
 func (h *Handler) RefreshNews(w http.ResponseWriter, r *http.Request) {
@@ -137,7 +139,7 @@ func (h *Handler) RefreshNews(w http.ResponseWriter, r *http.Request) {
 	}()
 	
 	response := map[string]string{"message": "News refresh started"}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, response)
 }
 
 func (h *Handler) parseArticleFilters(r *http.Request) (models.ArticleFilters, error) {
@@ -174,13 +176,33 @@ func (h *Handler) respondJSON(w http.ResponseWriter, statusCode int, data interf
 	}
 }
 
-func (h *Handler) respondError(w http.ResponseWriter, statusCode int, message, details string) {
-	response := models.ErrorResponse{
-		Error:   message,
-		Code:    statusCode,
-		Details: details,
-	}
+func (h *Handler) respondSuccess(w http.ResponseWriter, data interface{}) {
+	response := models.NewSuccessResponse(data)
+	h.respondJSON(w, http.StatusOK, response)
+}
+
+func (h *Handler) respondCreated(w http.ResponseWriter, data interface{}) {
+	response := models.NewSuccessResponse(data)
+	h.respondJSON(w, http.StatusCreated, response)
+}
+
+func (h *Handler) respondError(w http.ResponseWriter, statusCode int, code, message, details string) {
+	response := models.NewErrorResponse(code, message, details)
 	h.respondJSON(w, statusCode, response)
+}
+
+func (h *Handler) respondValidationError(w http.ResponseWriter, message, details string) {
+	h.respondError(w, http.StatusBadRequest, models.ErrCodeValidation, message, details)
+}
+
+func (h *Handler) respondNotFound(w http.ResponseWriter, resource string) {
+	h.respondError(w, http.StatusNotFound, models.ErrCodeNotFound, 
+		fmt.Sprintf("%s not found", resource), "")
+}
+
+func (h *Handler) respondInternalError(w http.ResponseWriter, message string) {
+	h.respondError(w, http.StatusInternalServerError, models.ErrCodeInternal, 
+		"Internal server error", message)
 }
 
 // Enhanced API endpoints
@@ -195,93 +217,82 @@ func (h *Handler) GetAPIInfo(w http.ResponseWriter, r *http.Request) {
 			"GET /health",
 			"GET /",
 			"GET /v1/openapi.json",
-			"GET /v1/schema", 
+			"GET /v1/schema",
+			"GET /v1/status",
+			// Articles resource
 			"GET /v1/articles",
 			"GET /v1/articles/{id}",
-			"POST /v1/articles/{id}/summarize",
-			"GET /v1/articles/recent",
-			"GET /v1/articles/feed",
+			"POST /v1/articles/{id}/summary",
 			"GET /v1/articles/search",
+			"GET /v1/articles/feed",
 			"GET /v1/articles/trending",
-			"GET /v1/articles/by-source/{sourceId}",
-			"GET /v1/articles/by-category/{category}",
+			"GET /v1/articles/recent",
+			// Sources resource
 			"GET /v1/sources",
-			"GET /v1/sources/{id}",
 			"POST /v1/sources",
+			"GET /v1/sources/{id}",
 			"PUT /v1/sources/{id}",
+			"PATCH /v1/sources/{id}",
 			"DELETE /v1/sources/{id}",
 			"POST /v1/sources/{id}/refresh",
+			"GET /v1/sources/{id}/articles",
+			// Categories resource
 			"GET /v1/categories",
+			"GET /v1/categories/{name}/articles",
+			// Statistics resource
 			"GET /v1/stats",
 			"GET /v1/stats/sources",
 			"GET /v1/stats/categories",
 			"GET /v1/stats/timeline",
+			// Trends resource
 			"GET /v1/trends",
-			"GET /v1/status",
+			// System operations
 			"POST /v1/refresh",
 		},
 		LastUpdated: time.Now(),
 	}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, response)
 }
 
 // GetGlobalStats returns global statistics
 func (h *Handler) GetGlobalStats(w http.ResponseWriter, r *http.Request) {
 	stats, err := h.articleRepo.GetGlobalStats()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get global stats", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
 	// Get total sources
 	sourcesCount, err := h.sourceRepo.GetSourcesCount()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get sources count", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	stats.TotalSources = sourcesCount
 	
-	response := models.StatsResponse{
-		Success: true,
-		Data:    stats,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, stats)
 }
 
 // GetSourceStats returns statistics per source
 func (h *Handler) GetSourceStats(w http.ResponseWriter, r *http.Request) {
 	stats, err := h.articleRepo.GetSourceStats()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get source stats", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.SourceStatsResponse{
-		Success: true,
-		Data:    stats,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, stats)
 }
 
 // GetCategoryStats returns statistics per category
 func (h *Handler) GetCategoryStats(w http.ResponseWriter, r *http.Request) {
 	stats, err := h.articleRepo.GetCategoryStats()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get category stats", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.CategoryStatsResponse{
-		Success: true,
-		Data:    stats,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, stats)
 }
 
 // GetTimelineStats returns article count over time
@@ -296,18 +307,11 @@ func (h *Handler) GetTimelineStats(w http.ResponseWriter, r *http.Request) {
 	
 	stats, err := h.articleRepo.GetTimelineStats(days)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get timeline stats", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.TimelineStatsResponse{
-		Success: true,
-		Data:    stats,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Days = days
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, stats)
 }
 
 // GetRecentArticles returns recent articles
@@ -330,38 +334,30 @@ func (h *Handler) GetRecentArticles(w http.ResponseWriter, r *http.Request) {
 	
 	articles, err := h.articleRepo.GetRecentArticles(hours, limit)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get recent articles", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.RecentArticlesResponse{
-		Success: true,
-		Data:    articles,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Hours = hours
-	response.Meta.Total = len(articles)
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, articles)
 }
 
 // GetSystemStatus returns system status
 func (h *Handler) GetSystemStatus(w http.ResponseWriter, r *http.Request) {
 	status, err := h.articleRepo.GetSystemStatus()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get system status", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
 	// Get active sources count
 	sourcesCount, err := h.sourceRepo.GetSourcesCount()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get sources count", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	status.ActiveSources = sourcesCount
 	
-	h.respondJSON(w, http.StatusOK, status)
+	h.respondSuccess(w, status)
 }
 
 // Source management endpoints
@@ -370,7 +366,13 @@ func (h *Handler) GetSystemStatus(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) CreateSource(w http.ResponseWriter, r *http.Request) {
 	var req models.CreateSourceRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid request body", err.Error())
+		h.respondValidationError(w, "Invalid request body", err.Error())
+		return
+	}
+	
+	// Validate request
+	if err := h.validateCreateSourceRequest(req); err != nil {
+		h.respondValidationError(w, "Validation failed", err.Error())
 		return
 	}
 	
@@ -383,16 +385,11 @@ func (h *Handler) CreateSource(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	if err := h.sourceRepo.CreateSource(source); err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to create source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"message": "Source created successfully",
-		"data":    source,
-	}
-	h.respondJSON(w, http.StatusCreated, response)
+	h.respondCreated(w, source)
 }
 
 // GetSource returns a specific source
@@ -400,26 +397,22 @@ func (h *Handler) GetSource(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	source, err := h.sourceRepo.GetSourceByID(id)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
 	if source == nil {
-		h.respondError(w, http.StatusNotFound, "Source not found", "")
+		h.respondNotFound(w, "Source")
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"data":    source,
-	}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, source)
 }
 
 // UpdateSource updates an existing source
@@ -427,30 +420,33 @@ func (h *Handler) UpdateSource(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	var req models.UpdateSourceRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid request body", err.Error())
+		h.respondValidationError(w, "Invalid request body", err.Error())
 		return
 	}
 	
 	if err := h.sourceRepo.UpdateSource(id, req); err != nil {
 		if err.Error() == "source not found" {
-			h.respondError(w, http.StatusNotFound, "Source not found", "")
+			h.respondNotFound(w, "Source")
 			return
 		}
-		h.respondError(w, http.StatusInternalServerError, "Failed to update source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"message": "Source updated successfully",
+	// Get the updated source to return it
+	source, err := h.sourceRepo.GetSourceByID(id)
+	if err != nil {
+		h.respondInternalError(w, err.Error())
+		return
 	}
-	h.respondJSON(w, http.StatusOK, response)
+	
+	h.respondSuccess(w, source)
 }
 
 // DeleteSource deletes a source
@@ -458,24 +454,21 @@ func (h *Handler) DeleteSource(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	if err := h.sourceRepo.DeleteSource(id); err != nil {
 		if err.Error() == "source not found" {
-			h.respondError(w, http.StatusNotFound, "Source not found", "")
+			h.respondNotFound(w, "Source")
 			return
 		}
-		h.respondError(w, http.StatusInternalServerError, "Failed to delete source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"message": "Source deleted successfully",
-	}
-	h.respondJSON(w, http.StatusOK, response)
+	// Return 204 No Content for successful deletion (RESTful pattern)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // RefreshSource refreshes a single source
@@ -483,17 +476,17 @@ func (h *Handler) RefreshSource(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	source, err := h.sourceRepo.RefreshSingleSource(id)
 	if err != nil {
 		if err.Error() == "source not found" {
-			h.respondError(w, http.StatusNotFound, "Source not found", "")
+			h.respondNotFound(w, "Source")
 			return
 		}
-		h.respondError(w, http.StatusInternalServerError, "Failed to refresh source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
@@ -504,85 +497,357 @@ func (h *Handler) RefreshSource(w http.ResponseWriter, r *http.Request) {
 	}()
 	
 	response := map[string]interface{}{
-		"success": true,
 		"message": "Source refresh started",
-		"data":    source,
+		"source":  source,
 	}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, response)
 }
 
 // GetAllSources returns all sources (including inactive ones)
 func (h *Handler) GetAllSources(w http.ResponseWriter, r *http.Request) {
 	sources, err := h.sourceRepo.GetAllSources()
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get all sources", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := map[string]interface{}{
-		"success": true,
-		"data":    sources,
-		"meta": map[string]interface{}{
-			"total":        len(sources),
-			"generated_at": time.Now(),
-		},
-	}
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, sources)
 }
 
 // New handler methods for missing endpoints
 
-// GetOpenAPISpec returns OpenAPI specification
+// GetOpenAPISpec returns comprehensive OpenAPI 3.0 specification
 func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 	spec := models.OpenAPISpec{
 		OpenAPI: "3.0.0",
 		Info: models.OpenAPIInfo{
 			Title:       "Genje News API",
-			Description: "Kenyan news aggregation service providing access to articles from multiple sources",
-			Version:     "1.0.0",
+			Description: "Production-ready RESTful news aggregation API with advanced NLP summarization for Kenyan news content. Features intelligent search, real-time aggregation, and comprehensive filtering capabilities.",
+			Version:     "2.0.0",
 			Contact: models.OpenAPIContact{
-				Name:  "Genje Team",
-				Email: "support@genje.com",
-				URL:   "https://genje.com",
+				Name:  "Genje API Team",
+				Email: "support@genje.co.ke",
+				URL:   "https://api.genje.co.ke",
+			},
+		},
+		Servers: []map[string]interface{}{
+			{
+				"url":         "https://api.genje.co.ke",
+				"description": "Production server",
+			},
+			{
+				"url":         "http://localhost:8080",
+				"description": "Local development server",
 			},
 		},
 		Paths: map[string]interface{}{
 			"/health": map[string]interface{}{
 				"get": map[string]interface{}{
-					"summary": "Health check",
+					"summary":     "API Health Check",
+					"description": "Returns the health status of the API service",
+					"tags":        []string{"System"},
 					"responses": map[string]interface{}{
 						"200": map[string]interface{}{
 							"description": "Service is healthy",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/HealthResponse",
+									},
+								},
+							},
 						},
 					},
 				},
 			},
 			"/v1/articles": map[string]interface{}{
 				"get": map[string]interface{}{
-					"summary": "Get articles",
+					"summary":     "List Articles",
+					"description": "Get paginated list of articles with advanced filtering options",
+					"tags":        []string{"Articles"},
 					"parameters": []interface{}{
 						map[string]interface{}{
-							"name":     "page",
-							"in":       "query",
-							"required": false,
-							"schema":   map[string]interface{}{"type": "integer"},
+							"name":        "page",
+							"in":          "query",
+							"description": "Page number (default: 1)",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1, "default": 1},
 						},
 						map[string]interface{}{
-							"name":     "limit",
-							"in":       "query",
-							"required": false,
-							"schema":   map[string]interface{}{"type": "integer"},
+							"name":        "limit",
+							"in":          "query",
+							"description": "Items per page (default: 20, max: 100)",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1, "maximum": 100, "default": 20},
 						},
 						map[string]interface{}{
-							"name":     "category",
-							"in":       "query",
-							"required": false,
-							"schema":   map[string]interface{}{"type": "string"},
+							"name":        "category",
+							"in":          "query",
+							"description": "Filter by category",
+							"required":    false,
+							"schema": map[string]interface{}{
+								"type": "string",
+								"enum": []string{"news", "sports", "business", "politics", "technology", "entertainment", "health", "world", "opinion", "general", "kiswahili", "diaspora"},
+							},
+						},
+						map[string]interface{}{
+							"name":        "source",
+							"in":          "query",
+							"description": "Filter by source name",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "string"},
+						},
+						map[string]interface{}{
+							"name":        "search",
+							"in":          "query",
+							"description": "Search in title and content",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "string", "minLength": 2},
 						},
 					},
 					"responses": map[string]interface{}{
 						"200": map[string]interface{}{
-							"description": "List of articles",
+							"description": "Successful response with articles",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ArticlesResponse",
+									},
+								},
+							},
+						},
+						"400": map[string]interface{}{
+							"description": "Bad request - invalid parameters",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ErrorResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/articles/{id}": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Get Article by ID",
+					"description": "Retrieve a specific article by its unique identifier",
+					"tags":        []string{"Articles"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "id",
+							"in":          "path",
+							"description": "Article ID",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Article found",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ArticleResponse",
+									},
+								},
+							},
+						},
+						"404": map[string]interface{}{
+							"description": "Article not found",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ErrorResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/articles/{id}/summary": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Get Article Summary (NLP-Powered)",
+					"description": "Get or generate intelligent article summary using advanced NLP techniques including TF-IDF analysis, entity recognition, and multi-criteria scoring",
+					"tags":        []string{"Articles", "NLP"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "id",
+							"in":          "path",
+							"description": "Article ID",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Article summary generated successfully",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SummaryResponse",
+									},
+								},
+							},
+						},
+						"404": map[string]interface{}{
+							"description": "Article not found",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ErrorResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+				"post": map[string]interface{}{
+					"summary":     "Generate New Article Summary",
+					"description": "Force generation of a new article summary (same as GET but explicit action)",
+					"tags":        []string{"Articles", "NLP"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "id",
+							"in":          "path",
+							"description": "Article ID",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "integer", "minimum": 1},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "New summary generated",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SummaryResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/articles/search": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Search Articles",
+					"description": "Full-text search with relevance ranking and advanced filtering",
+					"tags":        []string{"Articles", "Search"},
+					"parameters": []interface{}{
+						map[string]interface{}{
+							"name":        "q",
+							"in":          "query",
+							"description": "Search query (required)",
+							"required":    true,
+							"schema":      map[string]interface{}{"type": "string", "minLength": 2},
+						},
+						map[string]interface{}{
+							"name":        "category",
+							"in":          "query",
+							"description": "Filter by category",
+							"required":    false,
+							"schema":      map[string]interface{}{"type": "string"},
+						},
+						map[string]interface{}{
+							"name":        "sort_by",
+							"in":          "query",
+							"description": "Sort by field",
+							"required":    false,
+							"schema": map[string]interface{}{
+								"type": "string",
+								"enum": []string{"relevance", "date", "source"},
+								"default": "relevance",
+							},
+						},
+					},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Search results",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ArticlesResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/sources": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "List News Sources",
+					"description": "Get all active news sources",
+					"tags":        []string{"Sources"},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "List of active sources",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SourcesResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+				"post": map[string]interface{}{
+					"summary":     "Create News Source",
+					"description": "Add a new news source to the system",
+					"tags":        []string{"Sources"},
+					"requestBody": map[string]interface{}{
+						"required": true,
+						"content": map[string]interface{}{
+							"application/json": map[string]interface{}{
+								"schema": map[string]interface{}{
+									"$ref": "#/components/schemas/CreateSourceRequest",
+								},
+							},
+						},
+					},
+					"responses": map[string]interface{}{
+						"201": map[string]interface{}{
+							"description": "Source created successfully",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/SourceResponse",
+									},
+								},
+							},
+						},
+						"400": map[string]interface{}{
+							"description": "Validation error",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/ErrorResponse",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			"/v1/stats": map[string]interface{}{
+				"get": map[string]interface{}{
+					"summary":     "Global Statistics",
+					"description": "Get comprehensive statistics about articles, sources, and categories",
+					"tags":        []string{"Statistics"},
+					"responses": map[string]interface{}{
+						"200": map[string]interface{}{
+							"description": "Global statistics",
+							"content": map[string]interface{}{
+								"application/json": map[string]interface{}{
+									"schema": map[string]interface{}{
+										"$ref": "#/components/schemas/StatsResponse",
+									},
+								},
+							},
 						},
 					},
 				},
@@ -592,16 +857,94 @@ func (h *Handler) GetOpenAPISpec(w http.ResponseWriter, r *http.Request) {
 			"schemas": map[string]interface{}{
 				"Article": map[string]interface{}{
 					"type": "object",
+					"description": "News article with comprehensive metadata",
 					"properties": map[string]interface{}{
-						"id":           map[string]interface{}{"type": "integer"},
-						"title":        map[string]interface{}{"type": "string"},
-						"content":      map[string]interface{}{"type": "string"},
-						"url":          map[string]interface{}{"type": "string"},
-						"author":       map[string]interface{}{"type": "string"},
-						"source":       map[string]interface{}{"type": "string"},
-						"published_at": map[string]interface{}{"type": "string", "format": "date-time"},
-						"created_at":   map[string]interface{}{"type": "string", "format": "date-time"},
-						"category":     map[string]interface{}{"type": "string"},
+						"id":           map[string]interface{}{"type": "integer", "example": 123, "description": "Unique article identifier"},
+						"title":        map[string]interface{}{"type": "string", "example": "Kenya's Economic Growth Outlook for 2025", "description": "Article headline"},
+						"content":      map[string]interface{}{"type": "string", "description": "Full article content (HTML)"},
+						"summary":      map[string]interface{}{"type": "string", "example": "Economic experts predict steady growth driven by infrastructure investments.", "description": "AI-generated summary using NLP techniques"},
+						"url":          map[string]interface{}{"type": "string", "format": "uri", "example": "https://standardmedia.co.ke/business/article/2025/01/15/kenya-economic-growth", "description": "Original article URL"},
+						"author":       map[string]interface{}{"type": "string", "example": "Jane Doe", "description": "Article author"},
+						"source":       map[string]interface{}{"type": "string", "example": "Standard Business", "description": "News source name"},
+						"published_at": map[string]interface{}{"type": "string", "format": "date-time", "example": "2025-01-15T10:30:00Z", "description": "Original publication date"},
+						"created_at":   map[string]interface{}{"type": "string", "format": "date-time", "example": "2025-01-15T10:35:00Z", "description": "Date added to our system"},
+						"category":     map[string]interface{}{"type": "string", "example": "business", "description": "Article category", "enum": []string{"news", "sports", "business", "politics", "technology", "entertainment", "health", "world", "opinion", "general", "kiswahili", "diaspora"}},
+						"image_url":    map[string]interface{}{"type": "string", "format": "uri", "example": "https://standardmedia.co.ke/images/business/economic-growth.jpg", "description": "Article featured image"},
+					},
+					"required": []string{"id", "title", "url", "source", "published_at", "created_at", "category"},
+				},
+				"APIResponse": map[string]interface{}{
+					"type": "object",
+					"description": "Standardized API response wrapper",
+					"properties": map[string]interface{}{
+						"success": map[string]interface{}{"type": "boolean", "example": true, "description": "Indicates if the request was successful"},
+						"data":    map[string]interface{}{"description": "Response data (varies by endpoint)"},
+						"meta": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"timestamp": map[string]interface{}{"type": "string", "format": "date-time", "description": "Response generation timestamp"},
+								"pagination": map[string]interface{}{"$ref": "#/components/schemas/PaginationMeta"},
+								"request_id": map[string]interface{}{"type": "string", "description": "Unique request identifier for debugging"},
+							},
+						},
+					},
+					"required": []string{"success"},
+				},
+				"PaginationMeta": map[string]interface{}{
+					"type": "object",
+					"description": "Enhanced pagination information",
+					"properties": map[string]interface{}{
+						"page":        map[string]interface{}{"type": "integer", "example": 1, "description": "Current page number"},
+						"limit":       map[string]interface{}{"type": "integer", "example": 20, "description": "Items per page"},
+						"total":       map[string]interface{}{"type": "integer", "example": 1250, "description": "Total number of items"},
+						"total_pages": map[string]interface{}{"type": "integer", "example": 63, "description": "Total number of pages"},
+						"has_next":    map[string]interface{}{"type": "boolean", "example": true, "description": "Whether there are more pages"},
+						"has_prev":    map[string]interface{}{"type": "boolean", "example": false, "description": "Whether there are previous pages"},
+					},
+				},
+				"ErrorResponse": map[string]interface{}{
+					"type": "object",
+					"description": "Standardized error response",
+					"properties": map[string]interface{}{
+						"success": map[string]interface{}{"type": "boolean", "example": false},
+						"error": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"code":    map[string]interface{}{"type": "string", "example": "VALIDATION_ERROR", "description": "Error code for programmatic handling"},
+								"message": map[string]interface{}{"type": "string", "example": "Invalid query parameters", "description": "Human-readable error message"},
+								"details": map[string]interface{}{"type": "string", "example": "Page parameter must be a positive integer", "description": "Additional error details"},
+							},
+						},
+						"meta": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"timestamp":  map[string]interface{}{"type": "string", "format": "date-time"},
+								"request_id": map[string]interface{}{"type": "string"},
+							},
+						},
+					},
+				},
+				"SummaryResponse": map[string]interface{}{
+					"type": "object",
+					"description": "NLP-powered article summary response",
+					"properties": map[string]interface{}{
+						"success": map[string]interface{}{"type": "boolean", "example": true},
+						"data": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"summary": map[string]interface{}{
+									"type": "string", 
+									"example": "President William Ruto has pledged to expand youth employment in both the Climate Worx and affordable housing programmes, aiming to double current figures within the next three months.",
+									"description": "AI-generated summary using TF-IDF analysis, entity recognition, and multi-criteria scoring",
+								},
+							},
+						},
+						"meta": map[string]interface{}{
+							"type": "object",
+							"properties": map[string]interface{}{
+								"timestamp": map[string]interface{}{"type": "string", "format": "date-time"},
+							},
+						},
 					},
 				},
 			},
@@ -705,29 +1048,27 @@ func (h *Handler) SearchArticles(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	if filters.Query == "" {
-		h.respondError(w, http.StatusBadRequest, "Query parameter 'q' is required", "")
+		h.respondValidationError(w, "Query parameter 'q' is required", "Search query must be provided")
 		return
 	}
 	
 	articles, total, err := h.articleRepo.SearchArticles(filters)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to search articles", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.SearchResponse{
-		Success: true,
-		Data:    articles,
+	totalPages := (total + filters.Limit - 1) / filters.Limit
+	pagination := models.PaginationMeta{
+		Page:       filters.Page,
+		Limit:      filters.Limit,
+		Total:      total,
+		TotalPages: totalPages,
+		HasNext:    filters.Page < totalPages,
+		HasPrev:    filters.Page > 1,
 	}
-	response.Meta.Pagination = models.PaginationResponse{
-		Page:  filters.Page,
-		Limit: filters.Limit,
-		Total: total,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Query = filters.Query
-	response.Meta.Filters = filters
-	
+
+	response := models.NewPaginatedResponse(articles, pagination)
 	h.respondJSON(w, http.StatusOK, response)
 }
 
@@ -750,18 +1091,11 @@ func (h *Handler) GetArticlesFeed(w http.ResponseWriter, r *http.Request) {
 	
 	feed, err := h.articleRepo.GetArticlesFeed(req)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get articles feed", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.FeedResponse{
-		Success: true,
-		Data:    feed,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Filters = req
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, feed)
 }
 
 // GetTrendingArticles returns trending articles
@@ -780,89 +1114,79 @@ func (h *Handler) GetTrendingArticles(w http.ResponseWriter, r *http.Request) {
 	
 	articles, err := h.articleRepo.GetTrendingArticles(limit, timeWindow)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get trending articles", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.TrendingResponse{
-		Success: true,
-		Data:    articles,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Algorithm = "recent_engagement"
-	response.Meta.TimeWindow = timeWindow
-	
-	h.respondJSON(w, http.StatusOK, response)
+	h.respondSuccess(w, articles)
 }
 
 // GetArticlesBySource returns articles from a specific source
 func (h *Handler) GetArticlesBySource(w http.ResponseWriter, r *http.Request) {
-	sourceIDStr := chi.URLParam(r, "sourceId")
+	sourceIDStr := chi.URLParam(r, "id")
 	sourceID, err := strconv.Atoi(sourceIDStr)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid source ID", "")
+		h.respondValidationError(w, "Invalid source ID", "Source ID must be a positive integer")
 		return
 	}
 	
 	filters, err := h.parseArticleFilters(r)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid query parameters", err.Error())
+		h.respondValidationError(w, "Invalid query parameters", err.Error())
 		return
 	}
 	
 	articles, total, err := h.articleRepo.GetArticlesBySource(sourceID, filters)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get articles by source", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.EnhancedArticlesResponse{
-		Success: true,
-		Data:    articles,
+	totalPages := (total + filters.Limit - 1) / filters.Limit
+	pagination := models.PaginationMeta{
+		Page:       filters.Page,
+		Limit:      filters.Limit,
+		Total:      total,
+		TotalPages: totalPages,
+		HasNext:    filters.Page < totalPages,
+		HasPrev:    filters.Page > 1,
 	}
-	response.Meta.Pagination = models.PaginationResponse{
-		Page:  filters.Page,
-		Limit: filters.Limit,
-		Total: total,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Filters = filters
-	
+
+	response := models.NewPaginatedResponse(articles, pagination)
 	h.respondJSON(w, http.StatusOK, response)
 }
 
 // GetArticlesByCategory returns articles from a specific category
 func (h *Handler) GetArticlesByCategory(w http.ResponseWriter, r *http.Request) {
-	category := chi.URLParam(r, "category")
+	category := chi.URLParam(r, "name")
 	if category == "" {
-		h.respondError(w, http.StatusBadRequest, "Category parameter is required", "")
+		h.respondValidationError(w, "Category parameter is required", "Category name must be provided")
 		return
 	}
 	
 	filters, err := h.parseArticleFilters(r)
 	if err != nil {
-		h.respondError(w, http.StatusBadRequest, "Invalid query parameters", err.Error())
+		h.respondValidationError(w, "Invalid query parameters", err.Error())
 		return
 	}
 	
 	articles, total, err := h.articleRepo.GetArticlesByCategory(category, filters)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get articles by category", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.EnhancedArticlesResponse{
-		Success: true,
-		Data:    articles,
+	totalPages := (total + filters.Limit - 1) / filters.Limit
+	pagination := models.PaginationMeta{
+		Page:       filters.Page,
+		Limit:      filters.Limit,
+		Total:      total,
+		TotalPages: totalPages,
+		HasNext:    filters.Page < totalPages,
+		HasPrev:    filters.Page > 1,
 	}
-	response.Meta.Pagination = models.PaginationResponse{
-		Page:  filters.Page,
-		Limit: filters.Limit,
-		Total: total,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.Filters = filters
-	
+
+	response := models.NewPaginatedResponse(articles, pagination)
 	h.respondJSON(w, http.StatusOK, response)
 }
 
@@ -882,17 +1206,36 @@ func (h *Handler) GetTrends(w http.ResponseWriter, r *http.Request) {
 	
 	topics, err := h.articleRepo.GetTrendingTopics(limit, timeWindow)
 	if err != nil {
-		h.respondError(w, http.StatusInternalServerError, "Failed to get trending topics", err.Error())
+		h.respondInternalError(w, err.Error())
 		return
 	}
 	
-	response := models.TrendsResponse{
-		Success: true,
-		Data:    topics,
-	}
-	response.Meta.GeneratedAt = time.Now()
-	response.Meta.TimeWindow = timeWindow
-	response.Meta.Algorithm = "category_frequency"
+	h.respondSuccess(w, topics)
+}
+
+// validateCreateSourceRequest validates the create source request
+func (h *Handler) validateCreateSourceRequest(req models.CreateSourceRequest) error {
+	validator := validation.New()
 	
-	h.respondJSON(w, http.StatusOK, response)
+	// Required fields
+	validator.Required("name", req.Name)
+	validator.Required("feed_url", req.FeedURL)
+	
+	// Length validations
+	validator.MinLength("name", req.Name, 2)
+	validator.MaxLength("name", req.Name, 100)
+	
+	// URL validations
+	validator.URL("url", req.URL)
+	validator.URL("feed_url", req.FeedURL)
+	
+	// Category validation
+	allowedCategories := []string{"news", "sports", "business", "politics", "technology", "entertainment", "health", "world", "opinion", "general"}
+	validator.In("category", req.Category, allowedCategories)
+	
+	if validator.HasErrors() {
+		return validator.Errors()
+	}
+	
+	return nil
 } 
