@@ -7,12 +7,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Symfony\Component\DomCrawler\Crawler;
 
 class CitizenTvScraper extends BaseScraper
 {
     private const SITEMAP_URL = 'https://citizen.digital/sitemap.xml';
     private const NEWS_NAMESPACE = 'http://www.google.com/schemas/sitemap-news/0.9';
+    private const MAX_ITEMS = 120;
 
     public function getSourceName(): string
     {
@@ -45,11 +45,19 @@ class CitizenTvScraper extends BaseScraper
                 return 0;
             }
 
+            $processed = 0;
+
             foreach ($xml->url as $urlNode) {
                 $loc = (string) $urlNode->loc;
                 if ($loc === '' || !Str::contains($loc, '/article/')) {
                     continue;
                 }
+
+                if ($processed >= self::MAX_ITEMS) {
+                    break;
+                }
+
+                $processed++;
 
                 if (News::where('url', $loc)->exists()) {
                     continue;
@@ -58,7 +66,7 @@ class CitizenTvScraper extends BaseScraper
                 $newsData = $urlNode->children(self::NEWS_NAMESPACE)->news ?? null;
                 $publishedAt = $this->parsePublicationDate((string) ($newsData->publication_date ?? ''));
 
-                if ($publishedAt && $publishedAt->lt(now()->subDays(2))) {
+                if ($publishedAt && $publishedAt->lt(now()->subDays(14))) {
                     continue;
                 }
 
@@ -95,6 +103,7 @@ class CitizenTvScraper extends BaseScraper
                         \App\Jobs\BackfillArticleImageJob::dispatch($created->id);
                     }
                     $count++;
+                    $processed++;
                 } catch (\Exception $e) {
                     Log::error('Failed to persist Citizen article', [
                         'url' => $loc,
@@ -124,19 +133,31 @@ class CitizenTvScraper extends BaseScraper
             }
 
             $html = $response->body();
-            $crawler = new Crawler($html, $url);
-
-            $title = $this->firstMeta($crawler, 'property', 'og:title')
-                ?? $this->firstMeta($crawler, 'name', 'twitter:title');
-            $description = $this->firstMeta($crawler, 'property', 'og:description')
-                ?? $this->firstMeta($crawler, 'name', 'description');
-            $image = $this->sanitizeImageUrl($this->firstMeta($crawler, 'property', 'og:image'));
-            $author = $this->firstMeta($crawler, 'name', 'author')
-                ?? $this->firstMeta($crawler, 'property', 'article:author');
-            $category = $this->firstMeta($crawler, 'property', 'article:section');
+            $title = $this->extractMetaContent($html, [
+                ['property', 'og:title'],
+                ['name', 'twitter:title'],
+            ]);
+            $description = $this->extractMetaContent($html, [
+                ['property', 'og:description'],
+                ['name', 'description'],
+            ]);
+            $image = $this->sanitizeImageUrl($this->extractMetaContent($html, [
+                ['property', 'og:image'],
+                ['name', 'twitter:image'],
+            ]));
+            $author = $this->extractMetaContent($html, [
+                ['name', 'author'],
+                ['property', 'article:author'],
+            ]);
+            $category = $this->extractMetaContent($html, [
+                ['property', 'article:section'],
+            ]);
 
             $published = $this->parsePublicationDate(
-                $this->firstMeta($crawler, 'property', 'article:published_time')
+                $this->extractMetaContent($html, [
+                    ['property', 'article:published_time'],
+                    ['name', 'article:published_time'],
+                ])
             ) ?? $fallbackPublishedAt ?? now();
 
             if (!$title) {
@@ -165,16 +186,21 @@ class CitizenTvScraper extends BaseScraper
         }
     }
 
-    private function firstMeta(Crawler $crawler, string $attribute, string $value): ?string
+    private function extractMetaContent(string $html, array $candidates): ?string
     {
-        try {
-            return trim((string) $crawler
-                ->filter("meta[{$attribute}='{$value}']")
-                ->first()
-                ->attr('content'));
-        } catch (\Throwable $e) {
-            return null;
+        foreach ($candidates as [$attr, $value]) {
+            $pattern = sprintf(
+                '/<meta[^>]+%s=["\']%s["\'][^>]*content=["\']([^"\']+)["\']/i',
+                preg_quote($attr, '/'),
+                preg_quote($value, '/')
+            );
+
+            if (preg_match($pattern, $html, $matches)) {
+                return html_entity_decode(trim($matches[1]), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            }
         }
+
+        return null;
     }
 
     private function parsePublicationDate(?string $value): ?Carbon

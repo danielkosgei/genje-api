@@ -217,6 +217,39 @@ abstract class BaseScraper implements NewsScraperInterface
     }
 
     /**
+     * Normalize and validate image URLs.
+     */
+    protected function sanitizeImageUrl(?string $url): ?string
+    {
+        if (!$url) {
+            return null;
+        }
+
+        $url = trim($url);
+        if ($url === '') {
+            return null;
+        }
+
+        if (Str::startsWith($url, '//')) {
+            $url = 'https:' . $url;
+        }
+
+        if (!Str::startsWith($url, ['http://', 'https://'])) {
+            return null;
+        }
+
+        $host = parse_url($url, PHP_URL_HOST) ?? '';
+        $blockedHosts = ['news.google', 'googleusercontent', 'gstatic', 'googleapis', 'ggpht.com', 'encrypted-tbn'];
+        foreach ($blockedHosts as $blocked) {
+            if ($host && Str::contains($host, $blocked)) {
+                return null;
+            }
+        }
+
+        return $url;
+    }
+
+    /**
      * Clean HTML from text
      */
     protected function cleanHtml(?string $text): string
