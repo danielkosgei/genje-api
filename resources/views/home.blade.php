@@ -127,6 +127,29 @@
                 </form>
             </div>
 
+            @if(request('search'))
+            <div class="mb-6 sm:mb-8 text-center px-4">
+                <p class="text-sm sm:text-base text-[#706f6c] dark:text-[#A1A09A]">
+                    Search results for "<strong class="text-[#1b1b18] dark:text-[#EDEDEC]">{{ request('search') }}</strong>" 
+                    <span class="ml-2">({{ $news->total() }} {{ Str::plural('result', $news->total()) }})</span>
+                </p>
+            </div>
+            @endif
+
+            <!-- Filters -->
+            @if(isset($sources) && $sources->count() > 0)
+            <div class="mb-6 sm:mb-8 flex gap-2 sm:gap-3 justify-center flex-wrap px-2">
+                <a href="{{ route('home', request('search') ? ['search' => request('search')] : []) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ !request('source') ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
+                    All
+                </a>
+                @foreach($sources as $source)
+                <a href="{{ route('home', array_filter(['source' => $source, 'search' => request('search')])) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ request('source') === $source ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
+                    {{ $source }}
+                </a>
+                @endforeach
+            </div>
+            @endif
+
             @if(isset($recommended) && $recommended->count() > 0)
             <div class="mb-10">
                 <div class="flex items-center justify-between mb-4">
@@ -192,28 +215,6 @@
                     </div>
                     @endforeach
                 </div>
-            </div>
-            @endif
-            @if(request('search'))
-            <div class="mb-6 sm:mb-8 text-center px-4">
-                <p class="text-sm sm:text-base text-[#706f6c] dark:text-[#A1A09A]">
-                    Search results for "<strong class="text-[#1b1b18] dark:text-[#EDEDEC]">{{ request('search') }}</strong>" 
-                    <span class="ml-2">({{ $news->total() }} {{ Str::plural('result', $news->total()) }})</span>
-                </p>
-            </div>
-            @endif
-
-            <!-- Filters -->
-            @if(isset($sources) && $sources->count() > 0)
-            <div class="mb-6 sm:mb-8 flex gap-2 sm:gap-3 justify-center flex-wrap px-2">
-                <a href="{{ route('home', request('search') ? ['search' => request('search')] : []) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ !request('source') ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
-                    All
-                </a>
-                @foreach($sources as $source)
-                <a href="{{ route('home', array_filter(['source' => $source, 'search' => request('search')])) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ request('source') === $source ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
-                    {{ $source }}
-                </a>
-                @endforeach
             </div>
             @endif
 
