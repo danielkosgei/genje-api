@@ -7,6 +7,7 @@ use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserPreferenceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -26,6 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
     Route::post('/favorites/{news}', [FavoritesController::class, 'store'])->name('favorites.store');
     Route::delete('/favorites/{news}', [FavoritesController::class, 'destroy'])->name('favorites.destroy');
+
+    // Source preferences
+    Route::post('/preferences/source/{source}', [UserPreferenceController::class, 'followSource'])->name('preferences.source.follow');
+    Route::delete('/preferences/source/{source}', [UserPreferenceController::class, 'unfollowSource'])->name('preferences.source.unfollow');
 });
 
 // Article routes

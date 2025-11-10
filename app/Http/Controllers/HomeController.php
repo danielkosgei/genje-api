@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\RecommendationService;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, RecommendationService $recs)
     {
         $query = News::query();
 
@@ -43,12 +44,22 @@ class HomeController extends Controller
         
         // Favorite IDs for current user (to toggle Save/Unsave)
         $favoriteIds = [];
+        $followedSources = [];
         if (Auth::check()) {
-            $favoriteIds = Auth::user()->favoriteNews()
+            $user = Auth::user();
+            $favoriteIds = $user->favoriteNews()
                 ->pluck('news.id')
                 ->toArray();
+            $prefs = $user->preferences ?? [];
+            $followedSources = $prefs['followed_sources'] ?? [];
         }
 
-        return view('home', compact('news', 'sources', 'categories', 'favoriteIds'));
+        // Recommended for the user (optional section)
+        $recommended = collect();
+        if (!($request->has('search') || $request->has('source') || $request->has('category'))) {
+            $recommended = $recs->getRecommended(6);
+        }
+
+        return view('home', compact('news', 'sources', 'categories', 'favoriteIds', 'recommended', 'followedSources'));
     }
 }

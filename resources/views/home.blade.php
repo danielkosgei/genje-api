@@ -127,6 +127,73 @@
                 </form>
             </div>
 
+            @if(isset($recommended) && $recommended->count() > 0)
+            <div class="mb-10">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl sm:text-2xl font-semibold">Recommended for you</h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+                    @foreach($recommended as $article)
+                    <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow rounded-sm">
+                        @if($article->image_url)
+                        <a href="{{ route('article', $article->id) }}">
+                            <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $article->image_url }}');"></div>
+                        </a>
+                        @endif
+                        <div class="p-4 sm:p-6 space-y-4">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A]">{{ $article->source }}</span>
+                                    @if($article->category)
+                                    <a href="{{ route('categories.show', $article->category) }}" class="text-xs px-2 py-1 bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#706f6c] dark:text-[#A1A09A] capitalize rounded-full">
+                                        {{ $article->category }}
+                                    </a>
+                                    @endif
+                                </div>
+                                @auth
+                                @php $isFollowing = isset($followedSources) && in_array($article->source, $followedSources, true); @endphp
+                                <div class="shrink-0">
+                                    @if($isFollowing)
+                                    <form method="POST" action="{{ route('preferences.source.unfollow', $article->source) }}" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-xs px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-full hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                            Unfollow
+                                        </button>
+                                    </form>
+                                    @else
+                                    <form method="POST" action="{{ route('preferences.source.follow', $article->source) }}" class="inline-block">
+                                        @csrf
+                                        <button type="submit" class="text-xs px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-full hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                            Follow
+                                        </button>
+                                    </form>
+                                    @endif
+                                </div>
+                                @endauth
+                            </div>
+
+                            <div class="space-y-2">
+                                <a href="{{ route('article', $article->id) }}" class="block">
+                                    <h3 class="text-lg font-semibold line-clamp-2">{{ $article->title }}</h3>
+                                </a>
+                                <p class="text-sm text-[#706f6c] dark:text-[#A1A09A] line-clamp-3">{{ $article->description }}</p>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-3">
+                                <span class="text-xs text-[#706f6c] dark:text-[#A1A09A]">
+                                    {{ $article->published_at->diffForHumans() }}
+                                </span>
+                                <a href="{{ route('article', $article->id) }}" class="text-xs font-medium text-[#1b1b18] dark:text-[#EDEDEC] hover:underline">
+                                    Continue reading →
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
             @if(request('search'))
             <div class="mb-6 sm:mb-8 text-center px-4">
                 <p class="text-sm sm:text-base text-[#706f6c] dark:text-[#A1A09A]">
@@ -152,53 +219,82 @@
 
             <!-- News Grid -->
             @if($news->count() > 0)
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-8 sm:mb-12">
                 @foreach($news as $article)
-                <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow">
+                <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow rounded-sm">
                     @if($article->image_url)
-                    <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $article->image_url }}');"></div>
+                    <a href="{{ route('article', $article->id) }}">
+                        <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $article->image_url }}');"></div>
+                    </a>
                     @endif
-                    <div class="p-4 sm:p-6">
-                        <div class="flex items-center gap-2 mb-2 flex-wrap justify-between">
-                            <span class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A]">{{ $article->source }}</span>
-                            @if($article->category)
-                            <a href="{{ route('categories.show', $article->category) }}" class="text-xs px-2 py-1 bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#706f6c] dark:text-[#A1A09A] capitalize">
-                                {{ $article->category }}
-                            </a>
-                            @endif
+                    <div class="p-4 sm:p-6 space-y-4">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A]">{{ $article->source }}</span>
+                                @if($article->category)
+                                <a href="{{ route('categories.show', $article->category) }}" class="text-xs px-2 py-1 bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#706f6c] dark:text-[#A1A09A] capitalize rounded-full">
+                                    {{ $article->category }}
+                                </a>
+                                @endif
+                            </div>
                             @auth
-                            <div class="ml-auto">
-                                @php $isSaved = isset($favoriteIds) && in_array($article->id, $favoriteIds, true); @endphp
-                                @if($isSaved)
-                                <form method="POST" action="{{ route('favorites.destroy', $article->id) }}">
+                            @php $isFollowing = isset($followedSources) && in_array($article->source, $followedSources, true); @endphp
+                            <div class="shrink-0">
+                                @if($isFollowing)
+                                <form method="POST" action="{{ route('preferences.source.unfollow', $article->source) }}" class="inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-xs px-2 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
-                                        Unsave
+                                    <button type="submit" class="text-xs px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-full hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                        Unfollow
                                     </button>
                                 </form>
                                 @else
-                                <form method="POST" action="{{ route('favorites.store', $article->id) }}">
+                                <form method="POST" action="{{ route('preferences.source.follow', $article->source) }}" class="inline-block">
                                     @csrf
-                                    <button type="submit" class="text-xs px-2 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
-                                        Save
+                                    <button type="submit" class="text-xs px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-full hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                        Follow
                                     </button>
                                 </form>
                                 @endif
                             </div>
                             @endauth
                         </div>
-                        <a href="{{ route('article', $article->id) }}" class="block">
-                            <h2 class="text-lg sm:text-xl font-semibold mb-2 line-clamp-2">{{ $article->title }}</h2>
-                            <p class="text-sm text-[#706f6c] dark:text-[#A1A09A] mb-4 line-clamp-3">{{ $article->description }}</p>
-                        </a>
-                        <div class="flex items-center justify-between flex-wrap gap-2">
+
+                        <div class="space-y-2">
+                            <a href="{{ route('article', $article->id) }}" class="block">
+                                <h2 class="text-lg sm:text-xl font-semibold line-clamp-2">{{ $article->title }}</h2>
+                            </a>
+                            <p class="text-sm text-[#706f6c] dark:text-[#A1A09A] line-clamp-3">{{ $article->description }}</p>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-3">
                             <span class="text-xs text-[#706f6c] dark:text-[#A1A09A]">
                                 {{ $article->published_at->diffForHumans() }}
                             </span>
-                            <span class="text-xs font-medium text-[#1b1b18] dark:text-[#EDEDEC]">
-                                Continue reading →
-                            </span>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                @auth
+                                @php $isSaved = isset($favoriteIds) && in_array($article->id, $favoriteIds, true); @endphp
+                                @if($isSaved)
+                                <form method="POST" action="{{ route('favorites.destroy', $article->id) }}" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-xs px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-full hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                        Unsave
+                                    </button>
+                                </form>
+                                @else
+                                <form method="POST" action="{{ route('favorites.store', $article->id) }}" class="inline-block">
+                                    @csrf
+                                    <button type="submit" class="text-xs px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-full hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                        Save
+                                    </button>
+                                </form>
+                                @endif
+                                @endauth
+                                <a href="{{ route('article', $article->id) }}" class="text-xs font-medium text-[#1b1b18] dark:text-[#EDEDEC] hover:underline">
+                                    Continue reading →
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>

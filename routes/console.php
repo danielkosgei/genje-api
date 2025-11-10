@@ -13,3 +13,7 @@ Schedule::command('news:scrape')
     ->hourly()
     ->withoutOverlapping()
     ->runInBackground();
+
+Schedule::command('digest:send')
+    ->dailyAt('07:00')
+    ->withoutOverlapping();
