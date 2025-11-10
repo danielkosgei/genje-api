@@ -6,6 +6,7 @@ use App\Models\News;
 use App\Services\NewsScraperInterface;
 use App\Services\RssFeedService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 abstract class BaseScraper implements NewsScraperInterface
 {
@@ -46,7 +47,7 @@ abstract class BaseScraper implements NewsScraperInterface
                 continue;
             }
 
-            $items = $this->rssService->extractItems($xml);
+            $items = array_slice($this->rssService->extractItems($xml), 0, 25);
 
             foreach ($items as $item) {
                 $articleData = $this->extractArticleData($item);
@@ -74,6 +75,76 @@ abstract class BaseScraper implements NewsScraperInterface
 
         Log::info("Scraped {$count} articles from {$this->getSourceName()}");
         return $count;
+    }
+
+    /**
+     * Decode description HTML for parsing
+     */
+    protected function getDecodedDescription($item): ?string
+    {
+        $description = $this->rssService->getText($item, './/description');
+
+        if ($description === '') {
+            return null;
+        }
+
+        return html_entity_decode($description, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    }
+
+    /**
+     * Extract article link from common RSS fields
+     */
+    protected function extractLinkFromItem($item): ?string
+    {
+        $link = $this->rssService->getText($item, './/link');
+
+        if ($link !== '') {
+            return $link;
+        }
+
+        $decodedDescription = $this->getDecodedDescription($item);
+        if ($decodedDescription && preg_match('/href=["\']([^"\']+)["\']/', $decodedDescription, $matches)) {
+            return trim($matches[1]);
+        }
+
+        $guid = $this->rssService->getText($item, './/guid');
+        if ($guid !== '') {
+            return $guid;
+        }
+
+        return null;
+    }
+
+    /**
+     * Extract category text if present
+     */
+    protected function extractCategoryFromItem($item): ?string
+    {
+        $category = $this->rssService->getText($item, './/category');
+
+        if ($category === '') {
+            return null;
+        }
+
+        return Str::lower($this->cleanHtml($category));
+    }
+
+    /**
+     * Extract author/source text if present
+     */
+    protected function extractAuthorFromItem($item): ?string
+    {
+        $author = $this->rssService->getText($item, './/author');
+        if ($author !== '') {
+            return $this->cleanHtml($author);
+        }
+
+        $source = $this->rssService->getText($item, './/source');
+        if ($source !== '') {
+            return $this->cleanHtml($source);
+        }
+
+        return null;
     }
 
     /**
@@ -115,7 +186,7 @@ abstract class BaseScraper implements NewsScraperInterface
         }
 
         // Try to extract from description/content
-        $description = $this->rssService->getText($item, './/description');
+        $description = $this->getDecodedDescription($item);
         if ($description) {
             preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $description, $matches);
             if (isset($matches[1])) {
@@ -129,8 +200,12 @@ abstract class BaseScraper implements NewsScraperInterface
     /**
      * Clean HTML from text
      */
-    protected function cleanHtml(string $text): string
+    protected function cleanHtml(?string $text): string
     {
+        if ($text === null) {
+            return '';
+        }
+
         $text = strip_tags($text);
         $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $text = trim($text);
