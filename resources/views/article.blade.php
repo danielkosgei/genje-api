@@ -74,6 +74,9 @@
             </div>
         </nav>
 
+        <!-- Reading Progress -->
+        <div id="reading-progress" class="fixed top-0 left-0 h-1 bg-[#1b1b18] dark:bg-white z-50" style="width: 0;"></div>
+
         <!-- Main Content -->
         <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
             <!-- Back Button -->
@@ -89,7 +92,7 @@
 
                 <div class="p-6 sm:p-8">
                     <!-- Meta Info -->
-                    <div class="flex items-center gap-3 mb-4">
+                    <div class="flex items-center gap-3 mb-4 flex-wrap">
                         <span class="text-sm font-medium text-[#706f6c] dark:text-[#A1A09A]">{{ $article->source }}</span>
                         @if($article->category)
                         <span class="text-xs px-2 py-1 bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#706f6c] dark:text-[#A1A09A] capitalize">
@@ -97,6 +100,12 @@
                         </span>
                         @endif
                         <span class="text-sm text-[#706f6c] dark:text-[#A1A09A]">{{ $article->published_at->format('M d, Y') }}</span>
+                        @php
+                            $textForTime = trim(($article->content ?: '') . ' ' . ($article->description ?: ''));
+                            $wordCount = str_word_count(strip_tags($textForTime));
+                            $minutes = max(1, (int) ceil($wordCount / 200));
+                        @endphp
+                        <span class="text-sm text-[#706f6c] dark:text-[#A1A09A]">{{ $minutes }} min read</span>
                     </div>
 
                     <!-- Title -->
@@ -106,6 +115,18 @@
                     <!-- Description -->
                     <p class="text-lg text-[#706f6c] dark:text-[#A1A09A] mb-6">{{ $article->description }}</p>
                     @endif
+
+                    <!-- Share -->
+                    <div class="mb-6 flex items-center gap-2">
+                        <button id="copy-link" class="px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] text-xs hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">Copy link</button>
+                        @php
+                            $shareUrl = urlencode(request()->fullUrl());
+                            $shareText = urlencode($article->title);
+                        @endphp
+                        <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" class="px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] text-xs hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">Share on X</a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" class="px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] text-xs hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">Facebook</a>
+                        <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" class="px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] text-xs hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">WhatsApp</a>
+                    </div>
 
                     <!-- Content -->
                     @if($article->content)
@@ -171,6 +192,32 @@
                 </p>
             </div>
         </footer>
+        <script>
+            (function () {
+                const progress = document.getElementById('reading-progress');
+                const copyBtn = document.getElementById('copy-link');
+                function updateProgress() {
+                    const doc = document.documentElement;
+                    const scrollTop = window.pageYOffset || doc.scrollTop;
+                    const scrollHeight = doc.scrollHeight - doc.clientHeight;
+                    const percent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+                    progress.style.width = percent + '%';
+                }
+                window.addEventListener('scroll', updateProgress, { passive: true });
+                window.addEventListener('resize', updateProgress);
+                updateProgress();
+
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', async () => {
+                        try {
+                            await navigator.clipboard.writeText(window.location.href);
+                            copyBtn.textContent = 'Link copied';
+                            setTimeout(() => copyBtn.textContent = 'Copy link', 2000);
+                        } catch (e) {}
+                    });
+                }
+            })();
+        </script>
     </body>
 </html>
 

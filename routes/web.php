@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -28,3 +29,7 @@ Route::middleware('auth')->group(function () {
 
 // Article routes
 Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article');
+
+// Category routes
+Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');

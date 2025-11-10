@@ -36,6 +36,7 @@
                     
                     <div class="flex items-center gap-2 sm:gap-4">
                         @auth
+                            <a href="{{ route('categories.index') }}" class="text-sm hover:opacity-80 hidden sm:inline">Categories</a>
                             <!-- Profile Dropdown -->
                             <div class="relative" x-data="{ open: false }">
                                 <button @click="open = !open" class="flex items-center gap-2 hover:opacity-80 transition-opacity focus:outline-none">
@@ -93,8 +94,8 @@
                     Stay informed with the latest news
                 </p>
 
-                <!-- Search Bar -->
-                <form method="GET" action="{{ route('home') }}" class="max-w-2xl mx-auto">
+                <!-- Search + Category -->
+                <form method="GET" action="{{ route('home') }}" class="max-w-3xl mx-auto">
                     <div class="flex gap-2 flex-col sm:flex-row">
                         <input 
                             type="text" 
@@ -103,6 +104,14 @@
                             placeholder="Search news..." 
                             class="flex-1 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615] focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
                         >
+                        @if(isset($categories) && $categories->count() > 0)
+                        <select name="category" class="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615]">
+                            <option value="">All Categories</option>
+                            @foreach($categories as $cat)
+                            <option value="{{ $cat }}" @selected(request('category')===$cat) class="capitalize">{{ $cat }}</option>
+                            @endforeach
+                        </select>
+                        @endif
                         <button 
                             type="submit" 
                             class="px-6 sm:px-8 py-2 sm:py-3 text-sm sm:text-base bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] font-medium hover:opacity-90 transition-opacity whitespace-nowrap"
@@ -153,9 +162,9 @@
                         <div class="flex items-center gap-2 mb-2 flex-wrap justify-between">
                             <span class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A]">{{ $article->source }}</span>
                             @if($article->category)
-                            <span class="text-xs px-2 py-1 bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#706f6c] dark:text-[#A1A09A] capitalize">
+                            <a href="{{ route('categories.show', $article->category) }}" class="text-xs px-2 py-1 bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#706f6c] dark:text-[#A1A09A] capitalize">
                                 {{ $article->category }}
-                            </span>
+                            </a>
                             @endif
                             @auth
                             <div class="ml-auto">
@@ -188,7 +197,7 @@
                                 {{ $article->published_at->diffForHumans() }}
                             </span>
                             <span class="text-xs font-medium text-[#1b1b18] dark:text-[#EDEDEC]">
-                                Read more →
+                                Continue reading →
                             </span>
                         </div>
                     </div>
