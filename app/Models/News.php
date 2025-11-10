@@ -16,8 +16,11 @@ class News extends Model
         'source',
         'category',
         'url',
+        'fingerprint',
         'image_url',
+        'cached_image_path',
         'author',
+        'quality_score',
         'published_at',
     ];
 

@@ -56,13 +56,32 @@ abstract class BaseScraper implements NewsScraperInterface
                     continue;
                 }
 
+                // Compute fingerprint and quality score
+                $articleData['fingerprint'] = $this->computeFingerprint(
+                    $articleData['source'] ?? '',
+                    $articleData['title'] ?? '',
+                    $articleData['published_at'] ?? null
+                );
+                $articleData['quality_score'] = $this->computeQualityScore(
+                    $articleData['title'] ?? '',
+                    $articleData['description'] ?? '',
+                    (bool) ($articleData['image_url'] ?? null),
+                    $articleData['published_at'] ?? null
+                );
+
                 // Check if article already exists
-                if (News::where('url', $articleData['url'])->exists()) {
+                if (
+                    News::where('url', $articleData['url'])->exists() ||
+                    (!empty($articleData['fingerprint']) && News::where('fingerprint', $articleData['fingerprint'])->exists())
+                ) {
                     continue;
                 }
 
                 try {
-                    News::create($articleData);
+                    $created = News::create($articleData);
+                    if (!empty($created->image_url)) {
+                        \App\Jobs\CacheArticleImageJob::dispatch($created->id);
+                    }
                     $count++;
                 } catch (\Exception $e) {
                     Log::error("Failed to save article: {$articleData['url']}", [
@@ -210,6 +229,65 @@ abstract class BaseScraper implements NewsScraperInterface
         $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $text = trim($text);
         return $text;
+    }
+
+    /**
+     * Compute a stable fingerprint for deduplication
+     */
+    protected function computeFingerprint(string $source, string $title, $publishedAt): ?string
+    {
+        $title = Str::lower(trim(preg_replace('/\s+/', ' ', $this->cleanHtml($title))));
+        $source = Str::lower(trim($source));
+        if ($title === '' || $source === '') {
+            return null;
+        }
+        $datePart = '';
+        if ($publishedAt instanceof \Carbon\Carbon) {
+            $datePart = $publishedAt->toDateString();
+        } elseif (is_string($publishedAt) && $publishedAt !== '') {
+            try {
+                $datePart = \Carbon\Carbon::parse($publishedAt)->toDateString();
+            } catch (\Throwable $e) {
+                $datePart = '';
+            }
+        }
+        return sha1($source . '|' . $title . '|' . $datePart);
+    }
+
+    /**
+     * Simple content quality scoring
+     */
+    protected function computeQualityScore(string $title, string $description, bool $hasImage, $publishedAt): int
+    {
+        $score = 0;
+        $titleLen = mb_strlen($this->cleanHtml($title));
+        $descLen = mb_strlen($this->cleanHtml($description));
+
+        // Title length
+        if ($titleLen >= 40) $score += 20;
+        elseif ($titleLen >= 20) $score += 10;
+
+        // Description richness
+        if ($descLen >= 200) $score += 30;
+        elseif ($descLen >= 100) $score += 20;
+        elseif ($descLen >= 50) $score += 10;
+
+        // Image presence
+        if ($hasImage) $score += 20;
+
+        // Recency boost (within last 24h)
+        try {
+            $published = $publishedAt instanceof \Carbon\Carbon ? $publishedAt : ($publishedAt ? \Carbon\Carbon::parse($publishedAt) : null);
+            if ($published && now()->diffInHours($published) <= 24) {
+                $score += 30;
+            } elseif ($published && now()->diffInHours($published) <= 72) {
+                $score += 10;
+            }
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
+        return (int) min(100, $score);
     }
 }
 
