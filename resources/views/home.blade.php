@@ -55,6 +55,9 @@
                                         <p class="text-xs text-[#706f6c] dark:text-[#A1A09A] truncate">{{ auth()->user()->email }}</p>
                                     </div>
                                     <div class="p-2 space-y-1">
+                                        <a href="{{ route('favorites.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors text-[#1b1b18] dark:text-[#EDEDEC]">
+                                            Saved
+                                        </a>
                                         <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors text-[#1b1b18] dark:text-[#EDEDEC]">
                                             Profile
                                         </a>
@@ -142,21 +145,31 @@
             @if($news->count() > 0)
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
                 @foreach($news as $article)
-                <a href="{{ route('article', $article->id) }}" class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow">
+                <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow">
                     @if($article->image_url)
                     <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $article->image_url }}');"></div>
                     @endif
                     <div class="p-4 sm:p-6">
-                        <div class="flex items-center gap-2 mb-2 flex-wrap">
+                        <div class="flex items-center gap-2 mb-2 flex-wrap justify-between">
                             <span class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A]">{{ $article->source }}</span>
                             @if($article->category)
                             <span class="text-xs px-2 py-1 bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#706f6c] dark:text-[#A1A09A] capitalize">
                                 {{ $article->category }}
                             </span>
                             @endif
+                            @auth
+                            <form method="POST" action="{{ route('favorites.store', $article->id) }}" class="ml-auto">
+                                @csrf
+                                <button type="submit" class="text-xs px-2 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                    Save
+                                </button>
+                            </form>
+                            @endauth
                         </div>
-                        <h2 class="text-lg sm:text-xl font-semibold mb-2 line-clamp-2">{{ $article->title }}</h2>
-                        <p class="text-sm text-[#706f6c] dark:text-[#A1A09A] mb-4 line-clamp-3">{{ $article->description }}</p>
+                        <a href="{{ route('article', $article->id) }}" class="block">
+                            <h2 class="text-lg sm:text-xl font-semibold mb-2 line-clamp-2">{{ $article->title }}</h2>
+                            <p class="text-sm text-[#706f6c] dark:text-[#A1A09A] mb-4 line-clamp-3">{{ $article->description }}</p>
+                        </a>
                         <div class="flex items-center justify-between flex-wrap gap-2">
                             <span class="text-xs text-[#706f6c] dark:text-[#A1A09A]">
                                 {{ $article->published_at->diffForHumans() }}
@@ -166,7 +179,7 @@
                             </span>
                         </div>
                     </div>
-                </a>
+                </div>
                 @endforeach
             </div>
 
