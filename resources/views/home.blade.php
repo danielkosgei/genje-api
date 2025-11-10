@@ -37,41 +37,21 @@
                     <div class="flex items-center gap-2 sm:gap-4">
                         @auth
                             <a href="{{ route('categories.index') }}" class="text-sm hover:opacity-80 hidden sm:inline">Categories</a>
-                            <!-- Profile Dropdown -->
-                            <div class="relative" x-data="{ open: false }">
-                                <button @click="open = !open" class="flex items-center gap-2 hover:opacity-80 transition-opacity focus:outline-none">
-                                    @if(auth()->user()->avatar)
-                                        <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 border border-[#e3e3e0] dark:border-[#3E3E3A] object-cover">
-                                    @else
-                                        <div class="w-8 h-8 bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] flex items-center justify-center font-medium text-xs border border-[#e3e3e0] dark:border-[#3E3E3A]">
-                                            {{ auth()->user()->initials() }}
-                                        </div>
-                                    @endif
-                                </button>
-                                
-                                <!-- Dropdown Menu -->
-                                <div x-show="open" @click.away="open = false" x-cloak class="absolute right-0 mt-2 w-56 bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] shadow-lg z-50" x-transition>
-                                    <div class="p-4 border-b border-[#e3e3e0] dark:border-[#3E3E3A]">
-                                        <p class="text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC]">{{ auth()->user()->name }}</p>
-                                        <p class="text-xs text-[#706f6c] dark:text-[#A1A09A] truncate">{{ auth()->user()->email }}</p>
+                            <a href="{{ route('profile') }}" class="flex items-center gap-2 hover:opacity-90 transition-opacity">
+                                @if(auth()->user()->avatar)
+                                    @php
+                                        $avatarUrl = auth()->user()->avatar;
+                                        if ($avatarUrl && Str::contains($avatarUrl, 'googleusercontent')) {
+                                            $avatarUrl = preg_replace('/=s\\d+-c$/', '=s256-c', $avatarUrl);
+                                        }
+                                    @endphp
+                                    <img src="{{ $avatarUrl }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 border border-[#e3e3e0] dark:border-[#3E3E3A] object-cover">
+                                @else
+                                    <div class="w-8 h-8 bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] flex items-center justify-center font-medium text-xs border border-[#e3e3e0] dark:border-[#3E3E3A]">
+                                        {{ auth()->user()->initials() }}
                                     </div>
-                                    <div class="p-2 space-y-1">
-                                        <a href="{{ route('favorites.index') }}" class="block px-4 py-2 text-sm hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors text-[#1b1b18] dark:text-[#EDEDEC]">
-                                            Saved
-                                        </a>
-                                        <a href="{{ route('profile') }}" class="block px-4 py-2 text-sm hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors text-[#1b1b18] dark:text-[#EDEDEC]">
-                                            Profile
-                                        </a>
-                                        <a href="{{ route('settings') }}" class="block px-4 py-2 text-sm hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors text-[#1b1b18] dark:text-[#EDEDEC]">
-                                            Settings
-                                        </a>
-                                        <div class="border-t border-[#e3e3e0] dark:border-[#3E3E3A] my-1"></div>
-                                        <a href="{{ route('logout') }}" class="block px-4 py-2 text-sm hover:bg-red-50 dark:hover:bg-red-950/20 transition-colors text-red-600 dark:text-red-400">
-                                            Logout
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                                @endif
+                            </a>
                         @else
                             <a href="{{ route('auth.google') }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] hover:opacity-90 transition-opacity border border-[#1b1b18] dark:border-white">
                                 <span class="hidden sm:inline">Login with Google</span>
@@ -136,20 +116,6 @@
             </div>
             @endif
 
-            <!-- Filters -->
-            @if(isset($sources) && $sources->count() > 0)
-            <div class="mb-6 sm:mb-8 flex gap-2 sm:gap-3 justify-center flex-wrap px-2">
-                <a href="{{ route('home', request('search') ? ['search' => request('search')] : []) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ !request('source') ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
-                    All
-                </a>
-                @foreach($sources as $source)
-                <a href="{{ route('home', array_filter(['source' => $source, 'search' => request('search')])) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ request('source') === $source ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
-                    {{ $source }}
-                </a>
-                @endforeach
-            </div>
-            @endif
-
             @if(isset($recommended) && $recommended->count() > 0)
             <div class="mb-10">
                 <div class="flex items-center justify-between mb-4">
@@ -157,10 +123,23 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
                     @foreach($recommended as $article)
+                    @php
+                        $img = $article->cached_image_path ? Storage::url($article->cached_image_path) : $article->image_url;
+                        if ($img) {
+                            $host = parse_url($img, PHP_URL_HOST) ?? '';
+                            $blockedHosts = ['news.google', 'googleusercontent', 'gstatic', 'googleapis', 'ggpht.com', 'encrypted-tbn'];
+                            foreach ($blockedHosts as $blocked) {
+                                if ($host && Str::contains($host, $blocked)) {
+                                    $img = null;
+                                    break;
+                                }
+                            }
+                        }
+                    @endphp
                     <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow rounded-sm">
-                        @if($article->image_url)
+                        @if($img)
                         <a href="{{ route('article', $article->id) }}">
-                            <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $article->image_url }}');"></div>
+                            <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $img }}');"></div>
                         </a>
                         @endif
                         <div class="p-4 sm:p-6 space-y-4">
@@ -218,14 +197,41 @@
             </div>
             @endif
 
+            <!-- Filters -->
+            @if(isset($sources) && $sources->count() > 0)
+            <div class="mb-6 sm:mb-8 flex gap-2 sm:gap-3 justify-center flex-wrap px-2">
+                <a href="{{ route('home', request('search') ? ['search' => request('search')] : []) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ !request('source') ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
+                    All
+                </a>
+                @foreach($sources as $source)
+                <a href="{{ route('home', array_filter(['source' => $source, 'search' => request('search')])) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ request('source') === $source ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
+                    {{ $source }}
+                </a>
+                @endforeach
+            </div>
+            @endif
+
             <!-- News Grid -->
             @if($news->count() > 0)
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-8 sm:mb-12">
                 @foreach($news as $article)
+                @php
+                    $img = $article->cached_image_path ? Storage::url($article->cached_image_path) : $article->image_url;
+                    if ($img) {
+                        $host = parse_url($img, PHP_URL_HOST) ?? '';
+                        $blockedHosts = ['news.google', 'googleusercontent', 'gstatic', 'googleapis', 'ggpht.com', 'encrypted-tbn'];
+                        foreach ($blockedHosts as $blocked) {
+                            if ($host && Str::contains($host, $blocked)) {
+                                $img = null;
+                                break;
+                            }
+                        }
+                    }
+                @endphp
                 <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow rounded-sm">
-                    @if($article->image_url)
+                    @if($img)
                     <a href="{{ route('article', $article->id) }}">
-                        <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $article->image_url }}');"></div>
+                        <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $img }}');"></div>
                     </a>
                     @endif
                     <div class="p-4 sm:p-6 space-y-4">

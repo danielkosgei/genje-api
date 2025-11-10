@@ -82,4 +82,3 @@ class RecommendationService
         return $scored;
     }
 }
-

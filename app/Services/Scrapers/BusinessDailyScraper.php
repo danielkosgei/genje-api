@@ -12,7 +12,7 @@ class BusinessDailyScraper extends BaseScraper
     protected function getFeedUrls(): array
     {
         return [
-            'https://news.google.com/rss/search?q=site:businessdailyafrica.com&hl=en-KE&gl=KE&ceid=KE:en',
+            'https://www.businessdailyafrica.com/bd/rss.xml',
         ];
     }
 

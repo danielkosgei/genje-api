@@ -12,7 +12,7 @@ class DailyNationScraper extends BaseScraper
     protected function getFeedUrls(): array
     {
         return [
-            'https://news.google.com/rss/search?q=site:nation.africa&hl=en-KE&gl=KE&ceid=KE:en',
+            'https://www.nation.africa/kenya/rss.xml',
         ];
     }
 

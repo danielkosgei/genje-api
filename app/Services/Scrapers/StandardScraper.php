@@ -12,7 +12,11 @@ class StandardScraper extends BaseScraper
     protected function getFeedUrls(): array
     {
         return [
-            'https://news.google.com/rss/search?q=site:standardmedia.co.ke&hl=en-KE&gl=KE&ceid=KE:en',
+            'https://www.standardmedia.co.ke/rss/headlines.php',
+            'https://www.standardmedia.co.ke/rss/kenya.php',
+            'https://www.standardmedia.co.ke/rss/politics.php',
+            'https://www.standardmedia.co.ke/rss/business.php',
+            'https://www.standardmedia.co.ke/rss/sports.php',
         ];
     }
 
