@@ -31,49 +31,69 @@ class CacheArticleImageJob implements ShouldQueue
      */
     public function handle(): void
     {
-            $news = News::find($this->newsId);
-            if (!$news || !$news->image_url || $news->cached_image_path) {
+        $news = News::find($this->newsId);
+        if (!$news || !$news->image_url || $news->cached_image_path) {
+            return;
+        }
+
+        try {
+            $headers = [
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0 Safari/537.36',
+                'Accept' => 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+            ];
+
+            $referer = $news->url;
+            if (!$referer) {
+                $parts = parse_url($news->image_url);
+                if (!empty($parts['scheme']) && !empty($parts['host'])) {
+                    $referer = $parts['scheme'] . '://' . $parts['host'] . '/';
+                }
+            }
+            if ($referer) {
+                $headers['Referer'] = $referer;
+            }
+
+            $response = Http::withHeaders($headers)
+                ->timeout(20)
+                ->get($news->image_url);
+
+            if (!$response->successful()) {
                 return;
             }
 
-            try {
-                $response = Http::timeout(20)->get($news->image_url);
-                if (!$response->successful()) {
-                    return;
-                }
-                $imageData = $response->body();
+            $imageData = $response->body();
 
-                // Try to convert to webp if possible
-                $image = @imagecreatefromstring($imageData);
-                if ($image !== false && function_exists('imagewebp')) {
-                    ob_start();
-                    imagepalettetotruecolor($image);
-                    imagealphablending($image, true);
-                    imagesavealpha($image, true);
-                    imagewebp($image, null, 80);
-                    $webpData = ob_get_clean();
-                    imagedestroy($image);
-                    $filename = 'news-images/' . $this->newsId . '-' . md5($news->image_url) . '.webp';
-                    Storage::disk('public')->put($filename, $webpData);
-                    $news->cached_image_path = $filename;
-                    $news->save();
-                    return;
-                }
-
-                // Fallback: store original
-                $ext = 'img';
-                if (preg_match('/\\.(jpg|jpeg|png|gif|webp)/i', $news->image_url, $m)) {
-                    $ext = strtolower($m[1]);
-                }
-                $filename = 'news-images/' . $this->newsId . '-' . md5($news->image_url) . '.' . $ext;
-                Storage::disk('public')->put($filename, $imageData);
+            // Try to convert to webp if possible
+            $image = @imagecreatefromstring($imageData);
+            if ($image !== false && function_exists('imagewebp')) {
+                ob_start();
+                imagepalettetotruecolor($image);
+                imagealphablending($image, true);
+                imagesavealpha($image, true);
+                imagewebp($image, null, 80);
+                $webpData = ob_get_clean();
+                imagedestroy($image);
+                $filename = 'news-images/' . $this->newsId . '-' . md5($news->image_url) . '.webp';
+                Storage::disk('public')->put($filename, $webpData);
                 $news->cached_image_path = $filename;
                 $news->save();
-            } catch (\Throwable $e) {
-                Log::warning('Failed to cache article image', [
-                    'news_id' => $this->newsId,
-                    'error' => $e->getMessage(),
-                ]);
+                return;
             }
+
+            // Fallback: store original
+            $ext = 'img';
+            if (preg_match('/\\.(jpg|jpeg|png|gif|webp)/i', $news->image_url, $m)) {
+                $ext = strtolower($m[1]);
+            }
+            $filename = 'news-images/' . $this->newsId . '-' . md5($news->image_url) . '.' . $ext;
+            Storage::disk('public')->put($filename, $imageData);
+            $news->cached_image_path = $filename;
+            $news->save();
+        } catch (\Throwable $e) {
+            Log::warning('Failed to cache article image', [
+                'news_id' => $this->newsId,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

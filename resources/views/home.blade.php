@@ -136,12 +136,15 @@
                             }
                         }
                     @endphp
-                    <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow rounded-sm">
-                        @if($img)
+                    @if(!$img)
+                        @continue
+                    @endif
+                    <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow rounded-sm article-card">
                         <a href="{{ route('article', $article->id) }}">
-                            <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $img }}');"></div>
+                            <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] overflow-hidden">
+                                <img src="{{ $img }}" alt="{{ $article->title }}" class="w-full h-full object-cover" referrerpolicy="no-referrer" crossorigin="anonymous" onerror="this.closest('.article-card')?.remove();">
+                            </div>
                         </a>
-                        @endif
                         <div class="p-4 sm:p-6 space-y-4">
                             <div class="flex items-start justify-between gap-3">
                                 <div class="flex items-center gap-2 flex-wrap">
@@ -186,98 +189,6 @@
                                 <span class="text-xs text-[#706f6c] dark:text-[#A1A09A]">
                                     {{ $article->published_at->diffForHumans() }}
                                 </span>
-                                <a href="{{ route('article', $article->id) }}" class="text-xs font-medium text-[#1b1b18] dark:text-[#EDEDEC] hover:underline">
-                                    Continue reading →
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            <!-- Filters -->
-            @if(isset($sources) && $sources->count() > 0)
-            <div class="mb-6 sm:mb-8 flex gap-2 sm:gap-3 justify-center flex-wrap px-2">
-                <a href="{{ route('home', request('search') ? ['search' => request('search')] : []) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ !request('source') ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
-                    All
-                </a>
-                @foreach($sources as $source)
-                <a href="{{ route('home', array_filter(['source' => $source, 'search' => request('search')])) }}" class="px-3 sm:px-4 py-2 text-xs sm:text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors {{ request('source') === $source ? 'bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] border-transparent' : '' }}">
-                    {{ $source }}
-                </a>
-                @endforeach
-            </div>
-            @endif
-
-            <!-- News Grid -->
-            @if($news->count() > 0)
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mb-8 sm:mb-12">
-                @foreach($news as $article)
-                @php
-                    $img = $article->cached_image_path ? Storage::url($article->cached_image_path) : $article->image_url;
-                    if ($img) {
-                        $host = parse_url($img, PHP_URL_HOST) ?? '';
-                        $blockedHosts = ['news.google', 'googleusercontent', 'gstatic', 'googleapis', 'ggpht.com', 'encrypted-tbn'];
-                        foreach ($blockedHosts as $blocked) {
-                            if ($host && Str::contains($host, $blocked)) {
-                                $img = null;
-                                break;
-                            }
-                        }
-                    }
-                @endphp
-                <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:shadow-lg transition-shadow rounded-sm">
-                    @if($img)
-                    <a href="{{ route('article', $article->id) }}">
-                        <div class="w-full h-40 sm:h-48 bg-gray-200 dark:bg-[#2a2a2a] bg-cover bg-center" style="background-image: url('{{ $img }}');"></div>
-                    </a>
-                    @endif
-                    <div class="p-4 sm:p-6 space-y-4">
-                        <div class="flex items-start justify-between gap-3">
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <span class="text-xs font-medium text-[#706f6c] dark:text-[#A1A09A]">{{ $article->source }}</span>
-                                @if($article->category)
-                                <a href="{{ route('categories.show', $article->category) }}" class="text-xs px-2 py-1 bg-[#f5f5f5] dark:bg-[#2a2a2a] text-[#706f6c] dark:text-[#A1A09A] capitalize rounded-full">
-                                    {{ $article->category }}
-                                </a>
-                                @endif
-                            </div>
-                            @auth
-                            @php $isFollowing = isset($followedSources) && in_array($article->source, $followedSources, true); @endphp
-                            <div class="shrink-0">
-                                @if($isFollowing)
-                                <form method="POST" action="{{ route('preferences.source.unfollow', $article->source) }}" class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-xs px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-full hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
-                                        Unfollow
-                                    </button>
-                                </form>
-                                @else
-                                <form method="POST" action="{{ route('preferences.source.follow', $article->source) }}" class="inline-block">
-                                    @csrf
-                                    <button type="submit" class="text-xs px-3 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-full hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
-                                        Follow
-                                    </button>
-                                </form>
-                                @endif
-                            </div>
-                            @endauth
-                        </div>
-
-                        <div class="space-y-2">
-                            <a href="{{ route('article', $article->id) }}" class="block">
-                                <h2 class="text-lg sm:text-xl font-semibold line-clamp-2">{{ $article->title }}</h2>
-                            </a>
-                            <p class="text-sm text-[#706f6c] dark:text-[#A1A09A] line-clamp-3">{{ $article->description }}</p>
-                        </div>
-
-                        <div class="flex items-center justify-between gap-3">
-                            <span class="text-xs text-[#706f6c] dark:text-[#A1A09A]">
-                                {{ $article->published_at->diffForHumans() }}
-                            </span>
                             <div class="flex items-center gap-2 flex-wrap">
                                 @auth
                                 @php $isSaved = isset($favoriteIds) && in_array($article->id, $favoriteIds, true); @endphp
@@ -302,13 +213,14 @@
                                     Continue reading →
                                 </a>
                             </div>
+                            </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
+            @endif
 
-            <!-- Pagination -->
             @if($news->hasPages())
             <div class="flex justify-center gap-2 mt-8 flex-wrap">
                 @if ($news->onFirstPage())
@@ -336,7 +248,8 @@
                 @endif
             </div>
             @endif
-            @else
+
+            @if($news->count() === 0)
             <div class="text-center py-16">
                 <p class="text-[#706f6c] dark:text-[#A1A09A]">No news articles found.</p>
             </div>

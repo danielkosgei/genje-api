@@ -6,6 +6,7 @@ use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\RecommendationService;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class HomeController extends Controller
 {
@@ -33,10 +34,26 @@ class HomeController extends Controller
             $query->where('category', $request->category);
         }
 
-        // Get latest news articles
-        $news = $query->orderBy('published_at', 'desc')
-            ->paginate(12)
-            ->appends($request->query());
+        // Clone query to fetch all results for ranking
+        $ordered = $query->orderBy('published_at', 'desc')->get();
+
+        $ranked = $recs->rankArticles($ordered);
+
+        // Paginate ranked results manually
+        $perPage = 12;
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $slice = $ranked->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $news = new LengthAwarePaginator(
+            $slice,
+            $ranked->count(),
+            $perPage,
+            $currentPage,
+            [
+                'path' => $request->url(),
+                'query' => $request->query(),
+            ]
+        );
         
         // Get distinct sources and categories for filters
         $sources = News::select('source')->distinct()->pluck('source');
@@ -56,8 +73,8 @@ class HomeController extends Controller
 
         // Recommended for the user (optional section)
         $recommended = collect();
-        if (!($request->has('search') || $request->has('source') || $request->has('category'))) {
-            $recommended = $recs->getRecommended(6);
+        if ($ranked->count() > 0) {
+            $recommended = $news;
         }
 
         return view('home', compact('news', 'sources', 'categories', 'favoriteIds', 'recommended', 'followedSources'));
