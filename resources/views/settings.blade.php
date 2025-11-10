@@ -78,41 +78,40 @@
         <main class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
             <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] p-6 sm:p-8">
                 <h1 class="text-3xl font-semibold mb-6">Settings</h1>
-                
-                <div class="space-y-8">
-                    <!-- App Preferences -->
+                @php $p = $preferences ?? []; @endphp
+                <form method="POST" action="{{ route('settings.update') }}" class="space-y-8">
+                    @csrf
+                    <!-- Notifications -->
                     <div>
-                        <h2 class="text-xl font-semibold mb-4">Preferences</h2>
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between border-b border-[#e3e3e0] dark:border-[#3E3E3A] pb-4">
-                                <div>
-                                    <p class="font-medium text-[#1b1b18] dark:text-[#EDEDEC]">Language</p>
-                                    <p class="text-sm text-[#706f6c] dark:text-[#A1A09A]">English</p>
-                                </div>
-                                <button class="px-4 py-2 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors">Change</button>
-                            </div>
-                            
-                            <div class="flex items-center justify-between border-b border-[#e3e3e0] dark:border-[#3E3E3A] pb-4">
-                                <div>
-                                    <p class="font-medium text-[#1b1b18] dark:text-[#EDEDEC]">Dark Mode</p>
-                                    <p class="text-sm text-[#706f6c] dark:text-[#A1A09A]">Follow system</p>
-                                </div>
-                                <button class="px-4 py-2 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a] transition-colors">Change</button>
-                            </div>
-                        </div>
+                        <h2 class="text-xl font-semibold mb-4">Email Notifications</h2>
+                        <label class="inline-flex items-center gap-2">
+                            <input type="checkbox" name="email_notifications" value="1" @checked(($p['email_notifications'] ?? false) === true) class="h-4 w-4">
+                            <span class="text-sm">Send me email updates</span>
+                        </label>
                     </div>
 
-                    <!-- Account Settings -->
+                    
+
+                    <!-- Language -->
                     <div>
-                        <h2 class="text-xl font-semibold mb-4">Account</h2>
-                        <div class="space-y-4">
-                            <div>
-                                <p class="font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2">Login Provider</p>
-                                <p class="text-sm text-[#706f6c] dark:text-[#A1A09A]">Connected via {{ ucfirst(auth()->user()->provider) }}</p>
-                            </div>
-                        </div>
+                        <h2 class="text-xl font-semibold mb-4">Language</h2>
+                        @php $lang = $p['language'] ?? 'en'; @endphp
+                        <select name="language" class="px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] bg-white dark:bg-[#161615]">
+                            <option value="en" @selected($lang==='en')>English</option>
+                            <option value="sw" @selected($lang==='sw')>Swahili</option>
+                            <option value="fr" @selected($lang==='fr')>French</option>
+                        </select>
                     </div>
-                </div>
+
+                    
+
+                    <div class="pt-4">
+                        <button type="submit" class="px-6 py-3 bg-[#1b1b18] dark:bg-white text-white dark:text-[#1b1b18] hover:opacity-90 transition-opacity">Save Preferences</button>
+                        @if(session('status'))
+                        <span class="ml-3 text-sm text-green-600">{{ session('status') }}</span>
+                        @endif
+                    </div>
+                </form>
             </div>
         </main>
 

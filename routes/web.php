@@ -20,6 +20,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
     // Favorites
     Route::get('/favorites', [FavoritesController::class, 'index'])->name('favorites.index');
