@@ -158,12 +158,25 @@
                             </span>
                             @endif
                             @auth
-                            <form method="POST" action="{{ route('favorites.store', $article->id) }}" class="ml-auto">
-                                @csrf
-                                <button type="submit" class="text-xs px-2 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
-                                    Save
-                                </button>
-                            </form>
+                            <div class="ml-auto">
+                                @php $isSaved = isset($favoriteIds) && in_array($article->id, $favoriteIds, true); @endphp
+                                @if($isSaved)
+                                <form method="POST" action="{{ route('favorites.destroy', $article->id) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-xs px-2 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                        Unsave
+                                    </button>
+                                </form>
+                                @else
+                                <form method="POST" action="{{ route('favorites.store', $article->id) }}">
+                                    @csrf
+                                    <button type="submit" class="text-xs px-2 py-1 border border-[#e3e3e0] dark:border-[#3E3E3A] hover:bg-[#f5f5f5] dark:hover:bg-[#2a2a2a]">
+                                        Save
+                                    </button>
+                                </form>
+                                @endif
+                            </div>
                             @endauth
                         </div>
                         <a href="{{ route('article', $article->id) }}" class="block">

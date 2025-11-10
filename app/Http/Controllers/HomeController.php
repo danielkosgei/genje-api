@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -40,6 +41,14 @@ class HomeController extends Controller
         $sources = News::select('source')->distinct()->pluck('source');
         $categories = News::select('category')->whereNotNull('category')->distinct()->pluck('category');
         
-        return view('home', compact('news', 'sources', 'categories'));
+        // Favorite IDs for current user (to toggle Save/Unsave)
+        $favoriteIds = [];
+        if (Auth::check()) {
+            $favoriteIds = Auth::user()->favoriteNews()
+                ->pluck('news.id')
+                ->toArray();
+        }
+
+        return view('home', compact('news', 'sources', 'categories', 'favoriteIds'));
     }
 }
