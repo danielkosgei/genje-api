@@ -26,7 +26,7 @@ func (r *PoliticianRepo) List(ctx context.Context, f models.PoliticianFilter) ([
 
 	countQuery := `SELECT COUNT(*) FROM politicians p WHERE 1=1`
 	dataQuery := `
-		SELECT p.id, p.slug, p.first_name, p.last_name, p.photo_url,
+		SELECT p.id, p.slug, p.first_name, p.last_name, p.status, p.photo_url,
 		       (SELECT pp.name FROM party_memberships pm
 		        JOIN political_parties pp ON pp.id = pm.party_id
 		        WHERE pm.politician_id = p.id AND pm.left_date IS NULL
@@ -66,7 +66,7 @@ func (r *PoliticianRepo) List(ctx context.Context, f models.PoliticianFilter) ([
 	var politicians []models.PoliticianSummary
 	for rows.Next() {
 		var p models.PoliticianSummary
-		if err := rows.Scan(&p.ID, &p.Slug, &p.FirstName, &p.LastName, &p.PhotoURL, &p.Party); err != nil {
+		if err := rows.Scan(&p.ID, &p.Slug, &p.FirstName, &p.LastName, &p.Status, &p.PhotoURL, &p.Party); err != nil {
 			return nil, 0, fmt.Errorf("scan politician: %w", err)
 		}
 		politicians = append(politicians, p)
@@ -77,14 +77,14 @@ func (r *PoliticianRepo) List(ctx context.Context, f models.PoliticianFilter) ([
 
 func (r *PoliticianRepo) GetBySlug(ctx context.Context, slug string) (*models.Politician, error) {
 	query := `
-		SELECT id, slug, first_name, last_name, other_names, date_of_birth,
-		       gender, bio, photo_url, education, career_history, created_at, updated_at
+		SELECT id, slug, first_name, last_name, other_names, date_of_birth, date_of_death,
+		       gender, status, bio, photo_url, education, career_history, created_at, updated_at
 		FROM politicians WHERE slug = $1`
 
 	var p models.Politician
 	err := r.pool.QueryRow(ctx, query, slug).Scan(
 		&p.ID, &p.Slug, &p.FirstName, &p.LastName, &p.OtherNames,
-		&p.DateOfBirth, &p.Gender, &p.Bio, &p.PhotoURL,
+		&p.DateOfBirth, &p.DateOfDeath, &p.Gender, &p.Status, &p.Bio, &p.PhotoURL,
 		&p.Education, &p.CareerHistory, &p.CreatedAt, &p.UpdatedAt,
 	)
 	if err == pgx.ErrNoRows {

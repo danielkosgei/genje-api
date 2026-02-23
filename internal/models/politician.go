@@ -14,7 +14,9 @@ type Politician struct {
 	LastName      string          `json:"last_name"`
 	OtherNames    *string         `json:"other_names,omitempty"`
 	DateOfBirth   *time.Time      `json:"date_of_birth,omitempty"`
+	DateOfDeath   *time.Time      `json:"date_of_death,omitempty"`
 	Gender        *string         `json:"gender,omitempty"`
+	Status        string          `json:"status"`
 	Bio           *string         `json:"bio,omitempty"`
 	PhotoURL      *string         `json:"photo_url,omitempty"`
 	Education     json.RawMessage `json:"education"`
@@ -28,6 +30,7 @@ type PoliticianSummary struct {
 	Slug      string    `json:"slug"`
 	FirstName string    `json:"first_name"`
 	LastName  string    `json:"last_name"`
+	Status    string    `json:"status"`
 	PhotoURL  *string   `json:"photo_url,omitempty"`
 	Party     *string   `json:"current_party,omitempty"`
 }

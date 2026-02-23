@@ -54,7 +54,9 @@ type politicianData struct {
 	OtherNames    *string          `json:"other_names"`
 	Slug          string           `json:"slug"`
 	DateOfBirth   *string          `json:"date_of_birth"`
+	DateOfDeath   *string          `json:"date_of_death"`
 	Gender        string           `json:"gender"`
+	Status        string           `json:"status"`
 	Bio           *string          `json:"bio"`
 	Education     []educationEntry `json:"education"`
 	CareerHistory []careerEntry    `json:"career_history"`
@@ -211,6 +213,12 @@ func seedPoliticians(ctx context.Context, pool *pgxpool.Pool) error {
 		return err
 	}
 
+	statusOrDefault := func(s string) string {
+		if s == "" {
+			return "active"
+		}
+		return s
+	}
 	educationJSON := func(entries []educationEntry) []byte {
 		if entries == nil {
 			entries = []educationEntry{}
@@ -228,10 +236,10 @@ func seedPoliticians(ctx context.Context, pool *pgxpool.Pool) error {
 
 	for _, p := range politicians {
 		_, err := pool.Exec(ctx,
-			`INSERT INTO politicians (slug, first_name, last_name, other_names, date_of_birth, gender, bio, education, career_history)
-			 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+			`INSERT INTO politicians (slug, first_name, last_name, other_names, date_of_birth, date_of_death, gender, status, bio, education, career_history)
+			 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 			 ON CONFLICT (slug) DO NOTHING`,
-			p.Slug, p.FirstName, p.LastName, p.OtherNames, p.DateOfBirth, p.Gender, p.Bio,
+			p.Slug, p.FirstName, p.LastName, p.OtherNames, p.DateOfBirth, p.DateOfDeath, p.Gender, statusOrDefault(p.Status), p.Bio,
 			educationJSON(p.Education), careerJSON(p.CareerHistory),
 		)
 		if err != nil {
