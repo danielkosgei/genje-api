@@ -2,86 +2,78 @@ package config
 
 import (
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/joho/godotenv"
 )
 
 type Config struct {
-	Server     ServerConfig
-	Database   DatabaseConfig
-	Aggregator AggregatorConfig
+	Server      ServerConfig
+	Database    DatabaseConfig
+	Aggregation AggregationConfig
+	Log         LogConfig
 }
 
 type ServerConfig struct {
-	Port         string
-	ReadTimeout  time.Duration
-	WriteTimeout time.Duration
+	Port string
+	Env  string
 }
 
 type DatabaseConfig struct {
-	URL             string
-	MaxOpenConns    int
-	MaxIdleConns    int
-	ConnMaxLifetime time.Duration
+	URL string
 }
 
-type AggregatorConfig struct {
-	Interval        time.Duration
-	RequestTimeout  time.Duration
-	UserAgent       string
-	MaxContentSize  int
-	MaxSummarySize  int
+type AggregationConfig struct {
+	Interval       time.Duration
+	RequestTimeout time.Duration
+	UserAgent      string
+}
+
+type LogConfig struct {
+	Level  string
+	JSON   bool
 }
 
 func Load() (*Config, error) {
-	// Load .env file if it exists
 	_ = godotenv.Load()
 
-	return &Config{
+	cfg := &Config{
 		Server: ServerConfig{
-			Port:         getEnv("PORT", "8080"),
-			ReadTimeout:  getDuration("SERVER_READ_TIMEOUT", 30*time.Second),
-			WriteTimeout: getDuration("SERVER_WRITE_TIMEOUT", 30*time.Second),
+			Port: getEnv("PORT", "8080"),
+			Env:  getEnv("ENV", "development"),
 		},
 		Database: DatabaseConfig{
-			URL:             getEnv("DATABASE_URL", "./genje.db?_journal_mode=WAL&_synchronous=NORMAL&_cache_size=1000&_foreign_keys=ON"),
-			MaxOpenConns:    getInt("DB_MAX_OPEN_CONNS", 25),
-			MaxIdleConns:    getInt("DB_MAX_IDLE_CONNS", 25),
-			ConnMaxLifetime: getDuration("DB_CONN_MAX_LIFETIME", 5*time.Minute),
+			URL: getEnv("DATABASE_URL", "postgres://jalada:jalada@localhost:5432/jalada?sslmode=disable"),
 		},
-		Aggregator: AggregatorConfig{
-			Interval:        getDuration("AGGREGATION_INTERVAL", 30*time.Minute),
-			RequestTimeout:  getDuration("REQUEST_TIMEOUT", 30*time.Second),
-			UserAgent:       getEnv("USER_AGENT", "Mozilla/5.0 (compatible; Genje-News-Aggregator/1.0)"),
-			MaxContentSize:  getInt("MAX_CONTENT_SIZE", 10000),
-			MaxSummarySize:  getInt("MAX_SUMMARY_SIZE", 300),
+		Aggregation: AggregationConfig{
+			Interval:       parseDuration(getEnv("AGGREGATION_INTERVAL", "15m")),
+			RequestTimeout: parseDuration(getEnv("REQUEST_TIMEOUT", "30s")),
+			UserAgent:      getEnv("USER_AGENT", "Jalada/1.0"),
 		},
-	}, nil
+		Log: LogConfig{
+			Level: getEnv("LOG_LEVEL", "debug"),
+			JSON:  getEnv("LOG_JSON", "false") == "true",
+		},
+	}
+
+	return cfg, nil
 }
 
-func getEnv(key, defaultValue string) string {
-	if value := os.Getenv(key); value != "" {
-		return value
-	}
-	return defaultValue
+func (c *Config) IsProduction() bool {
+	return c.Server.Env == "production"
 }
 
-func getDuration(key string, defaultValue time.Duration) time.Duration {
-	if value := os.Getenv(key); value != "" {
-		if duration, err := time.ParseDuration(value); err == nil {
-			return duration
-		}
+func getEnv(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
 	}
-	return defaultValue
+	return fallback
 }
 
-func getInt(key string, defaultValue int) int {
-	if value := os.Getenv(key); value != "" {
-		if intValue, err := strconv.Atoi(value); err == nil {
-			return intValue
-		}
+func parseDuration(s string) time.Duration {
+	d, err := time.ParseDuration(s)
+	if err != nil {
+		return 15 * time.Minute
 	}
-	return defaultValue
-} 
+	return d
+}

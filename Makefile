@@ -1,61 +1,54 @@
-.PHONY: build run test clean docker-build docker-run lint lint-ci
+APP_NAME := jalada
+BUILD_DIR := bin
 
-# Build the application
+.PHONY: build run test test-coverage lint format tidy clean \
+        migrate-up migrate-down migrate-create \
+        docker-build docker-run docker-compose-up docker-compose-down
+
 build:
-	go build -o bin/genje-api cmd/server/main.go
+	go build -o $(BUILD_DIR)/$(APP_NAME) ./cmd/server
 
-# Run the application
-run:
-	go run cmd/server/main.go
+run: build
+	./$(BUILD_DIR)/$(APP_NAME)
 
-# Run tests
 test:
-	go test -v ./...
+	go test -race ./...
 
-# Run tests with coverage
 test-coverage:
-	go test -v -cover ./...
+	go test -race -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out -o coverage.html
 
-# Clean build artifacts
-clean:
-	rm -rf bin/
-
-# Lint the code
 lint:
-	$(shell go env GOPATH)/bin/golangci-lint run
+	golangci-lint run ./...
 
-# Lint with timeout (for CI)
-lint-ci:
-	$(shell go env GOPATH)/bin/golangci-lint run --timeout=5m
-
-# Format the code
 format:
-	go fmt ./...
+	gofmt -s -w .
+	goimports -w .
 
-# Tidy dependencies
 tidy:
 	go mod tidy
 
-# Docker build
+clean:
+	rm -rf $(BUILD_DIR) coverage.out coverage.html
+
+migrate-up:
+	migrate -path internal/database/migrations -database "$(DATABASE_URL)" up
+
+migrate-down:
+	migrate -path internal/database/migrations -database "$(DATABASE_URL)" down 1
+
+migrate-create:
+	@read -p "Migration name: " name; \
+	migrate create -ext sql -dir internal/database/migrations -seq $$name
+
 docker-build:
-	docker build -t genje-api:latest .
+	docker build -t $(APP_NAME):latest .
 
-# Docker run
-docker-run:
-	docker run -p 8080:8080 --env-file .env genje-api:latest
+docker-run: docker-build
+	docker run --rm -p 8080:8080 --env-file .env $(APP_NAME):latest
 
-# Setup environment (copy config template)
-setup-env:
-	cp .env.example .env
-	@echo "🟢 Created .env file from template. Please edit it with your configuration."
+docker-compose-up:
+	docker compose up -d
 
-# Development setup
-dev-setup: setup-env
-	go mod download
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8
-	@echo "🟢 Development environment ready!"
-	@echo "   Edit .env file with your configuration, then run 'make run'"
-
-# Database reset (development only)
-db-reset:
-	rm -f genje.db genje.db-wal genje.db-shm
+docker-compose-down:
+	docker compose down

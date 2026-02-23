@@ -1,4 +1,5 @@
-# Go
+# Binaries
+bin/
 *.exe
 *.exe~
 *.dll
@@ -6,26 +7,16 @@
 *.dylib
 *.test
 *.out
-go.work
-go.work.sum
 
-# Build artifacts
-/bin/
-/dist/
-
-# Environment files
+# Environment
 .env
 .env.local
 .env.*.local
 
-# Database files
+# Database
 *.db
 *.db-wal
 *.db-shm
-
-# Logs
-*.log
-logs/
 
 # IDE
 .vscode/
@@ -36,17 +27,11 @@ logs/
 
 # OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
-
-# Temporary files
-tmp/
-temp/
 
 # Coverage
 coverage.out
 coverage.html
+
+# Tmp
+tmp/
