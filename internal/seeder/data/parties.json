@@ -1,0 +1,182 @@
+[
+  {
+    "name": "United Democratic Alliance",
+    "abbreviation": "UDA",
+    "slug": "uda",
+    "ideology": "Center-right, Conservatism, Populism",
+    "website": "https://uda.ke",
+    "status": "active",
+    "founded_date": "2020-12-01"
+  },
+  {
+    "name": "Orange Democratic Movement",
+    "abbreviation": "ODM",
+    "slug": "odm",
+    "ideology": "Social democracy, Civic nationalism, Social liberalism",
+    "website": "https://odm.co.ke",
+    "status": "active",
+    "founded_date": "2005-01-01"
+  },
+  {
+    "name": "Jubilee Party",
+    "abbreviation": "JP",
+    "slug": "jubilee-party",
+    "ideology": "Kenyan nationalism, National conservatism, Economic liberalism",
+    "website": "https://jubileeparty.ke",
+    "status": "active",
+    "founded_date": "2016-09-07"
+  },
+  {
+    "name": "Amani National Congress",
+    "abbreviation": "ANC",
+    "slug": "anc",
+    "ideology": "Social liberalism, Centrism",
+    "website": null,
+    "status": "active",
+    "founded_date": "2015-07-13"
+  },
+  {
+    "name": "Wiper Democratic Movement",
+    "abbreviation": "WDM-K",
+    "slug": "wiper",
+    "ideology": "Social democracy",
+    "website": "https://wiper.co.ke",
+    "status": "active",
+    "founded_date": "2006-03-01"
+  },
+  {
+    "name": "Forum for the Restoration of Democracy-Kenya",
+    "abbreviation": "FORD-K",
+    "slug": "ford-kenya",
+    "ideology": "Social democracy",
+    "website": "https://www.fordkenya.party",
+    "status": "active",
+    "founded_date": "1992-01-01"
+  },
+  {
+    "name": "Kenya African National Union",
+    "abbreviation": "KANU",
+    "slug": "kanu",
+    "ideology": "Kenyan nationalism, Conservatism",
+    "website": "https://kanuparty.org",
+    "status": "active",
+    "founded_date": "1960-05-01"
+  },
+  {
+    "name": "Forum for the Restoration of Democracy-People",
+    "abbreviation": "FORD-P",
+    "slug": "ford-people",
+    "ideology": "Social democracy",
+    "website": null,
+    "status": "dissolved",
+    "founded_date": "1997-10-01"
+  },
+  {
+    "name": "Democratic Action Party-Kenya",
+    "abbreviation": "DAP-K",
+    "slug": "dap-k",
+    "ideology": "Liberal democracy",
+    "website": null,
+    "status": "active",
+    "founded_date": "2020-01-01"
+  },
+  {
+    "name": "United Democratic Movement",
+    "abbreviation": "UDM",
+    "slug": "udm",
+    "ideology": "Liberal democracy",
+    "website": null,
+    "status": "active",
+    "founded_date": "1999-01-01"
+  },
+  {
+    "name": "Chama Cha Mashinani",
+    "abbreviation": "CCM",
+    "slug": "ccm",
+    "ideology": "Devolution, Grassroots development",
+    "website": "https://www.ccm.co.ke",
+    "status": "active",
+    "founded_date": "2016-09-07"
+  },
+  {
+    "name": "Movement for Democracy and Growth",
+    "abbreviation": "MDG",
+    "slug": "mdg",
+    "ideology": "Democracy, Economic growth",
+    "website": null,
+    "status": "active",
+    "founded_date": "2017-01-01"
+  },
+  {
+    "name": "The Service Party",
+    "abbreviation": "TSP",
+    "slug": "tsp",
+    "ideology": "Service delivery, Reform",
+    "website": "https://tsp.co.ke",
+    "status": "active",
+    "founded_date": "2020-05-01"
+  },
+  {
+    "name": "NARC Kenya",
+    "abbreviation": "NARC-K",
+    "slug": "narc-kenya",
+    "ideology": "Reform, Democracy",
+    "website": null,
+    "status": "active",
+    "founded_date": "2005-01-01"
+  },
+  {
+    "name": "Maendeleo Chap Chap",
+    "abbreviation": "MCC",
+    "slug": "maendeleo-chap-chap",
+    "ideology": "Development, Service delivery",
+    "website": "https://maendeleochapchapparty.co.ke",
+    "status": "active",
+    "founded_date": "2012-01-01"
+  },
+  {
+    "name": "Party of Action",
+    "abbreviation": "PAA",
+    "slug": "paa",
+    "ideology": "Social democracy, Freedom, Equality, Inclusivity",
+    "website": "https://www.paaparty.co.ke",
+    "status": "active",
+    "founded_date": "2020-01-01"
+  },
+  {
+    "name": "United Progressive Alliance",
+    "abbreviation": "UPA",
+    "slug": "upa",
+    "ideology": "Progressivism",
+    "website": null,
+    "status": "active",
+    "founded_date": "2010-01-01"
+  },
+  {
+    "name": "Roots Party of Kenya",
+    "abbreviation": "Roots",
+    "slug": "roots-party",
+    "ideology": "Reform, Federalism",
+    "website": null,
+    "status": "active",
+    "founded_date": "2021-01-01"
+  },
+  {
+    "name": "Kenya Union Party",
+    "abbreviation": "KUP",
+    "slug": "kup",
+    "ideology": "Liberal democracy",
+    "website": null,
+    "status": "active",
+    "founded_date": "2012-01-01"
+  },
+  {
+    "name": "Grand Dream Development Party",
+    "abbreviation": "GDDP",
+    "slug": "gddp",
+    "ideology": "Development",
+    "website": null,
+    "status": "active",
+    "founded_date": "2015-01-01"
+  }
+]

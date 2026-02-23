@@ -16,6 +16,8 @@ import (
 	"jalada/internal/database"
 	"jalada/internal/handlers"
 	"jalada/internal/repository"
+	"jalada/internal/scraper"
+	"jalada/internal/seeder"
 	"jalada/internal/services"
 )
 
@@ -33,12 +35,18 @@ func main() {
 		log.Fatal().Err(err).Msg("failed to run migrations")
 	}
 
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	pool, err := database.NewPool(ctx, cfg.Database.URL)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to connect to database")
 	}
 	defer pool.Close()
+
+	if err := seeder.Seed(ctx, pool); err != nil {
+		log.Fatal().Err(err).Msg("failed to seed data")
+	}
 
 	// Repositories
 	politicianRepo := repository.NewPoliticianRepo(pool)
@@ -70,6 +78,9 @@ func main() {
 
 	router := handlers.NewRouter(h)
 
+	newsScheduler := scraper.NewScheduler(newsRepo, cfg.Aggregation)
+	go newsScheduler.Start(ctx)
+
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", cfg.Server.Port),
 		Handler:      router,
@@ -90,8 +101,10 @@ func main() {
 	sig := <-quit
 	log.Info().Str("signal", sig.String()).Msg("shutting down")
 
-	shutdownCtx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
-	defer cancel()
+	cancel()
+
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer shutdownCancel()
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
 		log.Fatal().Err(err).Msg("server forced to shutdown")

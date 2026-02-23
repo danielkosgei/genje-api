@@ -141,6 +141,83 @@ func (r *NewsRepo) ListSources(ctx context.Context) ([]models.NewsSource, error)
 	return sources, nil
 }
 
+func (r *NewsRepo) GetActiveSources(ctx context.Context) ([]models.NewsSource, error) {
+	query := `
+		SELECT id, name, url, feed_url, type, outlet, active, created_at, updated_at
+		FROM news_sources WHERE active = true ORDER BY name`
+
+	rows, err := r.pool.Query(ctx, query)
+	if err != nil {
+		return nil, fmt.Errorf("get active sources: %w", err)
+	}
+	defer rows.Close()
+
+	var sources []models.NewsSource
+	for rows.Next() {
+		var s models.NewsSource
+		if err := rows.Scan(&s.ID, &s.Name, &s.URL, &s.FeedURL, &s.Type, &s.Outlet, &s.Active, &s.CreatedAt, &s.UpdatedAt); err != nil {
+			return nil, fmt.Errorf("scan source: %w", err)
+		}
+		sources = append(sources, s)
+	}
+	return sources, nil
+}
+
+func (r *NewsRepo) InsertArticle(ctx context.Context, a *models.NewsArticle) error {
+	_, err := r.pool.Exec(ctx,
+		`INSERT INTO news_articles (source_id, title, content, summary, url, author, image_url, published_at, scraped_at, category, is_election_related)
+		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9, $10)
+		 ON CONFLICT (url) DO NOTHING`,
+		a.SourceID, a.Title, a.Content, a.Summary, a.URL, a.Author, a.ImageURL, a.PublishedAt, a.Category, a.IsElectionRelated,
+	)
+	if err != nil {
+		return fmt.Errorf("insert article: %w", err)
+	}
+	return nil
+}
+
+func (r *NewsRepo) ArticleExistsByURL(ctx context.Context, url string) (bool, error) {
+	var exists bool
+	err := r.pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM news_articles WHERE url = $1)`, url).Scan(&exists)
+	if err != nil {
+		return false, fmt.Errorf("check article exists: %w", err)
+	}
+	return exists, nil
+}
+
+func (r *NewsRepo) InsertMention(ctx context.Context, articleURL string, politicianID uuid.UUID) error {
+	_, err := r.pool.Exec(ctx,
+		`INSERT INTO article_politician_mentions (article_id, politician_id)
+		 SELECT na.id, $2
+		 FROM news_articles na WHERE na.url = $1
+		 ON CONFLICT (article_id, politician_id) DO NOTHING`,
+		articleURL, politicianID,
+	)
+	if err != nil {
+		return fmt.Errorf("insert mention: %w", err)
+	}
+	return nil
+}
+
+func (r *NewsRepo) GetAllPoliticianNames(ctx context.Context) ([]models.PoliticianSummary, error) {
+	query := `SELECT id, slug, first_name, last_name, photo_url FROM politicians`
+	rows, err := r.pool.Query(ctx, query)
+	if err != nil {
+		return nil, fmt.Errorf("get politician names: %w", err)
+	}
+	defer rows.Close()
+
+	var politicians []models.PoliticianSummary
+	for rows.Next() {
+		var p models.PoliticianSummary
+		if err := rows.Scan(&p.ID, &p.Slug, &p.FirstName, &p.LastName, &p.PhotoURL); err != nil {
+			return nil, fmt.Errorf("scan politician: %w", err)
+		}
+		politicians = append(politicians, p)
+	}
+	return politicians, nil
+}
+
 func (r *NewsRepo) ListDataSources(ctx context.Context) ([]models.Source, error) {
 	query := `
 		SELECT id, name, url, type, reliability, last_accessed_at, created_at, updated_at

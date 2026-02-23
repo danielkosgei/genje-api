@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Nation Africa - News",
+    "url": "https://nation.africa",
+    "feed_url": "https://nation.africa/kenya/news/rss",
+    "type": "rss",
+    "outlet": "nation",
+    "active": true
+  },
+  {
+    "name": "Nation Africa - Politics",
+    "url": "https://nation.africa",
+    "feed_url": "https://nation.africa/kenya/news/politics/rss",
+    "type": "rss",
+    "outlet": "nation",
+    "active": true
+  },
+  {
+    "name": "The Standard - Politics",
+    "url": "https://www.standardmedia.co.ke",
+    "feed_url": "https://www.standardmedia.co.ke/rss/politics.php",
+    "type": "rss",
+    "outlet": "standard",
+    "active": true
+  },
+  {
+    "name": "The Standard - National",
+    "url": "https://www.standardmedia.co.ke",
+    "feed_url": "https://www.standardmedia.co.ke/rss/national.php",
+    "type": "rss",
+    "outlet": "standard",
+    "active": true
+  },
+  {
+    "name": "The Star - News",
+    "url": "https://www.the-star.co.ke",
+    "feed_url": "https://www.the-star.co.ke/rss",
+    "type": "rss",
+    "outlet": "star",
+    "active": true
+  },
+  {
+    "name": "The Star - Politics",
+    "url": "https://www.the-star.co.ke",
+    "feed_url": "https://www.the-star.co.ke/news/politics/rss",
+    "type": "rss",
+    "outlet": "star",
+    "active": true
+  },
+  {
+    "name": "Citizen Digital",
+    "url": "https://www.citizen.digital",
+    "feed_url": "https://www.citizen.digital/feeds/rss.xml",
+    "type": "rss",
+    "outlet": "citizen",
+    "active": true
+  },
+  {
+    "name": "KTN News",
+    "url": "https://www.ktnnews.com",
+    "feed_url": "https://www.standardmedia.co.ke/rss/ktnnews.php",
+    "type": "rss",
+    "outlet": "ktn",
+    "active": true
+  },
+  {
+    "name": "Capital FM News",
+    "url": "https://www.capitalfm.co.ke",
+    "feed_url": "https://www.capitalfm.co.ke/news/feed/",
+    "type": "rss",
+    "outlet": "other",
+    "active": true
+  },
+  {
+    "name": "Tuko News",
+    "url": "https://www.tuko.co.ke",
+    "feed_url": "https://www.tuko.co.ke/rss",
+    "type": "rss",
+    "outlet": "other",
+    "active": true
+  }
+]

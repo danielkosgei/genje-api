@@ -1,0 +1,1075 @@
+[
+  {
+    "first_name": "William",
+    "last_name": "Ruto",
+    "other_names": "Samoei",
+    "slug": "william-ruto",
+    "date_of_birth": "1966-12-21",
+    "gender": "male",
+    "bio": "5th President of Kenya, elected in 2022.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "BSc Botany and Zoology", "year": 1990},
+      {"institution": "University of Nairobi", "degree": "MSc Plant Ecology", "year": 2011}
+    ],
+    "career_history": [
+      {"role": "President of Kenya", "period": "2022-present"},
+      {"role": "Deputy President of Kenya", "period": "2013-2022"},
+      {"role": "Minister for Agriculture", "period": "2008-2010"},
+      {"role": "MP Eldoret North", "period": "1997-2013"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Rigathi",
+    "last_name": "Gachagua",
+    "other_names": null,
+    "slug": "rigathi-gachagua",
+    "date_of_birth": "1965-08-21",
+    "gender": "male",
+    "bio": "Former Deputy President of Kenya, served from 2022 until impeachment in October 2024.",
+    "education": [],
+    "career_history": [
+      {"role": "Deputy President of Kenya", "period": "2022-2024"},
+      {"role": "MP Mathira", "period": "2017-2022"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Kithure",
+    "last_name": "Kindiki",
+    "other_names": null,
+    "slug": "kithure-kindiki",
+    "date_of_birth": "1972-07-07",
+    "gender": "male",
+    "bio": "Deputy President of Kenya since October 2024, following the impeachment of Rigathi Gachagua. Former Cabinet Secretary for Interior.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 1996},
+      {"institution": "University of Pretoria", "degree": "LLD", "year": 2005}
+    ],
+    "career_history": [
+      {"role": "Deputy President of Kenya", "period": "2024-present"},
+      {"role": "Cabinet Secretary for Interior and National Administration", "period": "2022-2024"},
+      {"role": "Senator Tharaka-Nithi", "period": "2013-2022"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Raila",
+    "last_name": "Odinga",
+    "other_names": "Amolo",
+    "slug": "raila-odinga",
+    "date_of_birth": "1945-01-07",
+    "gender": "male",
+    "bio": "Veteran opposition leader and former Prime Minister of Kenya. Candidate for African Union Commission Chairperson.",
+    "education": [
+      {"institution": "Herder Institut, Leipzig", "degree": "Diploma in General Engineering", "year": 1965},
+      {"institution": "Technical University of Magdeburg", "degree": "MSc Mechanical Engineering", "year": 1970}
+    ],
+    "career_history": [
+      {"role": "AU Commission Chair Candidate", "period": "2024-present"},
+      {"role": "Prime Minister of Kenya", "period": "2008-2013"},
+      {"role": "Minister for Energy", "period": "2001-2002"},
+      {"role": "MP Langata", "period": "1992-2013"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Martha",
+    "last_name": "Karua",
+    "other_names": "Wangari",
+    "slug": "martha-karua",
+    "date_of_birth": "1957-09-22",
+    "gender": "female",
+    "bio": "NARC Kenya party leader. Served as Raila Odinga's running mate in the 2022 presidential election. Former Minister for Justice.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 1981}
+    ],
+    "career_history": [
+      {"role": "NARC Kenya Party Leader", "period": "2013-present"},
+      {"role": "Deputy Presidential Candidate (Azimio)", "period": "2022"},
+      {"role": "Minister for Justice and Constitutional Affairs", "period": "2003-2009"},
+      {"role": "MP Gichugu", "period": "1992-2013"}
+    ],
+    "party_slug": "narc-kenya"
+  },
+  {
+    "first_name": "Musalia",
+    "last_name": "Mudavadi",
+    "other_names": "Wycliffe",
+    "slug": "musalia-mudavadi",
+    "date_of_birth": "1960-09-21",
+    "gender": "male",
+    "bio": "Prime Cabinet Secretary of Kenya and ANC party leader. Former Vice President of Kenya.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "BA Economics", "year": 1984}
+    ],
+    "career_history": [
+      {"role": "Prime Cabinet Secretary", "period": "2022-present"},
+      {"role": "ANC Party Leader", "period": "2015-present"},
+      {"role": "Vice President of Kenya", "period": "2002-2003"},
+      {"role": "Minister for Finance", "period": "1993-1997"},
+      {"role": "MP Sabatia", "period": "1989-2013"}
+    ],
+    "party_slug": "anc"
+  },
+  {
+    "first_name": "Moses",
+    "last_name": "Wetang'ula",
+    "other_names": "Masika",
+    "slug": "moses-wetangula",
+    "date_of_birth": "1956-09-13",
+    "gender": "male",
+    "bio": "Speaker of the National Assembly of Kenya. FORD-Kenya party leader and former Minister for Foreign Affairs.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 1980}
+    ],
+    "career_history": [
+      {"role": "Speaker of the National Assembly", "period": "2022-present"},
+      {"role": "Senator Bungoma", "period": "2013-2022"},
+      {"role": "Minister for Foreign Affairs", "period": "2008-2012"},
+      {"role": "MP Sirisia", "period": "2002-2013"}
+    ],
+    "party_slug": "ford-kenya"
+  },
+  {
+    "first_name": "Amason",
+    "last_name": "Kingi",
+    "other_names": "Jeffah",
+    "slug": "amason-kingi",
+    "date_of_birth": "1969-08-02",
+    "gender": "male",
+    "bio": "Speaker of the Senate of Kenya. Founder of the Pamoja African Alliance (PAA) party and former Governor of Kilifi County.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 1994}
+    ],
+    "career_history": [
+      {"role": "Speaker of the Senate", "period": "2022-present"},
+      {"role": "Governor Kilifi County", "period": "2013-2022"}
+    ],
+    "party_slug": "paa"
+  },
+  {
+    "first_name": "Uhuru",
+    "last_name": "Kenyatta",
+    "other_names": "Muigai",
+    "slug": "uhuru-kenyatta",
+    "date_of_birth": "1961-10-26",
+    "gender": "male",
+    "bio": "4th President of Kenya, serving two terms from 2013 to 2022. Son of founding President Jomo Kenyatta.",
+    "education": [
+      {"institution": "Amherst College", "degree": "BA Political Science and Economics", "year": 1985}
+    ],
+    "career_history": [
+      {"role": "President of Kenya", "period": "2013-2022"},
+      {"role": "Deputy Prime Minister and Minister for Finance", "period": "2008-2013"},
+      {"role": "MP Gatundu South", "period": "2002-2013"}
+    ],
+    "party_slug": "jubilee-party"
+  },
+  {
+    "first_name": "Kalonzo",
+    "last_name": "Musyoka",
+    "other_names": "Stephen",
+    "slug": "kalonzo-musyoka",
+    "date_of_birth": "1953-12-24",
+    "gender": "male",
+    "bio": "Wiper Democratic Movement party leader and former Vice President of Kenya.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 1977}
+    ],
+    "career_history": [
+      {"role": "Wiper Party Leader", "period": "2006-present"},
+      {"role": "Vice President of Kenya", "period": "2008-2013"},
+      {"role": "Minister for Foreign Affairs", "period": "2003-2004"},
+      {"role": "MP Mwingi North", "period": "1985-2013"}
+    ],
+    "party_slug": "wiper"
+  },
+  {
+    "first_name": "Abdulswamad",
+    "last_name": "Nassir",
+    "other_names": "Sharrif",
+    "slug": "abdulswamad-nassir",
+    "date_of_birth": "1979-11-07",
+    "gender": "male",
+    "bio": "Governor of Mombasa County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Mombasa County", "period": "2022-present"},
+      {"role": "MP Mvita", "period": "2013-2022"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Fatuma",
+    "last_name": "Achani",
+    "other_names": null,
+    "slug": "fatuma-achani",
+    "date_of_birth": null,
+    "gender": "female",
+    "bio": "Governor of Kwale County, elected in 2022. First female governor of Kwale.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Kwale County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Gideon",
+    "last_name": "Mung'aro",
+    "other_names": null,
+    "slug": "gideon-mungaro",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Kilifi County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Kilifi County", "period": "2022-present"},
+      {"role": "MP Kilifi North", "period": "2013-2017"}
+    ],
+    "party_slug": "paa"
+  },
+  {
+    "first_name": "Dhadho",
+    "last_name": "Godhana",
+    "other_names": null,
+    "slug": "dhadho-godhana",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Tana River County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Tana River County", "period": "2022-present"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Issa",
+    "last_name": "Timamy",
+    "other_names": null,
+    "slug": "issa-timamy",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Lamu County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Lamu County", "period": "2022-present"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Andrew",
+    "last_name": "Mwadime",
+    "other_names": null,
+    "slug": "andrew-mwadime",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Taita-Taveta County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Taita-Taveta County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Nathif",
+    "last_name": "Jama",
+    "other_names": null,
+    "slug": "nathif-jama",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Garissa County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Garissa County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Ahmed",
+    "last_name": "Abdullahi",
+    "other_names": null,
+    "slug": "ahmed-abdullahi",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Wajir County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Wajir County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Mohamed",
+    "last_name": "Adan",
+    "other_names": null,
+    "slug": "mohamed-adan",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Mandera County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Mandera County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Mohamud",
+    "last_name": "Ali",
+    "other_names": null,
+    "slug": "mohamud-ali",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Marsabit County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Marsabit County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Abdi",
+    "last_name": "Guyo",
+    "other_names": "Ibrahim",
+    "slug": "abdi-guyo",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Isiolo County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Isiolo County", "period": "2022-present"},
+      {"role": "MP Isiolo North", "period": "2017-2022"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Kawira",
+    "last_name": "Mwangaza",
+    "other_names": null,
+    "slug": "kawira-mwangaza",
+    "date_of_birth": null,
+    "gender": "female",
+    "bio": "Governor of Meru County, elected in 2022 as an independent candidate.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Meru County", "period": "2022-present"},
+      {"role": "MCA Meru County Assembly", "period": "2017-2022"}
+    ],
+    "party_slug": null
+  },
+  {
+    "first_name": "Muthomi",
+    "last_name": "Njuki",
+    "other_names": null,
+    "slug": "muthomi-njuki",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Tharaka-Nithi County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Tharaka-Nithi County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Cecily",
+    "last_name": "Mbarire",
+    "other_names": null,
+    "slug": "cecily-mbarire",
+    "date_of_birth": null,
+    "gender": "female",
+    "bio": "Governor of Embu County, elected in 2022. First female governor of Embu.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Embu County", "period": "2022-present"},
+      {"role": "MP Runyenjes", "period": "2007-2017"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Julius",
+    "last_name": "Malombe",
+    "other_names": null,
+    "slug": "julius-malombe",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Kitui County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Kitui County", "period": "2022-present"},
+      {"role": "Senator Kitui", "period": "2013-2022"}
+    ],
+    "party_slug": "wiper"
+  },
+  {
+    "first_name": "Wavinya",
+    "last_name": "Ndeti",
+    "other_names": null,
+    "slug": "wavinya-ndeti",
+    "date_of_birth": null,
+    "gender": "female",
+    "bio": "Governor of Machakos County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Machakos County", "period": "2022-present"}
+    ],
+    "party_slug": "wiper"
+  },
+  {
+    "first_name": "Mutula",
+    "last_name": "Kilonzo Jr",
+    "other_names": null,
+    "slug": "mutula-kilonzo-jr",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Makueni County, elected in 2022. Son of the late Senator Mutula Kilonzo.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 2000}
+    ],
+    "career_history": [
+      {"role": "Governor Makueni County", "period": "2022-present"},
+      {"role": "Senator Makueni", "period": "2013-2022"}
+    ],
+    "party_slug": "wiper"
+  },
+  {
+    "first_name": "Moses",
+    "last_name": "Kiarie",
+    "other_names": "Badilisha",
+    "slug": "moses-kiarie",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Nyandarua County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Nyandarua County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Mutahi",
+    "last_name": "Kahiga",
+    "other_names": null,
+    "slug": "mutahi-kahiga",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Nyeri County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Nyeri County", "period": "2022-present"},
+      {"role": "Deputy Governor Nyeri County", "period": "2017-2022"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Anne",
+    "last_name": "Waiguru",
+    "other_names": "Mumbi",
+    "slug": "anne-waiguru",
+    "date_of_birth": "1971-04-14",
+    "gender": "female",
+    "bio": "Governor of Kirinyaga County, re-elected in 2022. Former Cabinet Secretary for Devolution.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "BA Economics", "year": 1994},
+      {"institution": "University of London", "degree": "MBA", "year": 2003}
+    ],
+    "career_history": [
+      {"role": "Governor Kirinyaga County", "period": "2017-present"},
+      {"role": "Cabinet Secretary for Devolution", "period": "2013-2015"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Irungu",
+    "last_name": "Kang'ata",
+    "other_names": null,
+    "slug": "irungu-kangata",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Murang'a County, elected in 2022.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 2003}
+    ],
+    "career_history": [
+      {"role": "Governor Murang'a County", "period": "2022-present"},
+      {"role": "Senator Murang'a", "period": "2017-2022"},
+      {"role": "MP Kiharu", "period": "2013-2017"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Kimani",
+    "last_name": "Wamatangi",
+    "other_names": null,
+    "slug": "kimani-wamatangi",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Kiambu County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Kiambu County", "period": "2022-present"},
+      {"role": "Senator Kiambu", "period": "2013-2022"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Jeremiah",
+    "last_name": "Lomorukai",
+    "other_names": null,
+    "slug": "jeremiah-lomorukai",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Turkana County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Turkana County", "period": "2022-present"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Simon",
+    "last_name": "Kachapin",
+    "other_names": null,
+    "slug": "simon-kachapin",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of West Pokot County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor West Pokot County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Jonathan",
+    "last_name": "Lelelit",
+    "other_names": null,
+    "slug": "jonathan-lelelit",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Samburu County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Samburu County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "George",
+    "last_name": "Natembeya",
+    "other_names": null,
+    "slug": "george-natembeya",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Trans-Nzoia County, elected in 2022. Former Regional Commissioner.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Trans-Nzoia County", "period": "2022-present"},
+      {"role": "Regional Commissioner Rift Valley", "period": "2018-2022"}
+    ],
+    "party_slug": "dap-k"
+  },
+  {
+    "first_name": "Jonathan",
+    "last_name": "Bii",
+    "other_names": null,
+    "slug": "jonathan-bii",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Uasin Gishu County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Uasin Gishu County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Wisley",
+    "last_name": "Rotich",
+    "other_names": null,
+    "slug": "wisley-rotich",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Elgeyo-Marakwet County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Elgeyo-Marakwet County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Stephen",
+    "last_name": "Sang",
+    "other_names": null,
+    "slug": "stephen-sang",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Nandi County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Nandi County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Benjamin",
+    "last_name": "Cheboi",
+    "other_names": null,
+    "slug": "benjamin-cheboi",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Baringo County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Baringo County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Joshua",
+    "last_name": "Irungu",
+    "other_names": null,
+    "slug": "joshua-irungu",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Laikipia County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Laikipia County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Susan",
+    "last_name": "Kihika",
+    "other_names": null,
+    "slug": "susan-kihika",
+    "date_of_birth": null,
+    "gender": "female",
+    "bio": "Governor of Nakuru County, elected in 2022. Former Senator for Nakuru.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Nakuru County", "period": "2022-present"},
+      {"role": "Senator Nakuru", "period": "2017-2022"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Patrick",
+    "last_name": "Ole Ntutu",
+    "other_names": null,
+    "slug": "patrick-ole-ntutu",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Narok County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Narok County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Joseph",
+    "last_name": "Ole Lenku",
+    "other_names": null,
+    "slug": "joseph-ole-lenku",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Kajiado County, re-elected in 2022. Former Cabinet Secretary for Interior.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Kajiado County", "period": "2017-present"},
+      {"role": "Cabinet Secretary for Interior", "period": "2013-2014"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Eric",
+    "last_name": "Mutai",
+    "other_names": null,
+    "slug": "eric-mutai",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Kericho County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Kericho County", "period": "2022-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Hillary",
+    "last_name": "Barchok",
+    "other_names": null,
+    "slug": "hillary-barchok",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Bomet County, re-elected in 2022. Initially became governor in 2019 following the death of Governor Joyce Laboso.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Bomet County", "period": "2019-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Fernandes",
+    "last_name": "Barasa",
+    "other_names": null,
+    "slug": "fernandes-barasa",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Kakamega County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Kakamega County", "period": "2022-present"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Wilber",
+    "last_name": "Ottichilo",
+    "other_names": null,
+    "slug": "wilber-ottichilo",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Vihiga County, re-elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Vihiga County", "period": "2017-present"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Ken",
+    "last_name": "Lusaka",
+    "other_names": null,
+    "slug": "ken-lusaka",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Bungoma County, elected in 2022. Former Speaker of the Senate.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Bungoma County", "period": "2022-present"},
+      {"role": "Speaker of the Senate", "period": "2017-2022"}
+    ],
+    "party_slug": "anc"
+  },
+  {
+    "first_name": "Paul",
+    "last_name": "Otuoma",
+    "other_names": null,
+    "slug": "paul-otuoma",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Busia County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Busia County", "period": "2022-present"},
+      {"role": "MP Funyula", "period": "2007-2013"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "James",
+    "last_name": "Orengo",
+    "other_names": "Aggrey",
+    "slug": "james-orengo",
+    "date_of_birth": "1950-07-28",
+    "gender": "male",
+    "bio": "Governor of Siaya County, elected in 2022. Veteran politician and constitutional lawyer, former Senator and long-serving MP.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 1976}
+    ],
+    "career_history": [
+      {"role": "Governor Siaya County", "period": "2022-present"},
+      {"role": "Senator Siaya", "period": "2013-2022"},
+      {"role": "Minister for Lands", "period": "2008-2013"},
+      {"role": "MP Ugenya", "period": "1980-2007"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Anyang'",
+    "last_name": "Nyong'o",
+    "other_names": "Peter",
+    "slug": "anyang-nyongo",
+    "date_of_birth": "1945-03-17",
+    "gender": "male",
+    "bio": "Governor of Kisumu County, re-elected in 2022. Academic, former Senator and Cabinet Minister. Father of actress Lupita Nyong'o.",
+    "education": [
+      {"institution": "Makerere University", "degree": "BA Political Science", "year": 1968},
+      {"institution": "University of Chicago", "degree": "PhD Political Science", "year": 1977}
+    ],
+    "career_history": [
+      {"role": "Governor Kisumu County", "period": "2017-present"},
+      {"role": "Senator Kisumu", "period": "2013-2017"},
+      {"role": "Minister for Medical Services", "period": "2008-2013"},
+      {"role": "Minister for Planning", "period": "2003-2005"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Gladys",
+    "last_name": "Wanga",
+    "other_names": null,
+    "slug": "gladys-wanga",
+    "date_of_birth": null,
+    "gender": "female",
+    "bio": "Governor of Homa Bay County, elected in 2022. First female governor of Homa Bay.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Homa Bay County", "period": "2022-present"},
+      {"role": "MP Homa Bay Town", "period": "2013-2022"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Ochillo",
+    "last_name": "Ayacko",
+    "other_names": null,
+    "slug": "ochillo-ayacko",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Migori County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Migori County", "period": "2022-present"},
+      {"role": "Senator Migori", "period": "2019-2022"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Simba",
+    "last_name": "Arati",
+    "other_names": null,
+    "slug": "simba-arati",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Kisii County, elected in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Kisii County", "period": "2022-present"},
+      {"role": "MP Dagoretti North", "period": "2017-2022"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Amos",
+    "last_name": "Nyaribo",
+    "other_names": null,
+    "slug": "amos-nyaribo",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Governor of Nyamira County, re-elected in 2022. Initially became governor in 2021 following the death of Governor John Nyagarama.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Nyamira County", "period": "2021-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Johnson",
+    "last_name": "Sakaja",
+    "other_names": "Arthur",
+    "slug": "johnson-sakaja",
+    "date_of_birth": "1985-02-01",
+    "gender": "male",
+    "bio": "Governor of Nairobi County, elected in 2022. Former Senator for Nairobi.",
+    "education": [],
+    "career_history": [
+      {"role": "Governor Nairobi County", "period": "2022-present"},
+      {"role": "Senator Nairobi", "period": "2017-2022"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Hassan",
+    "last_name": "Joho",
+    "other_names": "Ali",
+    "slug": "hassan-joho",
+    "date_of_birth": "1976-03-16",
+    "gender": "male",
+    "bio": "Former Governor of Mombasa County (2013-2022). Prominent ODM politician and former Deputy Party Leader.",
+    "education": [],
+    "career_history": [
+      {"role": "Mining CS", "period": "2024-present"},
+      {"role": "Governor Mombasa County", "period": "2013-2022"},
+      {"role": "MP Kisauni", "period": "2007-2013"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Wycliffe",
+    "last_name": "Oparanya",
+    "other_names": "Ambetsa",
+    "slug": "wycliffe-oparanya",
+    "date_of_birth": "1962-07-02",
+    "gender": "male",
+    "bio": "Former Governor of Kakamega County (2013-2022). Former ODM Deputy Party Leader.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "BCom", "year": 1986}
+    ],
+    "career_history": [
+      {"role": "Cabinet Secretary for Cooperatives", "period": "2024-present"},
+      {"role": "Governor Kakamega County", "period": "2013-2022"},
+      {"role": "MP Butere", "period": "2003-2013"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Eugene",
+    "last_name": "Wamalwa",
+    "other_names": "Ludovic",
+    "slug": "eugene-wamalwa",
+    "date_of_birth": "1969-12-12",
+    "gender": "male",
+    "bio": "Former Cabinet Secretary and DAP-K party leader. Son of former Vice President Michael Kijana Wamalwa.",
+    "education": [
+      {"institution": "University of Nairobi", "degree": "LLB", "year": 1993}
+    ],
+    "career_history": [
+      {"role": "Cabinet Secretary for Defence", "period": "2020-2022"},
+      {"role": "Cabinet Secretary for Devolution", "period": "2018-2020"},
+      {"role": "Cabinet Secretary for Water", "period": "2013-2018"},
+      {"role": "MP Saboti", "period": "2008-2013"}
+    ],
+    "party_slug": "dap-k"
+  },
+  {
+    "first_name": "Gideon",
+    "last_name": "Moi",
+    "other_names": "Kipsiele",
+    "slug": "gideon-moi",
+    "date_of_birth": "1963-10-23",
+    "gender": "male",
+    "bio": "Senator for Baringo County and KANU Chairman. Son of former President Daniel arap Moi.",
+    "education": [],
+    "career_history": [
+      {"role": "KANU Chairman", "period": "2013-present"},
+      {"role": "Senator Baringo", "period": "2013-present"}
+    ],
+    "party_slug": "kanu"
+  },
+  {
+    "first_name": "Jimmy",
+    "last_name": "Wanjigi",
+    "other_names": "Kibaki",
+    "slug": "jimmy-wanjigi",
+    "date_of_birth": "1965-01-01",
+    "gender": "male",
+    "bio": "Kenyan businessman and political figure. Ran for president in 2022.",
+    "education": [],
+    "career_history": [
+      {"role": "Presidential Candidate", "period": "2022"}
+    ],
+    "party_slug": null
+  },
+  {
+    "first_name": "Aaron",
+    "last_name": "Cheruiyot",
+    "other_names": null,
+    "slug": "aaron-cheruiyot",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Senate Majority Leader and Senator for Kericho County.",
+    "education": [
+      {"institution": "Moi University", "degree": "LLB", "year": 2009}
+    ],
+    "career_history": [
+      {"role": "Senate Majority Leader", "period": "2022-present"},
+      {"role": "Senator Kericho", "period": "2017-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Stewart",
+    "last_name": "Madzayo",
+    "other_names": null,
+    "slug": "stewart-madzayo",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Senate Minority Leader and Senator for Kilifi County.",
+    "education": [],
+    "career_history": [
+      {"role": "Senate Minority Leader", "period": "2022-present"},
+      {"role": "Senator Kilifi", "period": "2017-present"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Ledama",
+    "last_name": "Ole Kina",
+    "other_names": null,
+    "slug": "ledama-ole-kina",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Senator for Narok County. Vocal legislator and former investment banker.",
+    "education": [],
+    "career_history": [
+      {"role": "Senator Narok", "period": "2017-present"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Kimani",
+    "last_name": "Ichung'wah",
+    "other_names": null,
+    "slug": "kimani-ichungwah",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Majority Leader of the National Assembly and MP for Kikuyu Constituency.",
+    "education": [],
+    "career_history": [
+      {"role": "Majority Leader National Assembly", "period": "2022-present"},
+      {"role": "MP Kikuyu", "period": "2013-present"}
+    ],
+    "party_slug": "uda"
+  },
+  {
+    "first_name": "Opiyo",
+    "last_name": "Wandayi",
+    "other_names": null,
+    "slug": "opiyo-wandayi",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "Former Minority Leader of the National Assembly. Appointed Cabinet Secretary following the broad-based government formation in 2024.",
+    "education": [],
+    "career_history": [
+      {"role": "Cabinet Secretary for Energy", "period": "2024-present"},
+      {"role": "Minority Leader National Assembly", "period": "2022-2024"},
+      {"role": "MP Ugunja", "period": "2017-present"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Junet",
+    "last_name": "Mohamed",
+    "other_names": null,
+    "slug": "junet-mohamed",
+    "date_of_birth": null,
+    "gender": "male",
+    "bio": "MP for Suna East Constituency. Close political ally of Raila Odinga and former Minority Whip.",
+    "education": [],
+    "career_history": [
+      {"role": "MP Suna East", "period": "2013-present"},
+      {"role": "Minority Whip National Assembly", "period": "2017-2022"}
+    ],
+    "party_slug": "odm"
+  },
+  {
+    "first_name": "Aden",
+    "last_name": "Duale",
+    "other_names": "Bare",
+    "slug": "aden-duale",
+    "date_of_birth": "1968-01-01",
+    "gender": "male",
+    "bio": "MP for Garissa Township. Former Cabinet Secretary for Defence and former Majority Leader of the National Assembly.",
+    "education": [],
+    "career_history": [
+      {"role": "Cabinet Secretary for Defence", "period": "2022-2024"},
+      {"role": "Majority Leader National Assembly", "period": "2013-2020"},
+      {"role": "MP Garissa Township", "period": "2007-present"}
+    ],
+    "party_slug": "uda"
+  }
+]
