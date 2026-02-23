@@ -176,7 +176,7 @@ func seedConstituencies(ctx context.Context, pool *pgxpool.Pool) error {
 
 func seedParties(ctx context.Context, pool *pgxpool.Pool) error {
 	count, _ := tableCount(ctx, pool, "political_parties")
-	if count >= 15 {
+	if count >= 25 {
 		log.Debug().Int("count", count).Msg("parties already seeded")
 		return nil
 	}
@@ -203,7 +203,7 @@ func seedParties(ctx context.Context, pool *pgxpool.Pool) error {
 
 func seedPoliticians(ctx context.Context, pool *pgxpool.Pool) error {
 	count, _ := tableCount(ctx, pool, "politicians")
-	if count >= 50 {
+	if count >= 400 {
 		log.Debug().Int("count", count).Msg("politicians already seeded")
 		return nil
 	}

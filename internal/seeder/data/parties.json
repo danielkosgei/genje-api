@@ -135,13 +135,13 @@
     "founded_date": "2012-01-01"
   },
   {
-    "name": "Party of Action",
+    "name": "Pamoja African Alliance",
     "abbreviation": "PAA",
     "slug": "paa",
-    "ideology": "Social democracy, Freedom, Equality, Inclusivity",
-    "website": "https://www.paaparty.co.ke",
+    "ideology": "Coastal rights, Federalism",
+    "website": null,
     "status": "active",
-    "founded_date": "2020-01-01"
+    "founded_date": "2021-01-01"
   },
   {
     "name": "United Progressive Alliance",
@@ -178,5 +178,77 @@
     "website": null,
     "status": "active",
     "founded_date": "2015-01-01"
+  },
+  {
+    "name": "United Party of Independent Alliance",
+    "abbreviation": "UPIA",
+    "slug": "upia",
+    "ideology": "Independence, Reform",
+    "website": null,
+    "status": "active",
+    "founded_date": "2017-01-01"
+  },
+  {
+    "name": "National Ordinary People Empowerment Union",
+    "abbreviation": "NOPEU",
+    "slug": "nopeu",
+    "ideology": "Populism, Empowerment",
+    "website": null,
+    "status": "active",
+    "founded_date": "2018-01-01"
+  },
+  {
+    "name": "Democratic Party of Kenya",
+    "abbreviation": "DP",
+    "slug": "dp",
+    "ideology": "Liberal democracy, Conservatism",
+    "website": null,
+    "status": "active",
+    "founded_date": "1992-01-01"
+  },
+  {
+    "name": "National Reconstruction Alliance",
+    "abbreviation": "NRA",
+    "slug": "nra",
+    "ideology": "Constitutionalism, Public interest litigation",
+    "website": null,
+    "status": "active",
+    "founded_date": "2012-01-01"
+  },
+  {
+    "name": "Chama Cha Kazi",
+    "abbreviation": "CCK",
+    "slug": "cck",
+    "ideology": "Industrialization, Economic growth",
+    "website": null,
+    "status": "active",
+    "founded_date": "2022-01-01"
+  },
+  {
+    "name": "Upya Party",
+    "abbreviation": "UP",
+    "slug": "upya",
+    "ideology": "Reform, Renewal",
+    "website": null,
+    "status": "active",
+    "founded_date": "2020-01-01"
+  },
+  {
+    "name": "National Agenda Party of Kenya",
+    "abbreviation": "NAP-K",
+    "slug": "nap-k",
+    "ideology": "National development",
+    "website": null,
+    "status": "active",
+    "founded_date": "2016-01-01"
+  },
+  {
+    "name": "United Democratic Party",
+    "abbreviation": "UDP",
+    "slug": "udp",
+    "ideology": "Democracy, Devolution",
+    "website": null,
+    "status": "active",
+    "founded_date": "2011-01-01"
   }
 ]
