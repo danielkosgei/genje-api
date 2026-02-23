@@ -29,10 +29,11 @@ func NewRouter(h *Handlers) *chi.Mux {
 	r.Use(cors.Handler(middleware.CORS()))
 	r.Use(middleware.RateLimit(100, 200))
 
+	r.Get("/", h.Health.Home)
 	r.Get("/health", h.Health.Health)
 
-	r.Route("/api/v1", func(r chi.Router) {
-		r.Get("/info", h.Health.APIInfo)
+	r.Route("/v1", func(r chi.Router) {
+		r.Get("/", h.Health.Home)
 
 		// Politicians
 		r.Route("/politicians", func(r chi.Router) {
