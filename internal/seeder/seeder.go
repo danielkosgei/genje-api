@@ -354,21 +354,90 @@ func seedElections(ctx context.Context, pool *pgxpool.Pool) error {
 		}
 	}
 
-	milestones := []struct {
+	type milestone struct {
 		title         string
+		description   string
 		milestoneType string
 		date          string
 		status        string
-	}{
-		{"Party Primaries Open", "nomination_start", "2027-03-01", "upcoming"},
-		{"Party Primaries Close", "nomination_end", "2027-04-30", "upcoming"},
-		{"IEBC Candidate Registration Opens", "registration_open", "2027-05-01", "upcoming"},
-		{"IEBC Candidate Registration Closes", "registration_close", "2027-06-01", "upcoming"},
-		{"Official Campaign Period Begins", "campaign_start", "2027-06-02", "upcoming"},
-		{"Campaign Silence Period", "silence_period", "2027-08-08", "upcoming"},
-		{"Election Day", "election_day", "2027-08-10", "upcoming"},
-		{"Results Announcement", "results_announcement", "2027-08-17", "upcoming"},
-		{"Inauguration", "inauguration", "2027-09-14", "upcoming"},
+	}
+
+	milestones := []milestone{
+		{
+			"Continuous Voter Registration Begins",
+			"IEBC resumed CVR on September 29, 2025 across all 290 constituency offices and 57 Huduma Centres per Article 88(4) of the Constitution. Target: 6.3 million new voters to reach 28.5 million total. Source: IEBC gazette notice, The Star, Capital FM.",
+			"registration_open", "2025-09-29", "passed",
+		},
+		{
+			"Election Technology Deployment Target",
+			"IEBC targets having election technology systems (KIEMS kits, BVRS replacements, results transmission) fully deployed by June 2026. Source: IEBC 2027 roadmap, Citizen Digital.",
+			"other", "2026-06-30", "upcoming",
+		},
+		{
+			"Mass Voter Registration Opens",
+			"30-day enhanced mass voter registration exercise across all polling stations. Eligible citizens 18+ with valid national ID or passport. Source: IEBC 2027 roadmap, Citizen Digital.",
+			"other", "2027-03-29", "upcoming",
+		},
+		{
+			"Recruitment of Temporary Election Officials Begins",
+			"IEBC begins recruiting presiding officers, deputy presiding officers, and polling clerks for the general election. Source: IEBC 2027 roadmap.",
+			"other", "2027-04-01", "upcoming",
+		},
+		{
+			"Mass Voter Registration Closes",
+			"Final day for new voter registration before the 2027 general election. Source: IEBC 2027 roadmap, Citizen Digital.",
+			"registration_close", "2027-04-29", "upcoming",
+		},
+		{
+			"Procurement of Election Materials Begins",
+			"IEBC begins procurement of ballot papers, tamper-evident envelopes, indelible ink, and other election materials. Source: IEBC 2027 roadmap.",
+			"other", "2027-05-01", "upcoming",
+		},
+		{
+			"Political Party Primaries Deadline",
+			"Deadline for political parties to conclude internal primaries, resolve disputes, and submit final candidate lists to IEBC. Estimated from IEBC 2027 roadmap (parties conclude by May 2027) and 2022 precedent.",
+			"nomination_end", "2027-05-15", "upcoming",
+		},
+		{
+			"IEBC Candidate Nomination Opens",
+			"IEBC opens nomination and registration of candidates for all elective positions. Presidential candidates must present supporter lists with at least 2,000 voters from a majority of counties. Estimated from 2022 precedent (May 29 - June 6, 2022). Source: Elections Act.",
+			"nomination_start", "2027-05-29", "upcoming",
+		},
+		{
+			"IEBC Candidate Nomination Closes",
+			"Final day for candidates to submit nomination papers to IEBC. Followed by a 10-day dispute resolution window. Estimated from 2022 precedent. Source: Elections Act, IEBC guidelines.",
+			"other", "2027-06-07", "upcoming",
+		},
+		{
+			"Official Campaign Period Begins",
+			"Campaigns permitted daily from 7:00 AM to 6:00 PM. Campaigns must stop 48 hours before polling day per Elections Act. Start date is approximately 45 days before election (2022 precedent: May 29). Source: Elections Act Cap. 7.",
+			"campaign_start", "2027-06-26", "upcoming",
+		},
+		{
+			"Campaign Silence Period Begins",
+			"All campaign activities must cease 48 hours before polling day per the Elections Act. No campaign rallies, advertisements, or voter canvassing permitted from this date. Source: Elections Act Section 13.",
+			"silence_period", "2027-08-08", "upcoming",
+		},
+		{
+			"Election Day",
+			"Constitutionally fixed date for the 2027 Kenya General Election per Article 101(1) of the Constitution. Voters elect President, Governors, Senators, Members of National Assembly, Woman Representatives, and Members of County Assembly. Polling hours: 6:00 AM to 5:00 PM. Source: Constitution of Kenya, Article 101.",
+			"election_day", "2027-08-10", "upcoming",
+		},
+		{
+			"Presidential Results Declaration Deadline",
+			"IEBC Chairperson must declare presidential results within 7 days of the election per Article 138(2) of the Constitution. Other results (Governor, Senator, MP, Woman Rep, MCA) declared at constituency/county level. Source: Constitution of Kenya, Article 138.",
+			"results_announcement", "2027-08-17", "upcoming",
+		},
+		{
+			"Election Petition Filing Deadline",
+			"Any petition challenging presidential election results must be filed at the Supreme Court within 7 days of the results declaration per Article 140(1). The Supreme Court has 14 days to hear and determine the petition. Source: Constitution of Kenya, Article 140.",
+			"other", "2027-08-24", "upcoming",
+		},
+		{
+			"Inauguration of President-Elect",
+			"The President-elect is sworn in on the first Tuesday following the 14th day after results declaration (if no petition) per Article 141 of the Constitution. Date estimated assuming results on August 17 and no petition. Source: Constitution of Kenya, Article 141.",
+			"inauguration", "2027-09-07", "upcoming",
+		},
 	}
 
 	var electionID string
@@ -377,16 +446,13 @@ func seedElections(ctx context.Context, pool *pgxpool.Pool) error {
 		return fmt.Errorf("find 2027 election: %w", err)
 	}
 
-	existingMilestones, _ := tableCount(ctx, pool, "election_timeline")
-	if existingMilestones >= len(milestones) {
-		return nil
-	}
+	_, _ = pool.Exec(ctx, `DELETE FROM election_timeline WHERE election_id = $1`, electionID)
 
 	for _, m := range milestones {
 		_, _ = pool.Exec(ctx,
-			`INSERT INTO election_timeline (election_id, title, milestone_type, date, status)
-			 VALUES ($1, $2, $3, $4, $5)`,
-			electionID, m.title, m.milestoneType, m.date, m.status,
+			`INSERT INTO election_timeline (election_id, title, description, milestone_type, date, status)
+			 VALUES ($1, $2, $3, $4, $5, $6)`,
+			electionID, m.title, m.description, m.milestoneType, m.date, m.status,
 		)
 	}
 	log.Info().Int("count", len(milestones)).Msg("seeded 2027 election timeline")
