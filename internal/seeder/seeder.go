@@ -58,6 +58,7 @@ type politicianData struct {
 	Gender        string           `json:"gender"`
 	Status        string           `json:"status"`
 	Bio           *string          `json:"bio"`
+	PhotoURL      *string          `json:"photo_url"`
 	Education     []educationEntry `json:"education"`
 	CareerHistory []careerEntry    `json:"career_history"`
 	PartySlug     *string          `json:"party_slug"`
@@ -236,11 +237,11 @@ func seedPoliticians(ctx context.Context, pool *pgxpool.Pool) error {
 
 	for _, p := range politicians {
 		_, err := pool.Exec(ctx,
-			`INSERT INTO politicians (slug, first_name, last_name, other_names, date_of_birth, date_of_death, gender, status, bio, education, career_history)
-			 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-			 ON CONFLICT (slug) DO NOTHING`,
+			`INSERT INTO politicians (slug, first_name, last_name, other_names, date_of_birth, date_of_death, gender, status, bio, photo_url, education, career_history)
+			 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+			 ON CONFLICT (slug) DO UPDATE SET photo_url = EXCLUDED.photo_url`,
 			p.Slug, p.FirstName, p.LastName, p.OtherNames, p.DateOfBirth, p.DateOfDeath, p.Gender, statusOrDefault(p.Status), p.Bio,
-			educationJSON(p.Education), careerJSON(p.CareerHistory),
+			p.PhotoURL, educationJSON(p.Education), careerJSON(p.CareerHistory),
 		)
 		if err != nil {
 			return fmt.Errorf("insert politician %s %s: %w", p.FirstName, p.LastName, err)
