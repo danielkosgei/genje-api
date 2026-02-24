@@ -257,7 +257,8 @@
     ],
     "party_slug": "ford-kenya",
     "status": "active",
-    "date_of_death": null
+    "date_of_death": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-08/HON.%20M%20M%20WETANGULA.jpg"
   },
   {
     "first_name": "Amason",
@@ -398,7 +399,8 @@
     ],
     "party_slug": "uda",
     "status": "active",
-    "date_of_death": null
+    "date_of_death": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kwale.jpg"
   },
   {
     "first_name": "Gideon",
@@ -1085,7 +1087,8 @@
     ],
     "party_slug": "uda",
     "status": "active",
-    "date_of_death": null
+    "date_of_death": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/kanar%20seki.jpg"
   },
   {
     "first_name": "Eric",
@@ -1565,7 +1568,8 @@
     ],
     "party_slug": "uda",
     "status": "active",
-    "date_of_death": null
+    "date_of_death": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2023-02/IMG-20230208-WA0030.jpg"
   },
   {
     "first_name": "Stewart",
@@ -1588,7 +1592,8 @@
     ],
     "party_slug": "odm",
     "status": "active",
-    "date_of_death": null
+    "date_of_death": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2017-10/b9deed2baf78623484fc2170479f5cfb_M.jpg"
   },
   {
     "first_name": "Ledama",
@@ -1630,7 +1635,8 @@
     ],
     "party_slug": "uda",
     "status": "active",
-    "date_of_death": null
+    "date_of_death": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Ichung%27wah%20Anthony%20Kimani2.jpg"
   },
   {
     "first_name": "Opiyo",
@@ -1680,7 +1686,8 @@
     ],
     "party_slug": "odm",
     "status": "active",
-    "date_of_death": null
+    "date_of_death": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cb0a7144eba907ac785c88f0e0fc98bf_M.jpg"
   },
   {
     "first_name": "Aden",
@@ -1935,7 +1942,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Faki.jpg"
   },
   {
     "first_name": "Issa",
@@ -1954,7 +1962,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-07/ISAABOY%20NOW.png"
   },
   {
     "first_name": "Danson",
@@ -1973,7 +1982,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mungatana1.jpg"
   },
   {
     "first_name": "Joseph",
@@ -1992,7 +2002,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/githuku-%20senator%20lamu.jpg"
   },
   {
     "first_name": "Johnes",
@@ -2011,7 +2022,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2020-02/Sen.%20Johnes%20Mwaruma.jpg"
   },
   {
     "first_name": "Abdulkadir",
@@ -2068,7 +2080,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "udm"
+    "party_slug": "udm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/ALi%20roba%20%282%29.jpg"
   },
   {
     "first_name": "Mohamed",
@@ -2087,7 +2100,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Mohammed%20chute%20said1.jpg"
   },
   {
     "first_name": "Fatuma",
@@ -2106,7 +2120,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/dullo%20fatuma.jpg"
   },
   {
     "first_name": "Kathuri",
@@ -2125,7 +2140,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/murungi%20kathuri.jpg"
   },
   {
     "first_name": "Mwenda",
@@ -2144,7 +2160,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Sen.%20Gataya.jpg"
   },
   {
     "first_name": "Alexander",
@@ -2163,7 +2180,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "dp"
+    "party_slug": "dp",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/alexander%20mundigi.jpg"
   },
   {
     "first_name": "Enoch",
@@ -2182,7 +2200,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/kiio.jpg"
   },
   {
     "first_name": "Agnes",
@@ -2201,7 +2220,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/kaviindu.jpg"
   },
   {
     "first_name": "Daniel",
@@ -2220,7 +2240,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/maanzo.jpg"
   },
   {
     "first_name": "John",
@@ -2239,7 +2260,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/methu.jpg"
   },
   {
     "first_name": "Wahome",
@@ -2258,7 +2280,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/wamatinga%20wahome.jpg"
   },
   {
     "first_name": "Kamau",
@@ -2277,7 +2300,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/murango.jpg"
   },
   {
     "first_name": "Joe",
@@ -2296,7 +2320,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/nyutu%20%282%29.png"
   },
   {
     "first_name": "Karungo",
@@ -2334,7 +2359,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "upya"
+    "party_slug": "upya",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/EKOMWA%20TURK.jpg"
   },
   {
     "first_name": "Julius",
@@ -2353,7 +2379,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/murgor%20recha.jpg"
   },
   {
     "first_name": "Steve",
@@ -2372,7 +2399,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/lelegwe.png"
   },
   {
     "first_name": "Allan",
@@ -2391,7 +2419,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2023-03/Sen.%20Chesang.jpg"
   },
   {
     "first_name": "Jackson",
@@ -2410,7 +2439,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Mandago.jpg"
   },
   {
     "first_name": "Kipchumba",
@@ -2486,7 +2516,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/kinyua%20laikipia.png"
   },
   {
     "first_name": "Tabitha",
@@ -2505,7 +2536,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Keroche.jpg"
   },
   {
     "first_name": "Ledama",
@@ -2524,7 +2556,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/ledama%20%282%29.jpg"
   },
   {
     "first_name": "Samuel",
@@ -2562,7 +2595,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Sen.%20Kiprotich%20Hillary%20Sigei%20.jpg"
   },
   {
     "first_name": "Boni",
@@ -2581,7 +2615,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/khalwale.jpg"
   },
   {
     "first_name": "Godfrey",
@@ -2600,7 +2635,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-07/ososti%20neeewww.jpeg"
   },
   {
     "first_name": "Okiya",
@@ -2657,7 +2693,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Ojienda%20pic.jpg"
   },
   {
     "first_name": "Moses",
@@ -2676,7 +2713,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Kajwang_0.jpg"
   },
   {
     "first_name": "Eddy",
@@ -2695,7 +2733,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/oketch%20eddy.jpg"
   },
   {
     "first_name": "Richard",
@@ -2714,7 +2753,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Onyoka.jpg"
   },
   {
     "first_name": "Okong'o",
@@ -2752,7 +2792,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/sifuna.jpg"
   },
   {
     "first_name": "Zamzam",
@@ -2771,7 +2812,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Mohammed%20Zamzam%20Chimba.jpg"
   },
   {
     "first_name": "Fatuma",
@@ -2809,7 +2851,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_Cropped%20Mbeyu.jpg"
   },
   {
     "first_name": "Amina",
@@ -2828,7 +2871,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kanu"
+    "party_slug": "kanu",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20tana%20river.jpg"
   },
   {
     "first_name": "Muthoni",
@@ -2847,7 +2891,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Marubu%20Muthoni%20Monicah.jpg"
   },
   {
     "first_name": "Lydia",
@@ -2866,7 +2911,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20taita.jpg"
   },
   {
     "first_name": "Edo",
@@ -2885,7 +2931,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20siyad.jpg"
   },
   {
     "first_name": "Fatuma",
@@ -2904,7 +2951,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Jehow%20Fatuma%20Abdi.jpg"
   },
   {
     "first_name": "Ummul",
@@ -2942,7 +2990,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Waqo%20Naomi%20Jillo.jpg"
   },
   {
     "first_name": "Mumina",
@@ -2961,7 +3010,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20bonaya.jpg"
   },
   {
     "first_name": "Elizabeth",
@@ -2980,7 +3030,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Kailema%20Elizabeth%20Karambu2.jpg"
   },
   {
     "first_name": "Susan",
@@ -2999,7 +3050,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "tsp"
+    "party_slug": "tsp",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20tharaka%23.jpg"
   },
   {
     "first_name": "Pamela",
@@ -3018,7 +3070,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20embu.jpg"
   },
   {
     "first_name": "Irene",
@@ -3037,7 +3090,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Kasalu%20Irene%20Muthoni.jpg"
   },
   {
     "first_name": "Joyce",
@@ -3056,7 +3110,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kamene.jpg"
   },
   {
     "first_name": "Rose",
@@ -3075,7 +3130,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20rose.jpg"
   },
   {
     "first_name": "Faith",
@@ -3094,7 +3150,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20faith.jpg"
   },
   {
     "first_name": "Rahab",
@@ -3113,7 +3170,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20nyeri.jpg"
   },
   {
     "first_name": "Jane",
@@ -3132,7 +3190,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20njeri.jpg"
   },
   {
     "first_name": "Betty",
@@ -3170,7 +3229,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Muratha%20Anne%20Wanjiku.jpg"
   },
   {
     "first_name": "Cecilia",
@@ -3189,7 +3249,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20cwr.jpg"
   },
   {
     "first_name": "Rael",
@@ -3208,7 +3269,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kup"
+    "party_slug": "kup",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Kasiwai%20Rael%20Kasiwai.jpg"
   },
   {
     "first_name": "Pauline",
@@ -3227,7 +3289,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20samburu.jpg"
   },
   {
     "first_name": "Lilian",
@@ -3265,7 +3328,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/ds_shollei.jpg"
   },
   {
     "first_name": "Caroline",
@@ -3284,7 +3348,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20caroline.jpg"
   },
   {
     "first_name": "Cynthia",
@@ -3303,7 +3368,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20cynthia.jpg"
   },
   {
     "first_name": "Florence",
@@ -3322,7 +3388,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20jematiah.jpg"
   },
   {
     "first_name": "Jane",
@@ -3341,7 +3408,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/KAGIRI-JANE-WANGECHI--3.jpg"
   },
   {
     "first_name": "Liza",
@@ -3360,7 +3428,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20liza.jpg"
   },
   {
     "first_name": "Rebecca",
@@ -3379,7 +3448,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20tonkei.jpg"
   },
   {
     "first_name": "Leah",
@@ -3398,7 +3468,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20Leah.jpg"
   },
   {
     "first_name": "Beatrice",
@@ -3417,7 +3488,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kericho.jpg"
   },
   {
     "first_name": "Linet",
@@ -3436,7 +3508,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20toto.jpg"
   },
   {
     "first_name": "Elsie",
@@ -3455,7 +3528,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Muhanda%20Elsie%20Busihile.jpg"
   },
   {
     "first_name": "Beatrice",
@@ -3474,7 +3548,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "anc"
+    "party_slug": "anc",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Adagala%20Beatrice%20Kahai.jpg"
   },
   {
     "first_name": "Catherine",
@@ -3493,7 +3568,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "ford-kenya"
+    "party_slug": "ford-kenya",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20catherine.jpg"
   },
   {
     "first_name": "Catherine",
@@ -3512,7 +3588,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20omanyo.jpg"
   },
   {
     "first_name": "Christine",
@@ -3531,7 +3608,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20siaya.jpg"
   },
   {
     "first_name": "Ruth",
@@ -3550,7 +3628,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20ruth.jpg"
   },
   {
     "first_name": "Joyce",
@@ -3569,7 +3648,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20Bensuada.jpg"
   },
   {
     "first_name": "Fatuma",
@@ -3588,7 +3668,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Mohamed%20Fatuma%20Zainab.jpg"
   },
   {
     "first_name": "Dorice",
@@ -3607,7 +3688,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kisii.jpg"
   },
   {
     "first_name": "Jerusha",
@@ -3626,7 +3708,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A5100.jpg"
   },
   {
     "first_name": "Esther",
@@ -3645,7 +3728,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20nairobi.jpg"
   },
   {
     "first_name": "Samuel",
@@ -3664,7 +3748,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/cropped.jpg"
   },
   {
     "first_name": "Benjamin",
@@ -3683,7 +3768,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_DSC_3461.JPG"
   },
   {
     "first_name": "Marianne",
@@ -3702,7 +3788,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/cropped%20kitany.jpg"
   },
   {
     "first_name": "Samuel",
@@ -3721,7 +3808,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20Atandi.jpg"
   },
   {
     "first_name": "John",
@@ -3740,7 +3828,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/cropped%20owino.jpg"
   },
   {
     "first_name": "Irene",
@@ -3759,7 +3848,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/cropped%20%20njoki.jpg"
   },
   {
     "first_name": "Abdi",
@@ -3778,7 +3868,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Shurie%20Abdi%20Omar.jpg"
   },
   {
     "first_name": "Kulow",
@@ -3797,7 +3888,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "udm"
+    "party_slug": "udm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-12/Hon.%20Ahmed%20Hassan%20Maalim.jpg"
   },
   {
     "first_name": "Joshua",
@@ -3816,7 +3908,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kandie.jpg"
   },
   {
     "first_name": "Joseph",
@@ -3835,7 +3928,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20makilap.jpg"
   },
   {
     "first_name": "Charles",
@@ -3854,7 +3948,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kamuren.jpg"
   },
   {
     "first_name": "Nelson",
@@ -3873,7 +3968,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Koech%20Nelson%20KIpyegon.jpg"
   },
   {
     "first_name": "Innocent",
@@ -3892,7 +3988,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20obiri.jpg"
   },
   {
     "first_name": "Obadiah",
@@ -3911,7 +4008,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20obadiah.jpg"
   },
   {
     "first_name": "Miruka",
@@ -3930,7 +4028,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_Screenshot_20220826_165032.jpg"
   },
   {
     "first_name": "Richard",
@@ -3949,7 +4048,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kilel.jpg"
   },
   {
     "first_name": "Richard",
@@ -3968,7 +4068,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20richard.jpg"
   },
   {
     "first_name": "Charles",
@@ -3987,7 +4088,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "upa"
+    "party_slug": "upa",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20onchoke.jpg"
   },
   {
     "first_name": "Gideon",
@@ -4006,7 +4108,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20ochanda.jpg"
   },
   {
     "first_name": "Patrick",
@@ -4025,7 +4128,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A4712.JPG"
   },
   {
     "first_name": "Raphael",
@@ -4044,7 +4148,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20wanjala.jpg"
   },
   {
     "first_name": "Jack",
@@ -4063,7 +4168,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "dap-k"
+    "party_slug": "dap-k",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20jack.jpg"
   },
   {
     "first_name": "Yakub",
@@ -4082,7 +4188,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "upia"
+    "party_slug": "upia",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Kuno%20Yakub%20Adow.jpg"
   },
   {
     "first_name": "Kibet",
@@ -4101,7 +4208,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kirui.jpg"
   },
   {
     "first_name": "Nicholas",
@@ -4120,7 +4228,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-11/Mwale%20Scott%20Tindi.jpg"
   },
   {
     "first_name": "Joseph",
@@ -4139,7 +4248,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20oyula.jpg"
   },
   {
     "first_name": "Mugambi",
@@ -4177,7 +4287,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20Nguchine.jpg"
   },
   {
     "first_name": "Omar",
@@ -4196,7 +4307,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mwinyi.jpg"
   },
   {
     "first_name": "Victor",
@@ -4215,7 +4327,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "ccm"
+    "party_slug": "ccm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Hon.%20Koech%20Kipngetich%20Victor_cropped.jpg"
   },
   {
     "first_name": "Patrick",
@@ -4234,7 +4347,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "dap-k"
+    "party_slug": "dap-k",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20barasa.jpg"
   },
   {
     "first_name": "Paul",
@@ -4253,7 +4367,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A4570.JPG"
   },
   {
     "first_name": "Patrick",
@@ -4272,7 +4387,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20chuka.jpg"
   },
   {
     "first_name": "Farah",
@@ -4291,7 +4407,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20farah.jpg"
   },
   {
     "first_name": "Beatrice",
@@ -4310,7 +4427,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_BILLBOARD%20pic.jpg"
   },
   {
     "first_name": "John",
@@ -4329,7 +4447,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kiarie.jpg"
   },
   {
     "first_name": "Musa",
@@ -4348,7 +4467,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20sirma.jpg"
   },
   {
     "first_name": "Adan",
@@ -4367,7 +4487,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/HON%20KEYNA.jpg"
   },
   {
     "first_name": "Benjamin",
@@ -4386,7 +4507,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_gathiru%20cropped.jpg"
   },
   {
     "first_name": "Babu",
@@ -4405,7 +4527,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Babu%20Owino%20Paul%20Ongili2.jpg"
   },
   {
     "first_name": "James",
@@ -4424,7 +4547,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20gakuya.jpg"
   },
   {
     "first_name": "Julius",
@@ -4462,7 +4586,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mwenje.jpg"
   },
   {
     "first_name": "Josses",
@@ -4481,7 +4606,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20Jossee.jpg"
   },
   {
     "first_name": "Milemba",
@@ -4500,7 +4626,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "anc"
+    "party_slug": "anc",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Milemba%20Omboko%20Jeremiah.jpg"
   },
   {
     "first_name": "Johana",
@@ -4519,7 +4646,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Ngeno%20Stephen%20Johana%20Kipyegon.jpg"
   },
   {
     "first_name": "Robert",
@@ -4538,7 +4666,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20Pukose.jpg"
   },
   {
     "first_name": "Salah",
@@ -4557,7 +4686,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20salah.jpg"
   },
   {
     "first_name": "Wilberforce",
@@ -4576,7 +4706,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20oundo.jpg"
   },
   {
     "first_name": "Said",
@@ -4595,7 +4726,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20buya.jpg"
   },
   {
     "first_name": "Charo",
@@ -4614,7 +4746,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "paa"
+    "party_slug": "paa",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_Cropped%20Ganze.jpg"
   },
   {
     "first_name": "Ali",
@@ -4633,7 +4766,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_Cropped%20Guyo.jpg"
   },
   {
     "first_name": "Edward",
@@ -4652,7 +4786,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20gatanga.jpg"
   },
   {
     "first_name": "Elijah",
@@ -4671,7 +4806,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Kururia%20Elijah%20Njore%20Njoroge.jpg"
   },
   {
     "first_name": "Gabriel",
@@ -4690,7 +4826,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped.jpg"
   },
   {
     "first_name": "Elisha",
@@ -4709,7 +4846,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Odhiambo%20Elisha%20Ochieng.jpg"
   },
   {
     "first_name": "Robert",
@@ -4728,7 +4866,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20gichugu.jpg"
   },
   {
     "first_name": "Martha",
@@ -4747,7 +4886,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20Martha.jpg"
   },
   {
     "first_name": "Gathoni",
@@ -4766,7 +4906,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Wamuchomba%20Gathoni.jpg"
   },
   {
     "first_name": "Charles",
@@ -4785,7 +4926,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "anc"
+    "party_slug": "anc",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20gimose.jpg"
   },
   {
     "first_name": "Peter",
@@ -4804,7 +4946,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-12/KALUMA%20PETER%20GEORGE%20OPONDO.jpg"
   },
   {
     "first_name": "Dan",
@@ -4823,7 +4966,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped_0.jpg"
   },
   {
     "first_name": "Julius",
@@ -4842,7 +4986,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20m%27anaiba.jpg"
   },
   {
     "first_name": "John",
@@ -4861,7 +5006,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20paul.jpg"
   },
   {
     "first_name": "Abdi",
@@ -4880,7 +5026,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "nap-k"
+    "party_slug": "nap-k",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20ijara.jpg"
   },
   {
     "first_name": "Bernard",
@@ -4899,7 +5046,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20shinali.jpg"
   },
   {
     "first_name": "Joseph",
@@ -4918,7 +5066,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20samal.jpg"
   },
   {
     "first_name": "Mohamed",
@@ -4956,7 +5105,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20bady.jpg"
   },
   {
     "first_name": "George",
@@ -4975,7 +5125,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20cropped.jpg"
   },
   {
     "first_name": "James",
@@ -4994,7 +5145,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20wamachukuru.jpg"
   },
   {
     "first_name": "Eve",
@@ -5013,7 +5165,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_MWESH%20PHOTO.jpg"
   },
   {
     "first_name": "Joseph",
@@ -5032,7 +5185,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "ford-kenya"
+    "party_slug": "ford-kenya",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20majimbo.jpg"
   },
   {
     "first_name": "Titus",
@@ -5051,7 +5205,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kup"
+    "party_slug": "kup",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Lotee%20Titus_0.jpg"
   },
   {
     "first_name": "Joshua",
@@ -5070,7 +5225,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20%20kaiti.jpg"
   },
   {
     "first_name": "Elijah",
@@ -5089,7 +5245,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20memusi.jpg"
   },
   {
     "first_name": "Kakuta",
@@ -5108,7 +5265,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_IMG_4635.jpg"
   },
   {
     "first_name": "Onesmus",
@@ -5127,7 +5285,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Nguro%20Onesmus%20Ngogoyo.jpg"
   },
   {
     "first_name": "Samuel",
@@ -5146,7 +5305,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/cropped%20samuel.jpg"
   },
   {
     "first_name": "George",
@@ -5165,7 +5325,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20risa.jpg"
   },
   {
     "first_name": "Katana",
@@ -5184,7 +5345,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Paul%20Katana%20Kahindi.jpg"
   },
   {
     "first_name": "Yusuf",
@@ -5203,7 +5365,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A0218.jpg"
   },
   {
     "first_name": "Alice",
@@ -5241,7 +5404,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "ford-kenya"
+    "party_slug": "ford-kenya",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20john.jpg"
   },
   {
     "first_name": "Peter",
@@ -5260,7 +5424,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/cropped%20kangema.jpg"
   },
   {
     "first_name": "Fabian",
@@ -5279,7 +5444,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "gddp"
+    "party_slug": "gddp",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20muli.jpg"
   },
   {
     "first_name": "Samwel",
@@ -5298,7 +5464,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20moroto.jpg"
   },
   {
     "first_name": "Oscar",
@@ -5317,7 +5484,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20sudi.jpg"
   },
   {
     "first_name": "Andrew",
@@ -5336,7 +5504,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20okuome.jpg"
   },
   {
     "first_name": "Ronald",
@@ -5355,7 +5524,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kasa.jpg"
   },
   {
     "first_name": "Robert",
@@ -5374,7 +5544,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mbui.jpg"
   },
   {
     "first_name": "Adams",
@@ -5393,7 +5564,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-04/Adams_Kipsanai_Korir%2C%20MP.jpg"
   },
   {
     "first_name": "Gideon",
@@ -5412,7 +5584,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20keiyo.jpg"
   },
   {
     "first_name": "Julius",
@@ -5431,7 +5604,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kesses.jpg"
   },
   {
     "first_name": "Christopher",
@@ -5450,7 +5624,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Wangaya%20Christopher%20Aseka.jpg"
   },
   {
     "first_name": "John",
@@ -5469,7 +5644,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kiambaa.jpg"
   },
   {
     "first_name": "John",
@@ -5488,7 +5664,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kiambu.jpg"
   },
   {
     "first_name": "Peter",
@@ -5507,7 +5684,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20orero.jpg"
   },
   {
     "first_name": "Jessica",
@@ -5526,7 +5704,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mbalu.jpg"
   },
   {
     "first_name": "Eckomas",
@@ -5545,7 +5724,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "maendeleo-chap-chap"
+    "party_slug": "maendeleo-chap-chap",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_kibwezi%20cropped.jpg"
   },
   {
     "first_name": "Antony",
@@ -5564,7 +5744,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kieni.jpg"
   },
   {
     "first_name": "Joseph",
@@ -5583,7 +5764,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kigumo.jpg"
   },
   {
     "first_name": "Samson",
@@ -5602,7 +5784,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Nyoro%20Ndindi%20Samson.jpg"
   },
   {
     "first_name": "Julius",
@@ -5621,7 +5804,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kanu"
+    "party_slug": "kanu",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20sunkuli.jpg"
   },
   {
     "first_name": "Owen",
@@ -5640,7 +5824,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Owen%20Mbaya.jpg"
   },
   {
     "first_name": "Richard",
@@ -5659,7 +5844,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20chonga.jpg"
   },
   {
     "first_name": "Thuddeus",
@@ -5678,7 +5864,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_Cropped%20kilome.jpg"
   },
   {
     "first_name": "Didmus",
@@ -5697,7 +5884,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_Cropped%20barasa.jpg"
   },
   {
     "first_name": "Maurice",
@@ -5716,7 +5904,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "dap-k"
+    "party_slug": "dap-k",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-05/Screenshot%202025-05-03%20143149.png"
   },
   {
     "first_name": "Samuel",
@@ -5735,7 +5924,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "paa"
+    "party_slug": "paa",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20Rai.jpg"
   },
   {
     "first_name": "Zachary",
@@ -5754,7 +5944,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Thuku%20Zachary%20Kwenya.jpg"
   },
   {
     "first_name": "Muhia",
@@ -5773,7 +5964,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Muhia%20Wanjiku.jpg"
   },
   {
     "first_name": "Joseph",
@@ -5792,7 +5984,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A9954.jpg"
   },
   {
     "first_name": "Hillary",
@@ -5811,7 +6004,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/DSC_1167.jpg"
   },
   {
     "first_name": "Gachoki",
@@ -5830,7 +6024,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20gitari.jpg"
   },
   {
     "first_name": "Rashid",
@@ -5849,7 +6044,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20bedzimba.jpg"
   },
   {
     "first_name": "Joshua",
@@ -5868,7 +6064,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Oron%20Joshua%20Odongo.jpg"
   },
   {
     "first_name": "Shakeel",
@@ -5887,7 +6084,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20shabbir.jpg"
   },
   {
     "first_name": "Rozaah",
@@ -5906,7 +6104,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20buyu.jpg"
   },
   {
     "first_name": "Makali",
@@ -5925,7 +6124,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Mulu%20Makali.jpg"
   },
   {
     "first_name": "Nimrod",
@@ -5944,7 +6144,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/NIMROD%20MBITHUKA.jpg"
   },
   {
     "first_name": "David",
@@ -5963,7 +6164,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kitui%20rural.jpg"
   },
   {
     "first_name": "Rachael",
@@ -5982,7 +6184,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kaki.jpg"
   },
   {
     "first_name": "Edith",
@@ -6001,7 +6204,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20edith.jpg"
   },
   {
     "first_name": "Nyakundi",
@@ -6020,7 +6224,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Nyakundi%20Japheth%20Mokaya.jpg"
   },
   {
     "first_name": "Antoney",
@@ -6039,7 +6244,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kitutu.jpg"
   },
   {
     "first_name": "Clive",
@@ -6058,7 +6264,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kitutu_0.jpg"
   },
   {
     "first_name": "Yegon",
@@ -6077,7 +6284,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20yegon_0.jpg"
   },
   {
     "first_name": "Alfred",
@@ -6096,7 +6304,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Mutai%20Alfred%20Kiprono.jpg"
   },
   {
     "first_name": "Joseph",
@@ -6115,7 +6324,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-04/tonui.jpg"
   },
   {
     "first_name": "Marwa",
@@ -6134,7 +6344,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kiteyama.jpg"
   },
   {
     "first_name": "Mathias",
@@ -6153,7 +6364,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20robi.jpg"
   },
   {
     "first_name": "Ferdinand",
@@ -6172,7 +6384,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "ford-kenya"
+    "party_slug": "ford-kenya",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kevin.jpg"
   },
   {
     "first_name": "Mohamed",
@@ -6191,7 +6404,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Final.jpg"
   },
   {
     "first_name": "Abdikadir",
@@ -6210,7 +6424,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_Ladgera.jpg"
   },
   {
     "first_name": "Mwangi",
@@ -6229,7 +6444,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "tsp"
+    "party_slug": "tsp",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_MWANGI%20CROPPED.jpg"
   },
   {
     "first_name": "Sarah",
@@ -6248,7 +6464,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20sarah.jpg"
   },
   {
     "first_name": "Wachira",
@@ -6267,7 +6484,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Wachira%20Stephen%20Karani.jpg"
   },
   {
     "first_name": "Joseph",
@@ -6286,7 +6504,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "udm"
+    "party_slug": "udm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-12/Lekuton%20Joseph.jpg"
   },
   {
     "first_name": "Ruweida",
@@ -6305,7 +6524,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/mini_831A4746.jpg"
   },
   {
     "first_name": "Muiruri",
@@ -6324,7 +6544,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20lamu%20west.jpg"
   },
   {
     "first_name": "Phelix",
@@ -6343,7 +6564,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kodhe.jpg"
   },
   {
     "first_name": "Joseph",
@@ -6362,7 +6584,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20lari.jpg"
   },
   {
     "first_name": "Mishi",
@@ -6381,7 +6604,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Mboko%20Mishi%20Juma%20Khamisi.jpg"
   },
   {
     "first_name": "Innocent",
@@ -6400,7 +6624,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Mugabe%20Innocent%20Maino.jpg"
   },
   {
     "first_name": "John",
@@ -6419,7 +6644,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20limuru.jpg"
   },
   {
     "first_name": "Protus",
@@ -6438,7 +6664,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_croped%20loima.jpg"
   },
   {
     "first_name": "Dick",
@@ -6457,7 +6684,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "dap-k"
+    "party_slug": "dap-k",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Luanda%20Dick%20Maungu.jpg"
   },
   {
     "first_name": "Nabii",
@@ -6476,7 +6704,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/nabii%20nabwera%20daraja.jpg"
   },
   {
     "first_name": "Mangale",
@@ -6495,7 +6724,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20lungalunga.jpg"
   },
   {
     "first_name": "Titus",
@@ -6514,7 +6744,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20lurambi.jpg"
   },
   {
     "first_name": "Japhet",
@@ -6533,7 +6764,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20maara.jpg"
   },
   {
     "first_name": "Caleb",
@@ -6552,7 +6784,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20mule.jpg"
   },
   {
     "first_name": "Harrison",
@@ -6571,7 +6804,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Kombe%20Harrison%20Garama.jpg"
   },
   {
     "first_name": "George",
@@ -6590,7 +6824,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_DSC_3680.jpg"
   },
   {
     "first_name": "Suzanne",
@@ -6609,7 +6844,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20susan.jpg"
   },
   {
     "first_name": "Moses",
@@ -6647,7 +6883,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20malindi.jpg"
   },
   {
     "first_name": "Husseinweytan",
@@ -6666,7 +6903,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mandera_1.jpg"
   },
   {
     "first_name": "Bashir",
@@ -6685,7 +6923,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "udm"
+    "party_slug": "udm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Abdullaih%20Bashir%20Sheikh.jpg"
   },
   {
     "first_name": "Abdul",
@@ -6704,7 +6943,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "udm"
+    "party_slug": "udm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mand.jpg"
   },
   {
     "first_name": "Adan",
@@ -6723,7 +6963,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "udm"
+    "party_slug": "udm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%201.jpg"
   },
   {
     "first_name": "John",
@@ -6742,7 +6983,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20john_0.jpg"
   },
   {
     "first_name": "Mary",
@@ -6761,7 +7003,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-11/Hon.%20Mary%20Wamaua.jpg"
   },
   {
     "first_name": "David",
@@ -6780,7 +7023,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Bowen%20Kangogo%20David.jpg"
   },
   {
     "first_name": "Timothy",
@@ -6799,7 +7043,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Toroitich%20Timothy%20Kipchumba.jpg"
   },
   {
     "first_name": "Joshua",
@@ -6818,7 +7063,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Mwalyo%20Joshua%20Mbithi.jpg"
   },
   {
     "first_name": "Godffrey",
@@ -6837,7 +7083,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Odanga%20Geoffrey%20Makokha.jpg"
   },
   {
     "first_name": "Anthony",
@@ -6856,7 +7103,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Oluoch%20Anthony.jpg"
   },
   {
     "first_name": "Edwin",
@@ -6875,7 +7123,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Gichuki%20Edwin%20Mugo.jpg"
   },
   {
     "first_name": "Eric",
@@ -6894,7 +7143,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2024-02/Eric%20Wamumbi.jpg"
   },
   {
     "first_name": "Kassim",
@@ -6913,7 +7163,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "anc"
+    "party_slug": "anc",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Kassim%20Sawa%20Tandaza.jpg"
   },
   {
     "first_name": "Peter",
@@ -6932,7 +7183,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Nabulindo%20Peter%20Oscar.jpg"
   },
   {
     "first_name": "Stephen",
@@ -6951,7 +7203,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Mule%20Stephen%20Mutinda.jpg"
   },
   {
     "first_name": "Patrick",
@@ -6970,7 +7223,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/King%27ola%20Patrick%20Makau.jpg"
   },
   {
     "first_name": "Geoffrey",
@@ -7027,7 +7281,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Nzioka%20Erastus%20Kivasu.jpg"
   },
   {
     "first_name": "Reuben",
@@ -7046,7 +7301,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-02/ScreenshotKIborek_20231120-114623_Facebook.jpg"
   },
   {
     "first_name": "Phylis",
@@ -7065,7 +7321,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Bartoo%20Phyllis%20Jepkemoi.jpg"
   },
   {
     "first_name": "Francis",
@@ -7084,7 +7341,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Kimani%20Francis%20Kuria.jpg"
   },
   {
     "first_name": "Abraham",
@@ -7122,7 +7380,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "upia"
+    "party_slug": "upia",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Guyo%20Waqo%20Jaldesa.jpg"
   },
   {
     "first_name": "Feisal",
@@ -7141,7 +7400,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Salim%20Feisal%20Abdallah%20Bader_0.jpg"
   },
   {
     "first_name": "Fred",
@@ -7160,7 +7420,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Chesebe%20Fred%20Kapondi.jpg"
   },
   {
     "first_name": "James",
@@ -7179,7 +7440,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Oyoo%20James%20Opiyo.jpg"
   },
   {
     "first_name": "Kaguchia",
@@ -7198,7 +7460,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Kaguchia%20John%20Philip%20Gichohi.jpg"
   },
   {
     "first_name": "Peter",
@@ -7217,7 +7480,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "dap-k"
+    "party_slug": "dap-k",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Salasya%20Peter%20Kalerwa.jpg"
   },
   {
     "first_name": "Johnson",
@@ -7236,7 +7500,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/NAICCA%20JOHNSON%20MANYA.jpg"
   },
   {
     "first_name": "Machele",
@@ -7255,7 +7520,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/cropped%20mvita.jpg"
   },
   {
     "first_name": "Vincent",
@@ -7274,7 +7540,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Musau%20Vincent%20Musyoka.jpg"
   },
   {
     "first_name": "Peter",
@@ -7293,7 +7560,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mwatate.jpg"
   },
   {
     "first_name": "Mary",
@@ -7312,7 +7580,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mwea.jpg"
   },
   {
     "first_name": "Gedion",
@@ -7331,7 +7600,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mwingi.jpg"
   },
   {
     "first_name": "Paul",
@@ -7350,7 +7620,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mwingi_0.jpg"
   },
   {
     "first_name": "Charles",
@@ -7369,7 +7640,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_PHOTO-2022-05-26-14-17-39.jpg"
   },
   {
     "first_name": "Jayne",
@@ -7388,7 +7660,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20naivasha.jpg"
   },
   {
     "first_name": "David",
@@ -7407,7 +7680,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20nakuru.jpg"
   },
   {
     "first_name": "Samuel",
@@ -7426,7 +7700,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20arama.jpg"
   },
   {
     "first_name": "Geoffey",
@@ -7464,7 +7739,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20kitur.jpg"
   },
   {
     "first_name": "Lemanken",
@@ -7483,7 +7759,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20aramat.jpg"
   },
   {
     "first_name": "Agnes",
@@ -7502,7 +7779,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20mantaine.jpg"
   },
   {
     "first_name": "Kitilai",
@@ -7521,7 +7799,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20ntutu.jpg"
   },
   {
     "first_name": "Gabriel",
@@ -7540,7 +7819,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/IMG-20220519-WA0047.jpg"
   },
   {
     "first_name": "Emmanuel",
@@ -7559,7 +7839,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Wangwe%20Emmanuel.jpg"
   },
   {
     "first_name": "George",
@@ -7578,7 +7859,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A0021.jpg"
   },
   {
     "first_name": "Martin",
@@ -7597,7 +7879,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20ndhiwa.jpg"
   },
   {
     "first_name": "George",
@@ -7616,7 +7899,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Macharia%20George%20Kariuki.jpg"
   },
   {
     "first_name": "Charity",
@@ -7635,7 +7919,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20njoro.jpg"
   },
   {
     "first_name": "Adhe",
@@ -7654,7 +7939,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kanu"
+    "party_slug": "kanu",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A9836.jpg"
   },
   {
     "first_name": "Rahim",
@@ -7673,7 +7959,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": null
+    "party_slug": null,
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Dawood%20Rahim%20Abdul.jpg"
   },
   {
     "first_name": "Joash",
@@ -7692,7 +7979,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_DSC_0866%20copy.jpg"
   },
   {
     "first_name": "Joshua",
@@ -7711,7 +7999,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Aduma%20Joshua%20Owuor.jpg"
   },
   {
     "first_name": "Mohammad",
@@ -7730,7 +8019,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A0061.jpg"
   },
   {
     "first_name": "Jared",
@@ -7749,7 +8039,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20jared.jpg"
   },
   {
     "first_name": "Zeheer",
@@ -7768,7 +8059,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20nyaribari.jpg"
   },
   {
     "first_name": "Daniel",
@@ -7787,7 +8079,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20nyaribari_0.jpg"
   },
   {
     "first_name": "Tom",
@@ -7806,7 +8099,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Odege%20Tom%20Mboya.JPG"
   },
   {
     "first_name": "Duncan",
@@ -7825,7 +8119,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20nyeri%20town.jpg"
   },
   {
     "first_name": "Michael",
@@ -7844,7 +8139,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20pic.jpg"
   },
   {
     "first_name": "Njuguna",
@@ -7863,7 +8159,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/DSC_0177%40%40AW.jpg"
   },
   {
     "first_name": "Wambugu",
@@ -7882,7 +8179,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20othaya.jpg"
   },
   {
     "first_name": "David",
@@ -7901,7 +8199,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kup"
+    "party_slug": "kup",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A7278.jpg"
   },
   {
     "first_name": "Kenga",
@@ -7920,7 +8219,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "paa"
+    "party_slug": "paa",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20rabai.jpg"
   },
   {
     "first_name": "Lillian",
@@ -7939,7 +8239,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20gogo.jpg"
   },
   {
     "first_name": "Paul",
@@ -7958,7 +8259,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Amollo%20Paul%20Otiende.jpeg"
   },
   {
     "first_name": "Paul",
@@ -7977,7 +8279,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20rongai.jpg"
   },
   {
     "first_name": "Paul",
@@ -7996,7 +8299,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20rongo.jpg"
   },
   {
     "first_name": "Augustine",
@@ -8015,7 +8319,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20roysambu.jpg"
   },
   {
     "first_name": "Joseph",
@@ -8034,7 +8339,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/a9e9f42914223665d97ad02bf448f9bc_M.jpg"
   },
   {
     "first_name": "Simon",
@@ -8053,7 +8359,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20ruiru.jpg"
   },
   {
     "first_name": "Eric",
@@ -8072,7 +8379,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20njiru.jpg"
   },
   {
     "first_name": "Clement",
@@ -8091,7 +8399,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20sabatia.jpg"
   },
   {
     "first_name": "Caleb",
@@ -8110,7 +8419,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20saboti.jpg"
   },
   {
     "first_name": "Dido",
@@ -8129,7 +8439,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20saku.jpg"
   },
   {
     "first_name": "Lentoijoni",
@@ -8148,7 +8459,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kanu"
+    "party_slug": "kanu",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Lentoijoni%20Jackson%20Lekumontare.jpg"
   },
   {
     "first_name": "Dominic",
@@ -8167,7 +8479,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20samburu_0.jpg"
   },
   {
     "first_name": "Naisula",
@@ -8186,7 +8499,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kanu"
+    "party_slug": "kanu",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Lesuuda%20Josephine%20Naisula.jpg"
   },
   {
     "first_name": "James",
@@ -8205,7 +8519,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20seme.jpg"
   },
   {
     "first_name": "Fred",
@@ -8243,7 +8558,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/DSC_1164%20copy_0.jpg"
   },
   {
     "first_name": "Justice",
@@ -8262,7 +8578,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A4508.jpg"
   },
   {
     "first_name": "John",
@@ -8281,7 +8598,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20waluke.jpg"
   },
   {
     "first_name": "Francis",
@@ -8300,7 +8618,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20sotik.jpg"
   },
   {
     "first_name": "Shadrack",
@@ -8319,7 +8638,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_cropped%20south%20imenti.jpg"
   },
   {
     "first_name": "Sylvanus",
@@ -8338,7 +8658,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/ONYIEGO%2C%20SILVANUS%20OSORO.jpg"
   },
   {
     "first_name": "David",
@@ -8357,7 +8678,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20soy.jpg"
   },
   {
     "first_name": "Amos",
@@ -8376,7 +8698,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Amos%20Mwago%20Maina_0.jpg"
   },
   {
     "first_name": "Millie",
@@ -8395,7 +8718,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20millie.jpg"
   },
   {
     "first_name": "Caroli",
@@ -8414,7 +8738,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Omondi%20Caroli.jpg"
   },
   {
     "first_name": "Samuel",
@@ -8433,7 +8758,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20subukia_0.jpg"
   },
   {
     "first_name": "Peter",
@@ -8452,7 +8778,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-11/1000450944.jpg"
   },
   {
     "first_name": "Hussein",
@@ -8471,7 +8798,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20tarbaj.jpg"
   },
   {
     "first_name": "John",
@@ -8490,7 +8818,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20taveta.jpg"
   },
   {
     "first_name": "Edward",
@@ -8509,7 +8838,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Kaunya%20Edward%20Oku.jpg"
   },
   {
     "first_name": "Mary",
@@ -8528,7 +8858,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Cropped%20emase.jpg"
   },
   {
     "first_name": "Geoffrey",
@@ -8547,7 +8878,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20tete.jpg"
   },
   {
     "first_name": "George",
@@ -8566,7 +8898,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20tharaka.jpg"
   },
   {
     "first_name": "Alice",
@@ -8585,7 +8918,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20thika%20town.jpg"
   },
   {
     "first_name": "William",
@@ -8604,7 +8938,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "kanu"
+    "party_slug": "kanu",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Kamket%20William%20Kasait.jpg"
   },
   {
     "first_name": "Lawrence",
@@ -8623,7 +8958,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "nopeu"
+    "party_slug": "nopeu",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20aburi.jpg"
   },
   {
     "first_name": "John",
@@ -8642,7 +8978,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20john.jpg"
   },
   {
     "first_name": "Julius",
@@ -8661,7 +8998,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/mini_831A4725.jpg"
   },
   {
     "first_name": "John",
@@ -8680,7 +9018,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "ford-kenya"
+    "party_slug": "ford-kenya",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Chikati%20John%20Murumba.jpg"
   },
   {
     "first_name": "Janet",
@@ -8699,7 +9038,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20janet.jpg"
   },
   {
     "first_name": "Joseph",
@@ -8718,7 +9058,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20turkana_0.jpg"
   },
   {
     "first_name": "Nicholas",
@@ -8737,7 +9078,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20Nixon.jpg"
   },
   {
     "first_name": "Paul",
@@ -8756,7 +9098,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20paul.jpg"
   },
   {
     "first_name": "John",
@@ -8775,7 +9118,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20trukana.jpg"
   },
   {
     "first_name": "Daniel",
@@ -8794,7 +9138,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/cropped%20turkana.jpg"
   },
   {
     "first_name": "David",
@@ -8813,7 +9158,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "mdg"
+    "party_slug": "mdg",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2025-04/WhatsApp%20Image%202025-04-29%20at%2011.41.36%20AM.jpeg"
   },
   {
     "first_name": "Mark",
@@ -8832,7 +9178,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-12/Nyamita%20Mark%20Ogolla.jpg"
   },
   {
     "first_name": "Ernest",
@@ -8851,7 +9198,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Kivai%20Ernest%20Ogesi.jpg"
   },
   {
     "first_name": "Abdi",
@@ -8870,7 +9218,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Abdi%20Khamis%20Chome2.jpg"
   },
   {
     "first_name": "Adan",
@@ -8908,7 +9257,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Ibrahim%20Saney%20Abdi.jpg"
   },
   {
     "first_name": "Mohamed",
@@ -8927,7 +9277,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Adow%20Aden%20Mohamed.jpg"
   },
   {
     "first_name": "Yusuf",
@@ -8946,7 +9297,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Farah%20Yussuf%20Mohamed_0.jpg"
   },
   {
     "first_name": "Martin",
@@ -8965,7 +9317,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "ford-kenya"
+    "party_slug": "ford-kenya",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Wanyonyi%20Martin%20Pepela.jpg"
   },
   {
     "first_name": "Daniel",
@@ -8984,7 +9337,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "uda"
+    "party_slug": "uda",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Sitati%20Daniel%20Wanyama.jpg"
   },
   {
     "first_name": "Stephen",
@@ -9003,7 +9357,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "jubilee-party"
+    "party_slug": "jubilee-party",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Stephen%20Mogaka_0.jpg"
   },
   {
     "first_name": "Tim",
@@ -9022,7 +9377,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "odm"
+    "party_slug": "odm",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/WETANGULA%20TIMOTHY%20WANYONYI.jpg"
   },
   {
     "first_name": "Danson",
@@ -9041,7 +9397,8 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-09/Mwakuwona%20Danson%20Mwashako.jpg"
   },
   {
     "first_name": "Robert",
@@ -9060,6 +9417,7 @@
         "period": "2022-present"
       }
     ],
-    "party_slug": "wiper"
+    "party_slug": "wiper",
+    "photo_url": "https://www.parliament.go.ke/sites/default/files/2022-10/Basil%20Robert%20Ngui.jpg"
   }
 ]
