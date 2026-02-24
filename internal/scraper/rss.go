@@ -133,8 +133,8 @@ func (f *RSSFetcher) itemToArticle(item *gofeed.Item, source *models.NewsSource)
 	if len(item.Authors) > 0 && article.Author == nil {
 		article.Author = &item.Authors[0].Name
 	}
-	if item.Image != nil && item.Image.URL != "" {
-		article.ImageURL = &item.Image.URL
+	if imgURL := extractImageURL(item); imgURL != "" {
+		article.ImageURL = &imgURL
 	}
 	if item.PublishedParsed != nil {
 		article.PublishedAt = item.PublishedParsed
@@ -147,6 +147,32 @@ func (f *RSSFetcher) itemToArticle(item *gofeed.Item, source *models.NewsSource)
 	}
 
 	return article
+}
+
+func extractImageURL(item *gofeed.Item) string {
+	if item.Image != nil && item.Image.URL != "" {
+		return item.Image.URL
+	}
+
+	for _, enc := range item.Enclosures {
+		if strings.HasPrefix(enc.Type, "image/") && enc.URL != "" {
+			return enc.URL
+		}
+	}
+
+	for _, ns := range []string{"media", "Media"} {
+		if exts, ok := item.Extensions[ns]; ok {
+			for _, tag := range []string{"content", "thumbnail"} {
+				if elems, ok := exts[tag]; ok && len(elems) > 0 {
+					if url := elems[0].Attrs["url"]; url != "" {
+						return url
+					}
+				}
+			}
+		}
+	}
+
+	return ""
 }
 
 func isElectionRelated(title, description string) bool {

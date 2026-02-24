@@ -167,7 +167,7 @@ func (r *NewsRepo) InsertArticle(ctx context.Context, a *models.NewsArticle) err
 	_, err := r.pool.Exec(ctx,
 		`INSERT INTO news_articles (source_id, title, content, summary, url, author, image_url, published_at, scraped_at, category, is_election_related)
 		 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9, $10)
-		 ON CONFLICT (url) DO NOTHING`,
+		 ON CONFLICT (url) DO UPDATE SET image_url = COALESCE(EXCLUDED.image_url, news_articles.image_url)`,
 		a.SourceID, a.Title, a.Content, a.Summary, a.URL, a.Author, a.ImageURL, a.PublishedAt, a.Category, a.IsElectionRelated,
 	)
 	if err != nil {
