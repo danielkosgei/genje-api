@@ -81,6 +81,10 @@ func (s *PoliticianService) GetCourtCases(ctx context.Context, politicianID uuid
 	return s.politicianRepo.GetCourtCases(ctx, politicianID)
 }
 
+func (s *PoliticianService) GetClaims(ctx context.Context, politicianID uuid.UUID) ([]models.Claim, error) {
+	return s.politicianRepo.GetClaims(ctx, politicianID)
+}
+
 func (s *PoliticianService) GetPromises(ctx context.Context, politicianID uuid.UUID) ([]models.Promise, error) {
 	return s.politicianRepo.GetPromises(ctx, politicianID)
 }

@@ -112,6 +112,24 @@ Hit the root URL (`/` or `/v1/`) for the complete self-documenting JSON schema w
 | **Timeline** | `GET /v1/timeline` | 2027 election timeline |
 | | `GET /v1/events` | Political events and rallies |
 
+### News filters
+
+`GET /v1/news` accepts these query parameters. Invalid values return `400` with the reason, rather than being ignored.
+
+| Parameter | Description |
+|-----------|-------------|
+| `q` | Case-insensitive text search over title, summary and content (up to 100 characters). `%` and `_` are matched literally. |
+| `category` | One of `Business`, `Politics`, `Sports`, `Entertainment`, `Technology`, `Health`, `World`, `News`. Case-insensitive. |
+| `source_id` | Only articles from one news source (UUID). |
+| `politician_id` | Only articles that mention a politician (UUID). |
+| `election_related` | `true` for election coverage only. |
+| `limit` | Page size, 1 to 100 (default 20). |
+| `offset` | Number of articles to skip (0 or more). |
+
+Each article includes `source`, the publisher's name (for example "The Standard"), and `category`. Articles are ordered newest first, with the ID as a tie-breaker so pages never overlap.
+
+Categories are assigned from each article's own section label, then its URL path, then its title, then the feed's default category. Anything unmatched is `News`.
+
 ### Pagination
 
 List endpoints support pagination via `limit` and `offset` query parameters:

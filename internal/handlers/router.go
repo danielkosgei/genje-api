@@ -14,6 +14,10 @@ type Handlers struct {
 	Party      *PartyHandler
 	Election   *ElectionHandler
 	News       *NewsHandler
+	Nominee    *NomineeHandler
+	Poll       *PollHandler
+	Search     *SearchHandler
+	Race       *RaceHandler
 	Geography  *GeographyHandler
 	Analytics  *AnalyticsHandler
 	Timeline   *TimelineHandler
@@ -43,7 +47,9 @@ func NewRouter(h *Handlers) *chi.Mux {
 				r.Get("/news", h.Politician.GetNews)
 				r.Get("/voting-record", h.Politician.GetVotingRecord)
 				r.Get("/court-cases", h.Politician.GetCourtCases)
+				r.Get("/profile", h.Politician.GetProfile)
 				r.Get("/promises", h.Politician.GetPromises)
+				r.Get("/claims", h.Politician.GetClaims)
 				r.Get("/achievements", h.Politician.GetAchievements)
 				r.Get("/controversies", h.Politician.GetControversies)
 				r.Get("/affiliations", h.Politician.GetAffiliations)
@@ -58,6 +64,7 @@ func NewRouter(h *Handlers) *chi.Mux {
 		r.Route("/parties", func(r chi.Router) {
 			r.Get("/", h.Party.ListParties)
 			r.Get("/{slug}", h.Party.GetParty)
+			r.Get("/{slug}/profile", h.Party.GetPartyProfile)
 		})
 
 		// Coalitions
@@ -77,11 +84,27 @@ func NewRouter(h *Handlers) *chi.Mux {
 			})
 		})
 
+		// Polls (sourced opinion polls; only what has been recorded)
+		r.Route("/polls", func(r chi.Router) {
+			r.Get("/", h.Poll.ListPolls)
+			r.Get("/summary", h.Poll.GetSummary)
+		})
+
+		// Search across politicians, parties, counties, coalitions and elections
+		r.Get("/search", h.Search.Search)
+
+		// Nominee lists (IEBC party nominees)
+		r.Route("/nominees", func(r chi.Router) {
+			r.Get("/", h.Nominee.ListNominees)
+			r.Get("/headings", h.Nominee.ListNomineeHeadings)
+		})
+
 		// Geography
 		r.Route("/counties", func(r chi.Router) {
 			r.Get("/", h.Geography.ListCounties)
 			r.Route("/{code}", func(r chi.Router) {
 				r.Get("/", h.Geography.GetCounty)
+				r.Get("/race", h.Race.GetCountyRace)
 				r.Get("/constituencies", h.Geography.GetConstituencies)
 			})
 		})

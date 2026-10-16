@@ -119,7 +119,7 @@ func (r *PoliticianRepo) GetByID(ctx context.Context, id uuid.UUID) (*models.Pol
 
 func (r *PoliticianRepo) GetPartyHistory(ctx context.Context, politicianID uuid.UUID) ([]models.PartyMembership, error) {
 	query := `
-		SELECT pm.id, pm.politician_id, pm.party_id, pp.name, pm.joined_date, pm.left_date, pm.role, pm.created_at
+		SELECT pm.id, pm.politician_id, pm.party_id, pp.name, pp.slug, pm.joined_date, pm.left_date, pm.role, pm.created_at
 		FROM party_memberships pm
 		JOIN political_parties pp ON pp.id = pm.party_id
 		WHERE pm.politician_id = $1
@@ -134,7 +134,7 @@ func (r *PoliticianRepo) GetPartyHistory(ctx context.Context, politicianID uuid.
 	var memberships []models.PartyMembership
 	for rows.Next() {
 		var m models.PartyMembership
-		if err := rows.Scan(&m.ID, &m.PoliticianID, &m.PartyID, &m.PartyName, &m.JoinedDate, &m.LeftDate, &m.Role, &m.CreatedAt); err != nil {
+		if err := rows.Scan(&m.ID, &m.PoliticianID, &m.PartyID, &m.PartyName, &m.PartySlug, &m.JoinedDate, &m.LeftDate, &m.Role, &m.CreatedAt); err != nil {
 			return nil, fmt.Errorf("scan party membership: %w", err)
 		}
 		memberships = append(memberships, m)

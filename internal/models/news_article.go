@@ -13,14 +13,19 @@ type NewsSource struct {
 	FeedURL   *string   `json:"feed_url,omitempty"`
 	Type      string    `json:"type"`
 	Outlet    *string   `json:"outlet,omitempty"`
-	Active    bool      `json:"active"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	Publisher *string   `json:"publisher,omitempty"`
+	// DefaultCategory is applied to articles whose own section label is missing or unrecognised.
+	DefaultCategory *string   `json:"default_category,omitempty"`
+	Active          bool      `json:"active"`
+	CreatedAt       time.Time `json:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at"`
 }
 
 type NewsArticle struct {
-	ID                uuid.UUID  `json:"id"`
-	SourceID          *uuid.UUID `json:"source_id,omitempty"`
+	ID       uuid.UUID  `json:"id"`
+	SourceID *uuid.UUID `json:"source_id,omitempty"`
+	// Source is the publisher name for display, such as "The Standard".
+	Source            *string    `json:"source,omitempty"`
 	Title             string     `json:"title"`
 	Content           *string    `json:"content,omitempty"`
 	Summary           *string    `json:"summary,omitempty"`
@@ -45,8 +50,10 @@ type NewsFilter struct {
 	SourceID        *uuid.UUID
 	ElectionRelated *bool
 	Category        *string
-	Since           *time.Time
-	Until           *time.Time
-	Limit           int
-	Offset          int
+	// Query matches against the title, summary and content, case-insensitively.
+	Query  string
+	Since  *time.Time
+	Until  *time.Time
+	Limit  int
+	Offset int
 }

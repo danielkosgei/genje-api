@@ -1,57 +1,48 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
 
 	"jalada/internal/models"
-	"jalada/internal/repository"
 )
 
-type NewsHandler struct {
-	repo *repository.NewsRepo
+// NewsStore is the data the news endpoints need. The repository satisfies it; tests use a fake.
+type NewsStore interface {
+	ListArticles(ctx context.Context, f models.NewsFilter) ([]models.NewsArticle, int, error)
+	GetArticleByID(ctx context.Context, id uuid.UUID) (*models.NewsArticle, error)
+	ListDataSources(ctx context.Context) ([]models.Source, error)
 }
 
-func NewNewsHandler(repo *repository.NewsRepo) *NewsHandler {
-	return &NewsHandler{repo: repo}
+type NewsHandler struct {
+	store NewsStore
+}
+
+func NewNewsHandler(store NewsStore) *NewsHandler {
+	return &NewsHandler{store: store}
 }
 
 func (h *NewsHandler) ListArticles(w http.ResponseWriter, r *http.Request) {
-	limit, offset := parsePagination(r)
-	q := r.URL.Query()
-
-	filter := models.NewsFilter{
-		Limit:  limit,
-		Offset: offset,
-	}
-
-	if v := q.Get("source_id"); v != "" {
-		id, err := parseUUID(v)
-		if err == nil {
-			filter.SourceID = &id
-		}
-	}
-	if v := q.Get("politician_id"); v != "" {
-		id, err := parseUUID(v)
-		if err == nil {
-			filter.PoliticianID = &id
-		}
-	}
-	if q.Get("election_related") == "true" {
-		t := true
-		filter.ElectionRelated = &t
-	}
-
-	articles, total, err := h.repo.ListArticles(r.Context(), filter)
+	filter, err := parseNewsFilter(r)
 	if err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	articles, total, err := h.store.ListArticles(r.Context(), filter)
+	if err != nil {
+		log.Error().Err(err).Msg("list articles failed")
 		writeError(w, http.StatusInternalServerError, "failed to list articles")
 		return
 	}
 	if articles == nil {
 		articles = []models.NewsArticle{}
 	}
-	writeJSON(w, http.StatusOK, models.NewPaginatedResponse(articles, total, limit, offset))
+	writeJSON(w, http.StatusOK, models.NewPaginatedResponse(articles, total, filter.Limit, filter.Offset))
 }
 
 func (h *NewsHandler) GetArticle(w http.ResponseWriter, r *http.Request) {
@@ -61,8 +52,9 @@ func (h *NewsHandler) GetArticle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	article, err := h.repo.GetArticleByID(r.Context(), id)
+	article, err := h.store.GetArticleByID(r.Context(), id)
 	if err != nil {
+		log.Error().Err(err).Str("article_id", id.String()).Msg("get article failed")
 		writeError(w, http.StatusInternalServerError, "failed to get article")
 		return
 	}
@@ -74,8 +66,9 @@ func (h *NewsHandler) GetArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *NewsHandler) ListSources(w http.ResponseWriter, r *http.Request) {
-	sources, err := h.repo.ListDataSources(r.Context())
+	sources, err := h.store.ListDataSources(r.Context())
 	if err != nil {
+		log.Error().Err(err).Msg("list sources failed")
 		writeError(w, http.StatusInternalServerError, "failed to list sources")
 		return
 	}

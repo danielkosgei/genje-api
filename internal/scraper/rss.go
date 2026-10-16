@@ -9,6 +9,7 @@ import (
 	"github.com/mmcdole/gofeed"
 	"github.com/rs/zerolog/log"
 
+	"jalada/internal/category"
 	"jalada/internal/models"
 	"jalada/internal/repository"
 )
@@ -141,10 +142,16 @@ func (f *RSSFetcher) itemToArticle(item *gofeed.Item, source *models.NewsSource)
 	} else if item.UpdatedParsed != nil {
 		article.PublishedAt = item.UpdatedParsed
 	}
+	label := ""
 	if len(item.Categories) > 0 {
-		cat := item.Categories[0]
-		article.Category = &cat
+		label = item.Categories[0]
 	}
+	defaultCategory := ""
+	if source.DefaultCategory != nil {
+		defaultCategory = *source.DefaultCategory
+	}
+	canonical := category.Normalize(label, item.Link, item.Title, defaultCategory)
+	article.Category = &canonical
 
 	return article
 }

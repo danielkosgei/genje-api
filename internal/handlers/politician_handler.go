@@ -125,6 +125,23 @@ func (h *PoliticianHandler) GetCourtCases(w http.ResponseWriter, r *http.Request
 	writeJSON(w, http.StatusOK, cases)
 }
 
+// GetClaims serves the claims for one politician. Each claim carries its rating and its source.
+func (h *PoliticianHandler) GetClaims(w http.ResponseWriter, r *http.Request) {
+	id, ok := h.resolvePoliticianID(w, r)
+	if !ok {
+		return
+	}
+	claims, err := h.svc.GetClaims(r.Context(), id)
+	if err != nil {
+		writeError(w, http.StatusInternalServerError, "failed to get claims")
+		return
+	}
+	if claims == nil {
+		claims = []models.Claim{}
+	}
+	writeJSON(w, http.StatusOK, claims)
+}
+
 func (h *PoliticianHandler) GetPromises(w http.ResponseWriter, r *http.Request) {
 	id, ok := h.resolvePoliticianID(w, r)
 	if !ok {
