@@ -51,9 +51,19 @@ func main() {
 	// Repositories
 	politicianRepo := repository.NewPoliticianRepo(pool)
 	partyRepo := repository.NewPartyRepo(pool)
+	nomineeRepo := repository.NewNomineeRepo(pool)
+	pollRepo := repository.NewPollRepo(pool)
+	searchRepo := repository.NewSearchRepo(pool)
+	raceRepo := repository.NewRaceRepo(pool)
 	electionRepo := repository.NewElectionRepo(pool)
 	geographyRepo := repository.NewGeographyRepo(pool)
 	newsRepo := repository.NewNewsRepo(pool)
+
+	if n, err := newsRepo.BackfillCategories(ctx); err != nil {
+		log.Error().Err(err).Msg("failed to backfill article categories")
+	} else if n > 0 {
+		log.Info().Int("updated", n).Msg("backfilled article categories")
+	}
 	eventRepo := repository.NewEventRepo(pool)
 	sentimentRepo := repository.NewSentimentRepo(pool)
 	analyticsRepo := repository.NewAnalyticsRepo(pool)
@@ -71,12 +81,23 @@ func main() {
 		Party:      handlers.NewPartyHandler(partyRepo),
 		Election:   handlers.NewElectionHandler(electionSvc),
 		News:       handlers.NewNewsHandler(newsRepo),
+		Nominee:    handlers.NewNomineeHandler(nomineeRepo),
+		Poll:       handlers.NewPollHandler(pollRepo),
+		Search:     handlers.NewSearchHandler(searchRepo),
+		Race:       handlers.NewRaceHandler(raceRepo),
 		Geography:  handlers.NewGeographyHandler(geographyRepo),
 		Analytics:  handlers.NewAnalyticsHandler(analyticsSvc),
 		Timeline:   handlers.NewTimelineHandler(timelineSvc),
 	}
 
 	router := handlers.NewRouter(h)
+
+	// Politician photos saved by the ingestion step. Files are served read-only from STATIC_DIR.
+	staticDir := os.Getenv("STATIC_DIR")
+	if staticDir == "" {
+		staticDir = "static"
+	}
+	router.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir(staticDir))))
 
 	newsScheduler := scraper.NewScheduler(newsRepo, cfg.Aggregation)
 	go newsScheduler.Start(ctx)

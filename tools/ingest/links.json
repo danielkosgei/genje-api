@@ -1,0 +1,65 @@
+[
+ {
+  "slug": "yusuf-hassan-abdi",
+  "kind": "profile",
+  "title": "National Assembly profile",
+  "url": "https://parliament.go.ke/node/3184",
+  "source_name": "Parliament of Kenya (National Assembly)",
+  "publisher_type": "official",
+  "found_via": "web search 'Yusuf Hassan Abdi Kenya MP Kamukunji official website' (2026-10-13)"
+ },
+ {
+  "slug": "rahim-dawood-abdul",
+  "kind": "profile",
+  "title": "National Assembly profile",
+  "url": "https://www.parliament.go.ke/node/3220",
+  "source_name": "Parliament of Kenya (National Assembly)",
+  "publisher_type": "official",
+  "found_via": "web search 'Rahim Dawood Abdul Kenya MP official website' (2026-10-13)"
+ },
+ {
+  "slug": "rahim-dawood-abdul",
+  "kind": "profile",
+  "title": "Mzalendo profile",
+  "url": "https://mzalendo.com/mps-performance/national-assembly/13th-parliament/abdul-rahim-dawood/",
+  "source_name": "Mzalendo Trust",
+  "publisher_type": "third_party",
+  "found_via": "web search 'Rahim Dawood Abdul Kenya MP official website' (2026-10-13); corrected 2026-10-13: the original address returned a redirect, the page it resolves to is used"
+ },
+ {
+  "slug": "johnson-sakaja",
+  "kind": "profile",
+  "title": "Mzalendo profile",
+  "url": "https://mzalendo.com/research-and-knowledge/politicians/johnson-arthur-sakaja/",
+  "source_name": "Mzalendo Trust",
+  "publisher_type": "third_party",
+  "found_via": "web search 'Johnson Arthur Sakaja mzalendo profile' (2026-10-13)"
+ },
+ {
+  "slug": "kithure-kindiki",
+  "kind": "profile",
+  "title": "Mzalendo profile",
+  "url": "https://info.mzalendo.com/person/kithure-kindiki/experience/",
+  "source_name": "Mzalendo Trust",
+  "publisher_type": "third_party",
+  "found_via": "web search 'Kithure Kindiki mzalendo profile' (2026-10-13)"
+ },
+ {
+  "slug": "moses-wetangula",
+  "kind": "profile",
+  "title": "Mzalendo profile",
+  "url": "https://info.mzalendo.com/person/moses-wetangula/",
+  "source_name": "Mzalendo Trust",
+  "publisher_type": "third_party",
+  "found_via": "web search 'Moses Wetang'ula mzalendo profile' (2026-10-13)"
+ },
+ {
+  "slug": "kalonzo-musyoka",
+  "kind": "profile",
+  "title": "Mzalendo profile",
+  "url": "https://info.mzalendo.com/person/kalonzo-musyoka/experience/",
+  "source_name": "Mzalendo Trust",
+  "publisher_type": "third_party",
+  "found_via": "web search 'Kalonzo Musyoka mzalendo profile' (2026-10-13)"
+ }
+]

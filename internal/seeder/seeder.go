@@ -65,12 +65,14 @@ type politicianData struct {
 }
 
 type newsSourceData struct {
-	Name    string  `json:"name"`
-	URL     string  `json:"url"`
-	FeedURL *string `json:"feed_url"`
-	Type    string  `json:"type"`
-	Outlet  *string `json:"outlet"`
-	Active  bool    `json:"active"`
+	Name            string  `json:"name"`
+	URL             string  `json:"url"`
+	FeedURL         *string `json:"feed_url"`
+	Type            string  `json:"type"`
+	Outlet          *string `json:"outlet"`
+	Publisher       string  `json:"publisher"`
+	DefaultCategory string  `json:"default_category"`
+	Active          bool    `json:"active"`
 }
 
 func loadJSON[T any](filename string) ([]T, error) {
@@ -459,30 +461,46 @@ func seedElections(ctx context.Context, pool *pgxpool.Pool) error {
 	return nil
 }
 
-func seedNewsSources(ctx context.Context, pool *pgxpool.Pool) error {
-	count, _ := tableCount(ctx, pool, "news_sources")
-	if count >= 5 {
-		log.Debug().Int("count", count).Msg("news sources already seeded")
-		return nil
-	}
 
+// seedNewsSources keeps the news_sources table in step with news_sources.json on every boot.
+// Sources are matched by name, so a corrected feed URL updates the existing row and keeps its
+// articles. Sources the file no longer lists are deactivated rather than deleted.
+func seedNewsSources(ctx context.Context, pool *pgxpool.Pool) error {
 	sources, err := loadJSON[newsSourceData]("news_sources.json")
 	if err != nil {
 		return err
 	}
 
+	names := make([]string, 0, len(sources))
 	for _, s := range sources {
+		names = append(names, s.Name)
 		_, err := pool.Exec(ctx,
-			`INSERT INTO news_sources (name, url, feed_url, type, outlet, active)
-			 VALUES ($1, $2, $3, $4, $5, $6)
-			 ON CONFLICT DO NOTHING`,
-			s.Name, s.URL, s.FeedURL, s.Type, s.Outlet, s.Active,
+			`INSERT INTO news_sources (name, url, feed_url, type, outlet, publisher, default_category, active)
+			 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+			 ON CONFLICT (name) DO UPDATE SET
+			     url = EXCLUDED.url,
+			     feed_url = EXCLUDED.feed_url,
+			     type = EXCLUDED.type,
+			     outlet = EXCLUDED.outlet,
+			     publisher = EXCLUDED.publisher,
+			     default_category = EXCLUDED.default_category,
+			     active = EXCLUDED.active,
+			     updated_at = NOW()`,
+			s.Name, s.URL, s.FeedURL, s.Type, s.Outlet, s.Publisher, s.DefaultCategory, s.Active,
 		)
 		if err != nil {
-			return fmt.Errorf("insert news source %s: %w", s.Name, err)
+			return fmt.Errorf("upsert news source %s: %w", s.Name, err)
 		}
 	}
-	log.Info().Int("count", len(sources)).Msg("seeded news sources")
+
+	tag, err := pool.Exec(ctx,
+		`UPDATE news_sources SET active = false, updated_at = NOW()
+		 WHERE active AND name <> ALL($1)`, names)
+	if err != nil {
+		return fmt.Errorf("deactivate unlisted news sources: %w", err)
+	}
+
+	log.Info().Int("count", len(sources)).Int64("deactivated", tag.RowsAffected()).Msg("synced news sources")
 	return nil
 }
 

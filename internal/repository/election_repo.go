@@ -11,6 +11,20 @@ import (
 	"jalada/internal/models"
 )
 
+// electionStatusSQL derives an election's status from its date, so it never goes stale.
+// The stored status is only used when the election has no date.
+const electionStatusSQL = `CASE
+	WHEN election_date IS NULL THEN status
+	WHEN election_date < CURRENT_DATE THEN 'completed'
+	WHEN election_date = CURRENT_DATE THEN 'ongoing'
+	ELSE 'upcoming' END`
+
+// milestoneStatusSQL derives a timeline milestone's status from its date.
+const milestoneStatusSQL = `CASE
+	WHEN date < CURRENT_DATE THEN 'passed'
+	WHEN date = CURRENT_DATE THEN 'current'
+	ELSE 'upcoming' END`
+
 type ElectionRepo struct {
 	pool *pgxpool.Pool
 }
@@ -21,7 +35,7 @@ func NewElectionRepo(pool *pgxpool.Pool) *ElectionRepo {
 
 func (r *ElectionRepo) List(ctx context.Context) ([]models.Election, error) {
 	query := `
-		SELECT id, name, election_date, type, status, created_at, updated_at
+		SELECT id, name, election_date, type, `+ electionStatusSQL +` AS status, created_at, updated_at
 		FROM elections
 		ORDER BY election_date DESC NULLS LAST`
 
@@ -44,7 +58,7 @@ func (r *ElectionRepo) List(ctx context.Context) ([]models.Election, error) {
 
 func (r *ElectionRepo) GetByID(ctx context.Context, id uuid.UUID) (*models.Election, error) {
 	query := `
-		SELECT id, name, election_date, type, status, created_at, updated_at
+		SELECT id, name, election_date, type, `+ electionStatusSQL +` AS status, created_at, updated_at
 		FROM elections WHERE id = $1`
 
 	var e models.Election
@@ -133,7 +147,7 @@ func (r *ElectionRepo) GetResults(ctx context.Context, electionID uuid.UUID) ([]
 
 func (r *ElectionRepo) GetTimeline(ctx context.Context, electionID uuid.UUID) ([]models.TimelineEvent, error) {
 	query := `
-		SELECT id, election_id, title, description, milestone_type, date, status, created_at, updated_at
+		SELECT id, election_id, title, description, milestone_type, date, `+ milestoneStatusSQL +` AS status, created_at, updated_at
 		FROM election_timeline
 		WHERE election_id = $1
 		ORDER BY date`

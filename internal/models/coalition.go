@@ -18,11 +18,14 @@ type Coalition struct {
 }
 
 type CoalitionMember struct {
-	CoalitionID uuid.UUID  `json:"coalition_id"`
-	PartyID     uuid.UUID  `json:"party_id"`
-	PartyName   string     `json:"party_name,omitempty"`
-	JoinedAt    *time.Time `json:"joined_at,omitempty"`
-	LeftAt      *time.Time `json:"left_at,omitempty"`
+	CoalitionID uuid.UUID `json:"coalition_id"`
+	PartyID     uuid.UUID `json:"party_id"`
+	PartyName   string    `json:"party_name,omitempty"`
+	PartySlug   string    `json:"party_slug,omitempty"`
+	// PartyAbbreviation is the short form such as "ODM", when the party has one.
+	PartyAbbreviation *string    `json:"party_abbreviation,omitempty"`
+	JoinedAt          *time.Time `json:"joined_at,omitempty"`
+	LeftAt            *time.Time `json:"left_at,omitempty"`
 }
 
 type CoalitionDetail struct {

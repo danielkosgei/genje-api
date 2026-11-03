@@ -151,7 +151,7 @@ func (r *PartyRepo) GetCoalitionBySlug(ctx context.Context, slug string) (*model
 	}
 
 	membersQuery := `
-		SELECT cm.coalition_id, cm.party_id, pp.name, cm.joined_at, cm.left_at
+		SELECT cm.coalition_id, cm.party_id, pp.name, pp.slug, pp.abbreviation, cm.joined_at, cm.left_at
 		FROM coalition_members cm
 		JOIN political_parties pp ON pp.id = cm.party_id
 		WHERE cm.coalition_id = $1
@@ -165,7 +165,7 @@ func (r *PartyRepo) GetCoalitionBySlug(ctx context.Context, slug string) (*model
 
 	for rows.Next() {
 		var m models.CoalitionMember
-		if err := rows.Scan(&m.CoalitionID, &m.PartyID, &m.PartyName, &m.JoinedAt, &m.LeftAt); err != nil {
+		if err := rows.Scan(&m.CoalitionID, &m.PartyID, &m.PartyName, &m.PartySlug, &m.PartyAbbreviation, &m.JoinedAt, &m.LeftAt); err != nil {
 			return nil, fmt.Errorf("scan coalition member: %w", err)
 		}
 		cd.Members = append(cd.Members, m)

@@ -2,18 +2,22 @@
   {
     "name": "Nation Africa - News",
     "url": "https://nation.africa",
-    "feed_url": "https://nation.africa/kenya/news/rss",
+    "feed_url": null,
     "type": "rss",
     "outlet": "nation",
-    "active": true
+    "publisher": "Nation Africa",
+    "default_category": "News",
+    "active": false
   },
   {
     "name": "Nation Africa - Politics",
     "url": "https://nation.africa",
-    "feed_url": "https://nation.africa/kenya/news/politics/rss",
+    "feed_url": null,
     "type": "rss",
     "outlet": "nation",
-    "active": true
+    "publisher": "Nation Africa",
+    "default_category": "Politics",
+    "active": false
   },
   {
     "name": "The Standard - Politics",
@@ -21,47 +25,89 @@
     "feed_url": "https://www.standardmedia.co.ke/rss/politics.php",
     "type": "rss",
     "outlet": "standard",
+    "publisher": "The Standard",
+    "default_category": "Politics",
     "active": true
   },
   {
-    "name": "The Standard - National",
+    "name": "The Standard - Kenya",
     "url": "https://www.standardmedia.co.ke",
-    "feed_url": "https://www.standardmedia.co.ke/rss/national.php",
+    "feed_url": "https://www.standardmedia.co.ke/rss/kenya.php",
     "type": "rss",
     "outlet": "standard",
+    "publisher": "The Standard",
+    "default_category": "News",
+    "active": true
+  },
+  {
+    "name": "The Standard - Business",
+    "url": "https://www.standardmedia.co.ke",
+    "feed_url": "https://www.standardmedia.co.ke/rss/business.php",
+    "type": "rss",
+    "outlet": "standard",
+    "publisher": "The Standard",
+    "default_category": "Business",
+    "active": true
+  },
+  {
+    "name": "The Standard - Sports",
+    "url": "https://www.standardmedia.co.ke",
+    "feed_url": "https://www.standardmedia.co.ke/rss/sports.php",
+    "type": "rss",
+    "outlet": "standard",
+    "publisher": "The Standard",
+    "default_category": "Sports",
+    "active": true
+  },
+  {
+    "name": "The Standard - Entertainment",
+    "url": "https://www.standardmedia.co.ke",
+    "feed_url": "https://www.standardmedia.co.ke/rss/entertainment.php",
+    "type": "rss",
+    "outlet": "standard",
+    "publisher": "The Standard",
+    "default_category": "Entertainment",
     "active": true
   },
   {
     "name": "The Star - News",
     "url": "https://www.the-star.co.ke",
-    "feed_url": "https://www.the-star.co.ke/rss",
+    "feed_url": null,
     "type": "rss",
     "outlet": "star",
-    "active": true
+    "publisher": "The Star",
+    "default_category": "News",
+    "active": false
   },
   {
     "name": "The Star - Politics",
     "url": "https://www.the-star.co.ke",
-    "feed_url": "https://www.the-star.co.ke/news/politics/rss",
+    "feed_url": null,
     "type": "rss",
     "outlet": "star",
-    "active": true
+    "publisher": "The Star",
+    "default_category": "Politics",
+    "active": false
   },
   {
     "name": "Citizen Digital",
     "url": "https://www.citizen.digital",
-    "feed_url": "https://www.citizen.digital/feeds/rss.xml",
+    "feed_url": "https://www.citizen.digital/feed.xml",
     "type": "rss",
     "outlet": "citizen",
+    "publisher": "Citizen Digital",
+    "default_category": "News",
     "active": true
   },
   {
     "name": "KTN News",
     "url": "https://www.ktnnews.com",
-    "feed_url": "https://www.standardmedia.co.ke/rss/ktnnews.php",
+    "feed_url": null,
     "type": "rss",
     "outlet": "ktn",
-    "active": true
+    "publisher": "KTN News",
+    "default_category": "News",
+    "active": false
   },
   {
     "name": "Capital FM News",
@@ -69,14 +115,38 @@
     "feed_url": "https://www.capitalfm.co.ke/news/feed/",
     "type": "rss",
     "outlet": "other",
+    "publisher": "Capital FM",
+    "default_category": "News",
     "active": true
   },
   {
     "name": "Tuko News",
     "url": "https://www.tuko.co.ke",
-    "feed_url": "https://www.tuko.co.ke/rss",
+    "feed_url": "https://www.tuko.co.ke/rss/all.rss",
     "type": "rss",
     "outlet": "other",
+    "publisher": "Tuko",
+    "default_category": "News",
+    "active": true
+  },
+  {
+    "name": "People Daily",
+    "url": "https://peopledaily.digital",
+    "feed_url": "https://peopledaily.digital/feed",
+    "type": "rss",
+    "outlet": "other",
+    "publisher": "People Daily",
+    "default_category": "News",
+    "active": true
+  },
+  {
+    "name": "KBC News",
+    "url": "https://www.kbc.co.ke",
+    "feed_url": "https://www.kbc.co.ke/feed/",
+    "type": "rss",
+    "outlet": "other",
+    "publisher": "KBC",
+    "default_category": "News",
     "active": true
   }
 ]

@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS poll_results;
+DROP TABLE IF EXISTS polls;
+DROP TABLE IF EXISTS pollsters;

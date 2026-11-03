@@ -26,6 +26,7 @@ type PartyMembership struct {
 	PoliticianID uuid.UUID  `json:"politician_id"`
 	PartyID      uuid.UUID  `json:"party_id"`
 	PartyName    string     `json:"party_name,omitempty"`
+	PartySlug    string     `json:"party_slug,omitempty"`
 	JoinedDate   *time.Time `json:"joined_date,omitempty"`
 	LeftDate     *time.Time `json:"left_date,omitempty"`
 	Role         *string    `json:"role,omitempty"`
